@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2025 Bivex
+ *
+ * Author: Bivex
+ * Available for contact via email: support@b-b.top
+ * For up-to-date contact information:
+ * https://github.com/bivex
+ *
+ * Created: 2025-12-18T21:10:34
+ * Last Updated: 2025-12-18T21:10:34
+ *
+ * Licensed under the MIT License.
+ * Commercial licensing available upon request.
+ */
+
 // This file configures the initialization of Sentry on the client.
 // The config you add here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
