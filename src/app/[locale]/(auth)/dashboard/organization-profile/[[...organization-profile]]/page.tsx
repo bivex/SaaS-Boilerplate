@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-18T21:10:35
+ * Last Updated: 2025-12-18T21:29:03
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,14 +15,22 @@
 
 import { OrganizationProfile } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
-import { use } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TitleBar } from '@/features/dashboard/TitleBar';
 import { getI18nPath } from '@/utils/Helpers';
 
 const OrganizationProfilePage = (props: { params: Promise<{ locale: string }> }) => {
-  const params = use(props.params);
+  const [params, setParams] = useState<{ locale: string } | null>(null);
   const t = useTranslations('OrganizationProfile');
+
+  useEffect(() => {
+    props.params.then(setParams);
+  }, [props.params]);
+
+  if (!params) {
+    return null;
+  }
 
   return (
     <>

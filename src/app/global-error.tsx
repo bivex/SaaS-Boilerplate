@@ -17,17 +17,25 @@
 
 import * as Sentry from '@sentry/nextjs';
 import NextError from 'next/error';
-import { use, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function GlobalError(props: {
   error: Error & { digest?: string };
   params: Promise<{ locale: string }>;
 }) {
-  const params = use(props.params);
+  const [params, setParams] = useState<{ locale: string } | null>(null);
+
+  useEffect(() => {
+    props.params.then(setParams);
+  }, [props.params]);
 
   useEffect(() => {
     Sentry.captureException(props.error);
   }, [props.error]);
+
+  if (!params) {
+    return null;
+  }
 
   return (
     <html lang={params.locale}>

@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-18T21:10:35
+ * Last Updated: 2025-12-18T21:26:37
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -33,7 +33,14 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 
 const SignUpPage = async (props: { params: Promise<{ locale: string }> }) => {
   const params = await props.params;
-  return <SignUp path={getI18nPath('/sign-up', params.locale)} />;
+  return (
+    <SignUp
+      path={getI18nPath('/sign-up', params.locale)}
+      routing="path"
+      signInUrl={getI18nPath('/sign-in', params.locale)}
+      forceRedirectUrl={getI18nPath('/dashboard', params.locale)}
+    />
+  );
 };
 
 export default SignUpPage;

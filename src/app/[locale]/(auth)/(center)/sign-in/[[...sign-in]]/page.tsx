@@ -33,7 +33,13 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 
 const SignInPage = async (props: { params: Promise<{ locale: string }> }) => {
   const params = await props.params;
-  return <SignIn path={getI18nPath('/sign-in', params.locale)} />;
+  return (
+    <SignIn
+      path={getI18nPath('/sign-in', params.locale)}
+      routing="path"
+      signUpUrl={getI18nPath('/sign-up', params.locale)}
+    />
+  );
 };
 
 export default SignInPage;
