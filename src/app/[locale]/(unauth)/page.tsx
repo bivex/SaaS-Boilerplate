@@ -1,4 +1,19 @@
-import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+/**
+ * Copyright (c) 2025 Bivex
+ *
+ * Author: Bivex
+ * Available for contact via email: support@b-b.top
+ * For up-to-date contact information:
+ * https://github.com/bivex
+ *
+ * Created: 2025-12-18T21:01:13
+ * Last Updated: 2025-12-18T21:04:08
+ *
+ * Licensed under the MIT License.
+ * Commercial licensing available upon request.
+ */
+
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { CTA } from '@/templates/CTA';
 import { DemoBanner } from '@/templates/DemoBanner';
@@ -10,9 +25,10 @@ import { Navbar } from '@/templates/Navbar';
 import { Pricing } from '@/templates/Pricing';
 import { Sponsors } from '@/templates/Sponsors';
 
-export async function generateMetadata(props: { params: { locale: string } }) {
+export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
+  const params = await props.params;
   const t = await getTranslations({
-    locale: props.params.locale,
+    locale: params.locale,
     namespace: 'Index',
   });
 
@@ -22,8 +38,9 @@ export async function generateMetadata(props: { params: { locale: string } }) {
   };
 }
 
-const IndexPage = (props: { params: { locale: string } }) => {
-  unstable_setRequestLocale(props.params.locale);
+const IndexPage = async (props: { params: Promise<{ locale: string }> }) => {
+  const params = await props.params;
+  setRequestLocale(params.locale);
 
   return (
     <>
