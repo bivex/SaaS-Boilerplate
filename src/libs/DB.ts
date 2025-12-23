@@ -7,19 +7,19 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T09:50:47
+ * Last Updated: 2025-12-23T19:01:00
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import path from 'node:path';
-
-import { PGlite } from '@electric-sql/pglite';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
+
+import type { PgliteDatabase } from 'drizzle-orm/pglite';
+import path from 'node:path';
+import { PGlite } from '@electric-sql/pglite';
 import { drizzle as drizzlePg } from 'drizzle-orm/node-postgres';
 import { migrate as migratePg } from 'drizzle-orm/node-postgres/migrator';
-import type { PgliteDatabase } from 'drizzle-orm/pglite';
 import { drizzle as drizzlePglite } from 'drizzle-orm/pglite';
 import { migrate as migratePglite } from 'drizzle-orm/pglite/migrator';
 import { PHASE_PRODUCTION_BUILD } from 'next/dist/shared/lib/constants';

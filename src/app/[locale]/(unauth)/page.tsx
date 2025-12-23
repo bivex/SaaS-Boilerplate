@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:01:13
- * Last Updated: 2025-12-23T09:43:52
+ * Last Updated: 2025-12-23T19:01:02
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,13 +15,14 @@
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { TestimonialsSection } from '@/components/ui/testimonial-v2';
 import { CTA } from '@/templates/CTA';
 import { DemoBanner } from '@/templates/DemoBanner';
 import { FAQ } from '@/templates/FAQ';
 import { Features } from '@/templates/Features';
-import { Footer } from '@/templates/Footer';
+import { Footer } from '@/components/ui/footer-section';
+import { Header1 } from '@/components/ui/header';
 import { Hero } from '@/templates/Hero';
-import { Navbar } from '@/templates/Navbar';
 import { Pricing } from '@/templates/Pricing';
 import { Sponsors } from '@/templates/Sponsors';
 import { UIComponents } from '@/templates/UIComponents';
@@ -46,10 +47,11 @@ const IndexPage = async (props: { params: Promise<{ locale: string }> }) => {
   return (
     <>
       <DemoBanner />
-      <Navbar />
+      <Header1 />
       <Hero />
       <Sponsors />
       <Features />
+      <TestimonialsSection />
       <UIComponents />
       <Pricing />
       <FAQ />

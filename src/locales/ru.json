@@ -57,12 +57,12 @@
     "next_renew_date": "Ваша подписка будет продлена {date}"
   },
   "FAQ": {
-    "question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam enim dui, id consequat turpis ullamcorper ac. Mauris id quam dolor. Nullam eu egestas turpis. Proin risus elit, sollicitudin in mi a, accumsan euismod turpis. In euismod mi sed diam tristique hendrerit."
+    "question": "Что такое этот SaaS boilerplate?",
+    "answer": "Это современный полнофункциональный SaaS boilerplate, построенный на Next.js, включающий аутентификацию, мультиарендность, интеграцию биллинга и интернационализацию. Он предоставляет прочную основу для создания масштабируемых SaaS-приложений с использованием лучших практик и современных технологий."
   },
   "CTA": {
-    "title": "Вы готовы?",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "title": "Готовы создать свой SaaS?",
+    "description": "Начните с нашего готового к продакшену boilerplate и запустите свое SaaS-приложение быстрее, чем когда-либо.",
     "button_text": "Добавить звезду на GitHub"
   },
   "Footer": {

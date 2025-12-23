@@ -57,12 +57,12 @@
     "next_renew_date": "Your subscription renews on {date}"
   },
   "FAQ": {
-    "question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam enim dui, id consequat turpis ullamcorper ac. Mauris id quam dolor. Nullam eu egestas turpis. Proin risus elit, sollicitudin in mi a, accumsan euismod turpis. In euismod mi sed diam tristique hendrerit."
+    "question": "What is this SaaS boilerplate?",
+    "answer": "This is a modern, full-stack SaaS boilerplate built with Next.js, featuring authentication, multi-tenancy, billing integration, and internationalization. It provides a solid foundation for building scalable SaaS applications with best practices and modern technologies."
   },
   "CTA": {
-    "title": "You are ready?",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "title": "Ready to build your SaaS?",
+    "description": "Get started with our production-ready boilerplate and launch your SaaS application faster than ever.",
     "button_text": "Star on GitHub"
   },
   "Footer": {

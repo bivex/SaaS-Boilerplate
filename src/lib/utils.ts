@@ -6,17 +6,17 @@
  * For up-to-date contact information:
  * https://github.com/bivex
  *
- * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T09:43:51
+ * Created: 2025-12-23T19:05:51
+ * Last Updated: 2025-12-23T19:05:55
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import type { UserConfig } from '@commitlint/types';
+import type { ClassValue } from 'clsx';
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
-const Configuration: UserConfig = {
-  extends: ['@commitlint/config-conventional'],
-};
-
-export default Configuration;
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
