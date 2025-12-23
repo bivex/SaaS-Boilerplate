@@ -15,6 +15,7 @@
 
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -27,48 +28,52 @@ import { Logo } from './Logo';
 export const Navbar = () => {
   const t = useTranslations('Navbar');
 
+  const logo = useMemo(() => <Logo />, []);
+  const rightMenu = useMemo(() => (
+    <>
+      <li data-fade>
+        <ThemeToggle />
+      </li>
+      <li data-fade>
+        <LocaleSwitcher />
+      </li>
+      <li className="ml-1 mr-2.5" data-fade>
+        <Link href="/sign-in">{t('sign_in')}</Link>
+      </li>
+      <li>
+        <Link className={buttonVariants()} href="/sign-up">
+          {t('sign_up')}
+        </Link>
+      </li>
+    </>
+  ), [t]);
+  const menuItems = useMemo(() => (
+    <>
+      <li>
+        <Link href="/sign-up">{t('product')}</Link>
+      </li>
+      <li>
+        <Link href="/sign-up">{t('docs')}</Link>
+      </li>
+      <li>
+        <Link href="/sign-up">{t('blog')}</Link>
+      </li>
+      <li>
+        <Link href="/sign-up">{t('community')}</Link>
+      </li>
+      <li>
+        <Link href="/sign-up">{t('company')}</Link>
+      </li>
+    </>
+  ), [t]);
+
   return (
     <Section className="px-3 py-6">
       <CenteredMenu
-        logo={<Logo />}
-        rightMenu={(
-          <>
-            <li data-fade>
-              <ThemeToggle />
-            </li>
-            <li data-fade>
-              <LocaleSwitcher />
-            </li>
-            <li className="ml-1 mr-2.5" data-fade>
-              <Link href="/sign-in">{t('sign_in')}</Link>
-            </li>
-            <li>
-              <Link className={buttonVariants()} href="/sign-up">
-                {t('sign_up')}
-              </Link>
-            </li>
-          </>
-        )}
+        logo={logo}
+        rightMenu={rightMenu}
       >
-        <li>
-          <Link href="/sign-up">{t('product')}</Link>
-        </li>
-
-        <li>
-          <Link href="/sign-up">{t('docs')}</Link>
-        </li>
-
-        <li>
-          <Link href="/sign-up">{t('blog')}</Link>
-        </li>
-
-        <li>
-          <Link href="/sign-up">{t('community')}</Link>
-        </li>
-
-        <li>
-          <Link href="/sign-up">{t('company')}</Link>
-        </li>
+        {menuItems}
       </CenteredMenu>
     </Section>
   );

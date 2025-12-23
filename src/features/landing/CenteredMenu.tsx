@@ -16,12 +16,13 @@
 'use client';
 
 import Link from 'next/link';
+import { memo } from 'react';
 
 import { ToggleMenuButton } from '@/components/ToggleMenuButton';
 import { useMenu } from '@/hooks/UseMenu';
 import { cn } from '@/utils/Helpers';
 
-export const CenteredMenu = (props: {
+const CenteredMenuComponent = (props: {
   logo: React.ReactNode;
   children: React.ReactNode;
   rightMenu: React.ReactNode;
@@ -59,3 +60,5 @@ export const CenteredMenu = (props: {
     </div>
   );
 };
+
+export const CenteredMenu = memo(CenteredMenuComponent);
