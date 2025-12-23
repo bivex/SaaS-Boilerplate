@@ -38,11 +38,13 @@ vi.mock('@/libs/DB', () => ({
   },
 }));
 
-// Mock the rate limit manager
-const mockRateLimitCheck = vi.fn();
+// Mock the rate limit manager - must be a factory function
 vi.mock('@/libs/security', () => ({
   rateLimitManager: {
-    check: mockRateLimitCheck,
+    check: vi.fn().mockResolvedValue({
+      allowed: true,
+      reset: new Date(Date.now() + 900000),
+    }),
   },
 }));
 
