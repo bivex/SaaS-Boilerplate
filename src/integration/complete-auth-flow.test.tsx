@@ -194,10 +194,10 @@ describe('Complete Authentication Flow Integration', () => {
       renderWithProviders(<AuthFlow />);
 
       // Start with sign up
-      expect(screen.getByText('Sign Up')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Sign Up' })).toBeInTheDocument();
 
       // Sign up
-      await user.click(screen.getByText('Sign Up'));
+      await user.click(screen.getByRole('button', { name: 'Sign Up' }));
       await waitFor(() => {
         expect(screen.getByText('Dashboard')).toBeInTheDocument();
       });
@@ -212,9 +212,9 @@ describe('Complete Authentication Flow Integration', () => {
 
       // Sign in again
       await user.click(screen.getByText('Sign In Again'));
-      expect(screen.getByText('Sign In')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Sign In' })).toBeInTheDocument();
 
-      await user.click(screen.getByText('Sign In'));
+      await user.click(screen.getByRole('button', { name: 'Sign In' }));
       await waitFor(() => {
         expect(screen.getByText('Dashboard')).toBeInTheDocument();
       });
