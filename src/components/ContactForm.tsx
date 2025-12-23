@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T18:00:00
- * Last Updated: 2025-12-23T18:08:25
+ * Last Updated: 2025-12-23T18:10:52
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -69,10 +69,11 @@ export function ContactForm() {
 
   function onSubmit(values: ContactFormValues) {
     // Здесь можно добавить логику отправки формы
-    console.log('Contact form submitted:', values);
+    // Имитация отправки формы - в реальном приложении здесь будет API вызов
+    console.warn('Contact form submitted:', values);
 
-    // Имитация отправки формы
-    alert('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.');
+    // Имитация отправки формы - в реальном приложении показать toast уведомление
+    console.warn('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.');
 
     // Сброс формы после успешной отправки
     form.reset();
