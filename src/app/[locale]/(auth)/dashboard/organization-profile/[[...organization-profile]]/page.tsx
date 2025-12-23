@@ -15,24 +15,13 @@
 
 'use client';
 
-import { OrganizationProfile } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
 
 import { TitleBar } from '@/features/dashboard/TitleBar';
-import { getI18nPath } from '@/utils/Helpers';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-const OrganizationProfilePage = (props: { params: Promise<{ locale: string }> }) => {
-  const [params, setParams] = useState<{ locale: string } | null>(null);
+const OrganizationProfilePage = () => {
   const t = useTranslations('OrganizationProfile');
-
-  useEffect(() => {
-    props.params.then(setParams);
-  }, [props.params]);
-
-  if (!params) {
-    return null;
-  }
 
   return (
     <>
@@ -41,20 +30,19 @@ const OrganizationProfilePage = (props: { params: Promise<{ locale: string }> })
         description={t('title_bar_description')}
       />
 
-      <OrganizationProfile
-        routing="path"
-        path={getI18nPath(
-          '/dashboard/organization-profile',
-          params.locale,
-        )}
-        afterLeaveOrganizationUrl="/onboarding/organization-selection"
-        appearance={{
-          elements: {
-            rootBox: 'w-full',
-            cardBox: 'w-full flex',
-          },
-        }}
-      />
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>{t('organization_settings')}</CardTitle>
+          <CardDescription>
+            {t('manage_organization')}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="text-sm text-muted-foreground">
+            {t('organization_note')}
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 };
