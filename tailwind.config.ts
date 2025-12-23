@@ -6,19 +6,18 @@
  * For up-to-date contact information:
  * https://github.com/bivex
  *
- * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T09:43:51
+ * Created: 2025-12-23T10:15:00
+ * Last Updated: 2025-12-23T10:01:28
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-/* eslint-disable ts/no-require-imports */
 import type { Config } from 'tailwindcss';
 
-const config = {
-  darkMode: 'class',
+const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -77,7 +76,7 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
-} satisfies Config;
+  plugins: [],
+};
 
 export default config;
