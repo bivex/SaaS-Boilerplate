@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-23T19:40:59
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -18,8 +18,9 @@ import { z } from 'zod';
 
 export const Env = createEnv({
   server: {
-    CLERK_SECRET_KEY: z.string().min(1),
-    CLERK_SKIP_EMAIL_VERIFICATION: z.string().optional(),
+    WORKOS_API_KEY: z.string().min(1),
+    WORKOS_CLIENT_ID: z.string().min(1),
+    WORKOS_COOKIE_PASSWORD: z.string().min(32),
     DATABASE_URL: z.string().optional(),
     LOGTAIL_SOURCE_TOKEN: z.string().optional(),
     STRIPE_SECRET_KEY: z.string().min(1),
@@ -28,8 +29,7 @@ export const Env = createEnv({
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().optional(),
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
-    NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1),
+    NEXT_PUBLIC_WORKOS_REDIRECT_URI: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
   },
   shared: {
@@ -37,17 +37,16 @@ export const Env = createEnv({
   },
   // You need to destructure all the keys manually
   runtimeEnv: {
-    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-    CLERK_SKIP_EMAIL_VERIFICATION: process.env.CLERK_SKIP_EMAIL_VERIFICATION,
+    WORKOS_API_KEY: process.env.WORKOS_API_KEY,
+    WORKOS_CLIENT_ID: process.env.WORKOS_CLIENT_ID,
+    WORKOS_COOKIE_PASSWORD: process.env.WORKOS_COOKIE_PASSWORD,
     DATABASE_URL: process.env.DATABASE_URL,
     LOGTAIL_SOURCE_TOKEN: process.env.LOGTAIL_SOURCE_TOKEN,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
     BILLING_PLAN_ENV: process.env.BILLING_PLAN_ENV,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
-      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-    NEXT_PUBLIC_CLERK_SIGN_IN_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
+    NEXT_PUBLIC_WORKOS_REDIRECT_URI: process.env.NEXT_PUBLIC_WORKOS_REDIRECT_URI,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     NODE_ENV: process.env.NODE_ENV,
