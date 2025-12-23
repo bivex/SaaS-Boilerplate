@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:30:00
- * Last Updated: 2025-12-23T20:48:04
+ * Last Updated: 2025-12-23T20:49:19
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -16,5 +16,5 @@
 import { createAuthClient } from 'better-auth/react';
 
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  baseURL: "http://localhost:3000",
 });

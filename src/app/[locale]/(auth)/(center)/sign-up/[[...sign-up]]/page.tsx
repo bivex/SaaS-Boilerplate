@@ -56,12 +56,17 @@ export default function SignUpPage() {
         name,
       });
 
+      console.log('Sign-up result:', result);
+
       if (result.error) {
+        console.error('Sign-up error:', result.error);
         setError(result.error.message || 'An error occurred');
       } else {
+        console.log('Sign-up successful, redirecting to dashboard');
         router.push('/dashboard');
       }
-    } catch {
+    } catch (error) {
+      console.error('Sign-up exception:', error);
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
