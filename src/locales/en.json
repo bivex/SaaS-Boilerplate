@@ -86,6 +86,7 @@
     "email": "Email",
     "password": "Password",
     "sign_in": "Sign In",
+    "signing_in": "Signing in...",
     "or_continue_with": "Or continue with",
     "google": "Google",
     "github": "GitHub",
@@ -102,6 +103,7 @@
     "password": "Password",
     "confirm_password": "Confirm Password",
     "sign_up": "Sign Up",
+    "signing_up": "Signing up...",
     "or_continue_with": "Or continue with",
     "google": "Google",
     "github": "GitHub",
@@ -134,6 +136,18 @@
   "OrganizationProfile": {
     "title_bar": "Organization Management",
     "title_bar_description": "Manage your organization"
+  },
+  "UserButton": {
+    "sign_in": "Sign in",
+    "profile": "Profile",
+    "organization": "Organization",
+    "sign_out": "Sign out"
+  },
+  "OrganizationSwitcher": {
+    "create_org": "Create Organization",
+    "personal": "Personal",
+    "organizations": "Organizations",
+    "manage_orgs": "Manage Organizations"
   },
   "Billing": {
     "title_bar": "Billing",

@@ -86,6 +86,7 @@
     "email": "Email",
     "password": "Mot de passe",
     "sign_in": "Se connecter",
+    "signing_in": "Connexion en cours...",
     "or_continue_with": "Ou continuer avec",
     "google": "Google",
     "github": "GitHub",
@@ -102,6 +103,7 @@
     "password": "Mot de passe",
     "confirm_password": "Confirmer le mot de passe",
     "sign_up": "S'inscrire",
+    "signing_up": "Inscription en cours...",
     "or_continue_with": "Ou continuer avec",
     "google": "Google",
     "github": "GitHub",
@@ -132,8 +134,20 @@
     "title_bar_description": "Afficher et gérer votre profil utilisateur"
   },
   "OrganizationProfile": {
-    "title_bar": "Gestion de l’organisation",
+    "title_bar": "Gestion de l'organisation",
     "title_bar_description": "Gérer votre organisation"
+  },
+  "UserButton": {
+    "sign_in": "Se connecter",
+    "profile": "Profil",
+    "organization": "Organisation",
+    "sign_out": "Se déconnecter"
+  },
+  "OrganizationSwitcher": {
+    "create_org": "Créer une organisation",
+    "personal": "Personnel",
+    "organizations": "Organisations",
+    "manage_orgs": "Gérer les organisations"
   },
   "Billing": {
     "title_bar": "Facturation",
