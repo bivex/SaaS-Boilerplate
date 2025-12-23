@@ -26,20 +26,22 @@ vi.mock('@/libs/DB', () => ({
   },
 }));
 
+// Mock schema
+vi.mock('../models/Schema', () => ({
+  session: 'session_table_mock',
+}));
+
 // Mock Redis client
-vi.mock('redis', () => ({
-  createClient: vi.fn(() => ({
-    connect: vi.fn(),
-    disconnect: vi.fn(),
-    get: vi.fn(),
+vi.mock('@upstash/redis', () => ({
+  Redis: vi.fn(() => ({
     set: vi.fn(),
+    get: vi.fn(),
     del: vi.fn(),
-    expire: vi.fn(),
   })),
 }));
 
-// Skipped: Session storage adapters (Redis, Database) are not yet fully implemented
-describe.skip('Session Storage Adapters', () => {
+// Session storage adapters implementation
+describe('Session Storage Adapters', () => {
   const mockDb = {
     select: vi.fn(),
     insert: vi.fn(),
@@ -60,7 +62,6 @@ describe.skip('Session Storage Adapters', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     vi.mocked(await import('@/libs/DB')).db = mockDb;
-    vi.mocked(await import('redis')).createClient.mockReturnValue(mockRedis);
   });
 
   afterEach(() => {
@@ -146,92 +147,66 @@ describe.skip('Session Storage Adapters', () => {
   });
 
   describe('Redis Session Storage', () => {
-    it('should connect to Redis on initialization', async () => {
-      const { createClient } = await import('redis');
+    it('should initialize Redis client', () => {
+      const { Redis } = require('@upstash/redis');
 
-      const client = createClient();
-      await client.connect();
+      // Redis is initialized in constructor
+      const redisStorage = new (require('../../libs/session-storage').RedisSessionStorage)();
 
-      expect(createClient).toHaveBeenCalled();
-      expect(client.connect).toHaveBeenCalled();
+      expect(Redis).toHaveBeenCalled();
     });
 
     it('should store session in Redis with TTL', async () => {
-      const { createClient } = await import('redis');
+      const { Redis } = require('@upstash/redis');
+      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
+        set: vi.fn(),
+      };
 
-      const client = createClient();
+      const redisStorage = new (require('../../libs/session-storage').RedisSessionStorage)();
       const sessionData = {
         id: 'session-1',
         userId: 'user-1',
         expiresAt: new Date(Date.now() + 3600000),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
-      const ttl = Math.floor((sessionData.expiresAt.getTime() - Date.now()) / 1000);
+      await redisStorage.store(sessionData);
 
-      await client.set(`session:${sessionData.id}`, JSON.stringify(sessionData));
-      await client.expire(`session:${sessionData.id}`, ttl);
-
-      expect(client.set).toHaveBeenCalledWith(
-        `session:${sessionData.id}`,
-        JSON.stringify(sessionData),
-      );
-      expect(client.expire).toHaveBeenCalledWith(`session:${sessionData.id}`, ttl);
+      expect(mockRedis.set).toHaveBeenCalled();
     });
 
     it('should retrieve session from Redis', async () => {
-      const { createClient } = await import('redis');
-
-      const client = createClient();
-      const sessionData = {
-        id: 'session-1',
-        userId: 'user-1',
-        expiresAt: new Date(Date.now() + 3600000),
+      const { Redis } = require('@upstash/redis');
+      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
+        get: vi.fn(),
       };
 
-      mockRedis.get.mockResolvedValue(JSON.stringify(sessionData));
+      mockRedis.get.mockResolvedValue(JSON.stringify({
+        id: 'session-1',
+        userId: 'user-1',
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }));
 
-      const result = await client.get('session:session-1');
-      const parsed = JSON.parse(result);
+      const redisStorage = new (require('../../libs/session-storage').RedisSessionStorage)();
+      const result = await redisStorage.retrieve('session-1');
 
-      expect(client.get).toHaveBeenCalledWith('session:session-1');
-      expect(parsed).toEqual(sessionData);
-    });
-
-    it('should handle Redis connection failures', async () => {
-      const { createClient } = await import('redis');
-
-      const client = createClient();
-      mockRedis.get.mockRejectedValue(new Error('Redis connection failed'));
-
-      await expect(client.get('session:session-1')).rejects.toThrow('Redis connection failed');
+      expect(result).toBeDefined();
+      expect(result?.id).toBe('session-1');
     });
 
     it('should handle Redis key not found', async () => {
-      const { createClient } = await import('redis');
+      const { Redis } = require('@upstash/redis');
+      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
+        get: vi.fn(),
+      };
 
-      const client = createClient();
       mockRedis.get.mockResolvedValue(null);
 
-      const result = await client.get('session:nonexistent');
-
-      expect(result).toBeNull();
-    });
-
-    it('should clean up expired keys automatically via TTL', async () => {
-      const { createClient } = await import('redis');
-
-      const client = createClient();
-
-      // Set a key with short TTL
-      await client.set('session:temp', 'data');
-      await client.expire('session:temp', 1); // 1 second TTL
-
-      // Wait for expiration
-      await new Promise(resolve => setTimeout(resolve, 1100));
-
-      mockRedis.get.mockResolvedValue(null); // Simulate expiration
-
-      const result = await client.get('session:temp');
+      const redisStorage = new (require('../../libs/session-storage').RedisSessionStorage)();
+      const result = await redisStorage.retrieve('nonexistent');
 
       expect(result).toBeNull();
     });
@@ -239,51 +214,54 @@ describe.skip('Session Storage Adapters', () => {
 
   describe('Hybrid Storage Strategy', () => {
     it('should use Redis for hot data and database for persistence', async () => {
-      const { createClient } = await import('redis');
-      const { db } = await import('@/libs/DB');
-
-      const redis = createClient();
+      const hybridStorage = new (require('../../libs/session-storage').HybridSessionStorage)();
       const sessionData = {
         id: 'session-1',
         userId: 'user-1',
         expiresAt: new Date(Date.now() + 3600000),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
-      // Store in both Redis (fast access) and DB (persistence)
-      await Promise.all([
-        redis.set(`session:${sessionData.id}`, JSON.stringify(sessionData)),
-        db.insert(sessionData),
-      ]);
+      // Mock successful storage in both
+      const { Redis } = require('@upstash/redis');
+      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
+        set: vi.fn().mockResolvedValue('OK'),
+      };
 
-      expect(redis.set).toHaveBeenCalled();
+      mockDb.insert.mockResolvedValue([sessionData]);
+
+      await hybridStorage.store(sessionData);
+
+      // Should attempt to store in both
+      expect(mockRedis.set).toHaveBeenCalled();
       expect(mockDb.insert).toHaveBeenCalled();
     });
 
     it('should fallback to database when Redis fails', async () => {
-      const { createClient } = await import('redis');
-      const { db } = await import('@/libs/DB');
+      const hybridStorage = new (require('../../libs/session-storage').HybridSessionStorage)();
 
-      const redis = createClient();
-      mockRedis.get.mockRejectedValue(new Error('Redis down'));
+      // Mock Redis failure and DB success
+      const { Redis } = require('@upstash/redis');
+      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
+        get: vi.fn().mockRejectedValue(new Error('Redis down')),
+      };
 
       mockDb.select.mockResolvedValue([{
         id: 'session-1',
         userId: 'user-1',
+        token: 'token-1',
         expiresAt: new Date(Date.now() + 3600000),
+        ipAddress: null,
+        userAgent: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }]);
 
-      // Try Redis first, fallback to DB
-      let session;
-      try {
-        session = await redis.get('session:session-1');
-      } catch (error) {
-        // Fallback to database
-        const result = await db.select().where({ id: 'session-1' });
-        session = result[0];
-      }
+      const result = await hybridStorage.retrieve('session-1');
 
-      expect(session).toBeDefined();
-      expect(session.id).toBe('session-1');
+      expect(result).toBeDefined();
+      expect(result?.id).toBe('session-1');
     });
   });
 

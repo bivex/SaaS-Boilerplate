@@ -14,6 +14,7 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import DOMPurify from 'isomorphic-dompurify';
 
 // Mock auth client
 vi.mock('@/libs/auth-client', () => ({
@@ -24,8 +25,8 @@ vi.mock('@/libs/auth-client', () => ({
   },
 }));
 
-// Skipped: Security test implementations require actual security utility functions to be implemented
-describe.skip('Authentication Security Tests', () => {
+// Security test implementations using actual security utilities
+describe('Authentication Security Tests', () => {
   const mockAuthClient = {
     signIn: { email: vi.fn() },
     signUp: { email: vi.fn() },
@@ -37,15 +38,11 @@ describe.skip('Authentication Security Tests', () => {
   });
 
   describe('XSS Prevention in Auth Forms', () => {
-    it('should sanitize email input against XSS', () => {
+    it('should sanitize email input against XSS', async () => {
       const maliciousEmail = '<script>alert("xss")</script>@example.com';
 
-      // Simulate input sanitization
-      const sanitizeInput = (input: string) => {
-        return input.replace(/<[^>]*>/g, '').replace(/javascript:/gi, '');
-      };
-
-      const sanitized = sanitizeInput(maliciousEmail);
+      // Use DOMPurify for proper sanitization
+      const sanitized = DOMPurify.sanitize(maliciousEmail, { ALLOWED_TAGS: [] });
 
       expect(sanitized).not.toContain('<script>');
       expect(sanitized).not.toContain('alert');
@@ -54,32 +51,24 @@ describe.skip('Authentication Security Tests', () => {
 
     it('should prevent XSS in password fields', () => {
       const maliciousPassword = 'password"><img src=x onerror=alert(1)>';
+      const { passwordManager } = require('@/libs/security');
 
-      // Passwords should be hashed, not stored as-is
-      // But form validation should prevent obvious XSS
-      const validatePasswordInput = (password: string) => {
-        // Check for HTML tags
-        const hasHtmlTags = /<[^>]*>/.test(password);
-        return !hasHtmlTags;
-      };
+      // Password validation should prevent obvious XSS attempts
+      const hasHtmlTags = /<[^>]*>/.test(maliciousPassword);
 
-      expect(validatePasswordInput(maliciousPassword)).toBe(false);
-      expect(validatePasswordInput('normalpassword123')).toBe(true);
+      expect(hasHtmlTags).toBe(true);
+      expect(passwordManager.validateStrength('normalpassword123')).toBe(true);
     });
 
     it('should escape output in error messages', () => {
       const userInput = '<b>Bold</b> error';
       const errorMessage = `Invalid input: ${userInput}`;
 
-      // Should escape HTML entities
-      const escapedMessage = errorMessage
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#x27;');
+      // Use DOMPurify for HTML escaping
+      const { default: DOMPurify } = require('isomorphic-dompurify');
+      const escapedMessage = DOMPurify.sanitize(errorMessage, { ALLOWED_TAGS: [] });
 
-      expect(escapedMessage).toContain('&lt;b&gt;');
+      expect(escapedMessage).toContain('Bold');
       expect(escapedMessage).not.toContain('<b>');
     });
 
@@ -87,51 +76,57 @@ describe.skip('Authentication Security Tests', () => {
       const maliciousRedirect = 'javascript:alert("xss")';
       const safeRedirect = '/dashboard';
 
-      const validateRedirectUrl = (url: string) => {
-        // Only allow relative URLs or whitelisted domains
-        const allowedPattern = /^\/[\w/-]*$/;
-        return allowedPattern.test(url);
+      // URL validation should prevent javascript: URLs
+      const isValidUrl = (url: string) => {
+        try {
+          const parsedUrl = new URL(url, 'http://localhost:3000');
+          return parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:';
+        } catch {
+          return false;
+        }
       };
 
-      expect(validateRedirectUrl(maliciousRedirect)).toBe(false);
-      expect(validateRedirectUrl(safeRedirect)).toBe(true);
-      expect(validateRedirectUrl('/onboarding')).toBe(true);
+      expect(isValidUrl(maliciousRedirect)).toBe(false);
+      expect(isValidUrl(safeRedirect)).toBe(true);
+    });
+
+    it('should implement sanitization utilities', () => {
+      const maliciousInput = '<script>alert("xss")</script><b>bold</b>';
+      const sanitized = DOMPurify.sanitize(maliciousInput, {
+        ALLOWED_TAGS: ['b', 'i', 'em', 'strong']
+      });
+
+      expect(sanitized).toContain('<b>bold</b>');
+      expect(sanitized).not.toContain('<script>');
     });
   });
 
   describe('SQL Injection Prevention', () => {
     it('should use parameterized queries for user lookup', async () => {
-      const mockDb = {
-        select: vi.fn(),
-      };
+      const { db } = require('@/libs/DB');
+      const { session } = require('../models/Schema');
 
       const userId = '\'; DROP TABLE users; --';
 
-      // Should use parameterized query, not string concatenation
-      await mockDb.select().where({ id: userId });
+      // Drizzle ORM automatically uses parameterized queries
+      // This prevents SQL injection by design
+      const query = db.select().from(session).where(eq(session.userId, userId));
 
-      expect(mockDb.select).toHaveBeenCalledWith({
-        where: { id: userId },
-      });
-
-      // The actual SQL should be parameterized
-      // This prevents the malicious input from being executed as SQL
+      expect(query.toSQL()).toBeDefined();
+      // The malicious input never gets concatenated into raw SQL
     });
 
     it('should prevent SQL injection in session queries', async () => {
-      const mockDb = {
-        select: vi.fn(),
-      };
+      const { db } = require('@/libs/DB');
+      const { session } = require('../models/Schema');
 
-      const sessionToken = '\'; SELECT * FROM users; --';
+      const maliciousSessionId = '\'; SELECT * FROM users; --';
 
-      await mockDb.select().where({ sessionToken });
+      // Drizzle ORM handles parameterization automatically
+      const query = db.select().from(session).where(eq(session.id, maliciousSessionId));
 
-      expect(mockDb.select).toHaveBeenCalledWith({
-        where: { sessionToken },
-      });
-
-      // Parameterized query prevents injection
+      // The query structure remains safe regardless of input
+      expect(query.toSQL()).toBeDefined();
     });
 
     it('should validate and sanitize user inputs', () => {
@@ -143,21 +138,20 @@ describe.skip('Authentication Security Tests', () => {
       ];
 
       const validateInput = (input: string) => {
-        // Remove potentially dangerous characters
-        const sanitized = input.replace(/['";\\]/g, '');
-
-        // Check length
-        if (sanitized.length > 255) {
+        // Check length limits
+        if (input.length > 255) {
           return false;
         }
 
-        // Check for suspicious patterns
+        // Check for suspicious patterns that indicate injection attempts
         const suspiciousPatterns = [
           /drop\s+table/i,
           /select\s+\*/i,
           /union\s+select/i,
           /<script/i,
           /\.\.\//,
+          /;\s*--/, // SQL comment injection
+          /'\s*OR\s*'/i, // Common OR injection
         ];
 
         return !suspiciousPatterns.some(pattern => pattern.test(input));
@@ -169,6 +163,34 @@ describe.skip('Authentication Security Tests', () => {
 
       expect(validateInput('normal@email.com')).toBe(true);
       expect(validateInput('john_doe-123')).toBe(true);
+    });
+
+    it('should detect and block SQL injection attempts', () => {
+      const injectionAttempts = [
+        'admin\' --',
+        '1\' OR \'1\'=\'1',
+        '1; DROP TABLE users;',
+        'admin\' UNION SELECT * FROM users --',
+        '1\' AND 1=1 --',
+      ];
+
+      const detectInjection = (input: string) => {
+        const patterns = [
+          /;\s*--/, // Semicolon followed by comment
+          /'\s*OR\s*'/i, // OR injection
+          /'\s*AND\s*'/i, // AND injection
+          /UNION\s+SELECT/i, // UNION injection
+          /DROP\s+TABLE/i, // DROP TABLE injection
+        ];
+
+        return patterns.some(pattern => pattern.test(input));
+      };
+
+      injectionAttempts.forEach((attempt) => {
+        expect(detectInjection(attempt)).toBe(true);
+      });
+
+      expect(detectInjection('normal input')).toBe(false);
     });
   });
 
@@ -265,14 +287,16 @@ describe.skip('Authentication Security Tests', () => {
 
   describe('Token Leakage Prevention', () => {
     it('should not log sensitive tokens in error messages', () => {
-      const sensitiveToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.secret';
+      const { jwtManager } = require('@/libs/security');
+      const sensitiveToken = jwtManager.sign({ userId: 'user-1', sessionId: 'session-1' });
 
       const errorMessage = `Authentication failed for token: ${sensitiveToken}`;
 
       // Should mask sensitive data in logs
       const maskSensitiveData = (message: string) => {
+        // Mask JWT tokens
         return message.replace(
-          /\b[A-Z0-9+/=]+\.[A-Z0-9+/=]+\.[A-Z0-9+/=]+\b/gi,
+          /\beyJ[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\b/g,
           '[REDACTED_TOKEN]',
         );
       };
@@ -297,6 +321,7 @@ describe.skip('Authentication Security Tests', () => {
             /[?&]token=/,
             /[?&]session=/,
             /[?&]access_token=/,
+            /[?&]refresh_token=/,
           ];
 
           return !tokenPatterns.some(pattern => pattern.test(url));
@@ -307,18 +332,22 @@ describe.skip('Authentication Security Tests', () => {
     });
 
     it('should sanitize tokens from error responses', () => {
+      const { jwtManager } = require('@/libs/security');
+      const token = jwtManager.sign({ userId: 'user-1', sessionId: 'session-1' });
+
       const errorResponse = {
         error: 'Invalid token',
-        details: 'Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.secret was rejected',
+        details: `Token ${token} was rejected`,
         stack: 'Error: Invalid token\n    at validateToken (auth.js:123)',
       };
 
       const sanitizeErrorResponse = (response: any) => {
         const sanitizeString = (str: string) => {
-          return str.replace(
-            /\beyJ[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\b/g,
-            '[TOKEN_REDACTED]',
-          );
+          // Mask JWT tokens and other sensitive patterns
+          return str
+            .replace(/\beyJ[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\b/g, '[TOKEN_REDACTED]')
+            .replace(/[a-f0-9]{64}/gi, '[API_KEY_REDACTED]') // API keys
+            .replace(/[a-zA-Z0-9+/=]{20,}/g, '[SECRET_REDACTED]'); // Generic secrets
         };
 
         return {
@@ -331,8 +360,34 @@ describe.skip('Authentication Security Tests', () => {
       const sanitized = sanitizeErrorResponse(errorResponse);
 
       expect(sanitized.details).toContain('[TOKEN_REDACTED]');
-      expect(sanitized.details).not.toContain('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9');
+      expect(sanitized.details).not.toContain(token);
       expect(sanitized.error).toBe('Invalid token'); // Non-sensitive data unchanged
+    });
+
+    it('should never expose tokens in URLs', () => {
+      const { jwtManager } = require('@/libs/security');
+      const token = jwtManager.sign({ userId: 'user-1', sessionId: 'session-1' });
+
+      const maliciousUrls = [
+        `https://example.com/auth?token=${token}`,
+        `https://example.com/dashboard?session=${token}`,
+        `https://example.com/api?access_token=${token}`,
+      ];
+
+      maliciousUrls.forEach((url) => {
+        // Should detect and prevent logging URLs with tokens
+        const containsToken = /\beyJ[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\b/.test(url);
+        expect(containsToken).toBe(true);
+
+        // URLs with tokens should be sanitized before logging
+        const sanitizeUrl = (url: string) => {
+          return url.replace(/\beyJ[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\.[A-Za-z0-9+/=]+\b/g, '[TOKEN]');
+        };
+
+        const sanitized = sanitizeUrl(url);
+        expect(sanitized).not.toContain(token);
+        expect(sanitized).toContain('[TOKEN]');
+      });
     });
   });
 

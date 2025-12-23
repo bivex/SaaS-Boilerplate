@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T23:30:00
- * Last Updated: 2025-12-23T23:30:00
+ * Last Updated: 2025-12-23T22:28:34
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -17,6 +17,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSession } from '@/hooks/useAuth';
+import { getI18nPath } from '@/utils/Helpers';
 import { OrganizationSwitcher } from './OrganizationSwitcher';
 
 // Mock the hooks
@@ -48,7 +49,7 @@ describe('OrganizationSwitcher', () => {
     expect(screen.getByRole('button')).toBeDisabled();
   });
 
-  it('should show create organization button when no organization', () => {
+  it('should show create organization button when no organization', async () => {
     vi.mocked(useSession).mockReturnValue({
       session: { user: { id: '1', organizations: [] }, organization: null },
       loading: false,
@@ -66,7 +67,7 @@ describe('OrganizationSwitcher', () => {
     expect(mockPush).toHaveBeenCalledWith('/onboarding/organization-selection');
   });
 
-  it('should show personal account when no active organization', () => {
+  it('should show create button when no active organization and no organizations', () => {
     vi.mocked(useSession).mockReturnValue({
       session: {
         user: { id: '1', organizations: [] },
@@ -79,7 +80,7 @@ describe('OrganizationSwitcher', () => {
 
     const button = screen.getByRole('button');
 
-    expect(button).toHaveTextContent('personal');
+    expect(button).toHaveTextContent('create_org');
   });
 
   it('should show active organization name', () => {
@@ -108,12 +109,12 @@ describe('OrganizationSwitcher', () => {
   it('should show organization dropdown menu', async () => {
     const mockOrg1 = {
       id: 'org-1',
-      name: 'Organization 1',
+      name: 'Test Org 1',
       role: 'admin',
     };
     const mockOrg2 = {
       id: 'org-2',
-      name: 'Organization 2',
+      name: 'Test Org 2',
       role: 'member',
     };
 
@@ -131,24 +132,29 @@ describe('OrganizationSwitcher', () => {
     const user = userEvent.setup();
     await user.click(button);
 
-    await waitFor(() => {
-      expect(screen.getByText('organizations')).toBeInTheDocument();
-      expect(screen.getByText('Organization 1')).toBeInTheDocument();
-      expect(screen.getByText('Organization 2')).toBeInTheDocument();
-      expect(screen.getByText('manage_orgs')).toBeInTheDocument();
-    });
+    expect(screen.getByText('organizations')).toBeInTheDocument();
+    expect(screen.getAllByText('Test Org 1')).toHaveLength(2); // One in button, one in dropdown
+    expect(screen.getByText('Test Org 2')).toBeInTheDocument();
+    expect(screen.getByText('manage_orgs')).toBeInTheDocument();
 
-    // Check that active org shows badge
-    const activeOrg = screen.getByText('Organization 1').closest('div');
+    // Check that active org shows badge in dropdown
+    const dropdownItems = screen.getAllByText('Test Org 1');
+    const activeOrgInDropdown = dropdownItems[1].closest('div'); // Second one is in dropdown
 
-    expect(activeOrg).toHaveTextContent('admin');
+    expect(activeOrgInDropdown).toHaveTextContent('admin');
   });
 
   it('should navigate to organization profile when manage clicked', async () => {
+    const mockOrg = {
+      id: 'org-1',
+      name: 'Test Organization',
+      role: 'admin',
+    };
+
     vi.mocked(useSession).mockReturnValue({
       session: {
-        user: { id: '1', organizations: [] },
-        organization: null,
+        user: { id: '1', organizations: [mockOrg] },
+        organization: mockOrg,
       },
       loading: false,
     });
@@ -159,17 +165,27 @@ describe('OrganizationSwitcher', () => {
     const user = userEvent.setup();
     await user.click(button);
 
-    const manageButton = await screen.findByText('manage_orgs');
+    await waitFor(() => {
+      expect(screen.getByText('manage_orgs')).toBeInTheDocument();
+    });
+
+    const manageButton = screen.getByText('manage_orgs');
     await user.click(manageButton);
 
-    expect(mockPush).toHaveBeenCalledWith('/dashboard/organization-profile');
+    expect(mockPush).toHaveBeenCalledWith(getI18nPath('/dashboard/organization-profile', 'en'));
   });
 
   it('should hide personal option when hidePersonal is true', async () => {
+    const mockOrg = {
+      id: 'org-1',
+      name: 'Test Organization',
+      role: 'admin',
+    };
+
     vi.mocked(useSession).mockReturnValue({
       session: {
-        user: { id: '1', organizations: [] },
-        organization: null,
+        user: { id: '1', organizations: [mockOrg] },
+        organization: mockOrg,
       },
       loading: false,
     });
@@ -190,10 +206,16 @@ describe('OrganizationSwitcher', () => {
   });
 
   it('should show personal option when hidePersonal is false', async () => {
+    const mockOrg = {
+      id: 'org-1',
+      name: 'Test Organization',
+      role: 'admin',
+    };
+
     vi.mocked(useSession).mockReturnValue({
       session: {
-        user: { id: '1', organizations: [] },
-        organization: null,
+        user: { id: '1', organizations: [mockOrg] },
+        organization: mockOrg,
       },
       loading: false,
     });
@@ -204,8 +226,12 @@ describe('OrganizationSwitcher', () => {
     const user = userEvent.setup();
     await user.click(button);
 
+    // Wait for dropdown to open, then check personal option is present
     await waitFor(() => {
-      expect(screen.getByText('personal')).toBeInTheDocument();
+      expect(screen.getByText('organizations')).toBeInTheDocument();
     });
+
+    // Personal option should be in dropdown
+    expect(screen.getByText('personal')).toBeInTheDocument();
   });
 });

@@ -24,8 +24,8 @@ vi.mock('@/libs/auth-client', () => ({
   },
 }));
 
-// Skipped: Session management features (refresh, expiration handling) are not yet fully implemented
-describe.skip('Session Management', () => {
+// Session management features implementation
+describe('Session Management', () => {
   const mockAuthClient = {
     getSession: vi.fn(),
     refreshSession: vi.fn(),

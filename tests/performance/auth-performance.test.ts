@@ -39,8 +39,8 @@ vi.mock('@/libs/auth-client', () => ({
   },
 }));
 
-// Skipped: Performance tests require full database and caching implementations
-describe.skip('Authentication Performance Tests', () => {
+// Authentication performance tests with actual implementations
+describe('Authentication Performance Tests', () => {
   const mockDb = {
     select: vi.fn(() => ({
       where: vi.fn(() => Promise.resolve([])),
