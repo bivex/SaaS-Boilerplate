@@ -26,13 +26,8 @@ const Logos = {
     >
       <img
         src="/assets/images/clerk-logo-dark.png"
-        alt="Clerk logo dark"
-        className="dark:hidden h-[37px] w-auto"
-      />
-      <img
-        src="/assets/images/clerk-logo-white.png"
-        alt="Clerk logo light"
-        className="hidden dark:block h-[37px] w-auto"
+        alt="Clerk logo"
+        className="h-[37px] w-auto dark:invert"
       />
     </a>
   ),
@@ -45,13 +40,8 @@ const Logos = {
     >
       <img
         src="/assets/images/crowdin-dark.png"
-        alt="Crowdin logo dark"
-        className="dark:hidden h-[26px] w-auto"
-      />
-      <img
-        src="/assets/images/crowdin-white.png"
-        alt="Crowdin logo light"
-        className="hidden dark:block h-[26px] w-auto"
+        alt="Crowdin logo"
+        className="h-[26px] w-auto dark:invert"
       />
     </a>
   ),
@@ -64,13 +54,8 @@ const Logos = {
     >
       <img
         src="/assets/images/sentry-dark.png"
-        alt="Sentry logo dark"
-        className="dark:hidden h-[38px] w-auto"
-      />
-      <img
-        src="/assets/images/sentry-white.png"
-        alt="Sentry logo light"
-        className="hidden dark:block h-[38px] w-auto"
+        alt="Sentry logo"
+        className="h-[38px] w-auto dark:invert"
       />
     </a>
   ),
@@ -83,13 +68,8 @@ const Logos = {
     >
       <img
         src="/assets/images/arcjet-light.svg"
-        alt="Arcjet logo dark"
-        className="dark:hidden h-[56px] w-auto"
-      />
-      <img
-        src="/assets/images/arcjet-dark.svg"
-        alt="Arcjet logo light"
-        className="hidden dark:block h-[56px] w-auto"
+        alt="Arcjet logo"
+        className="h-[56px] w-auto dark:invert"
       />
     </a>
   ),
