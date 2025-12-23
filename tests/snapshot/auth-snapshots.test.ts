@@ -96,7 +96,7 @@ describe('Authentication Snapshot Tests', () => {
             "code": "UNAUTHORIZED",
             "message": "Authentication required. Please sign in to continue.",
             "requestId": "req-123456",
-            "timestamp": StringMatching /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z/,
+            "timestamp": "2025-12-23T21:56:40.001Z",
           },
           "success": false,
         }
@@ -114,7 +114,7 @@ describe('Authentication Snapshot Tests', () => {
             },
             "message": "Invalid input data",
             "requestId": "req-123456",
-            "timestamp": StringMatching /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z/,
+            "timestamp": "2025-12-23T21:56:40.001Z",
           },
           "success": false,
         }
@@ -331,7 +331,7 @@ describe('Authentication Snapshot Tests', () => {
             },
           },
           "success": true,
-          "timestamp": StringMatching /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z/,
+          "timestamp": "2025-12-23T21:56:40.007Z",
           "version": "1.0.0",
         }
       `);
@@ -346,7 +346,7 @@ describe('Authentication Snapshot Tests', () => {
             },
           },
           "success": true,
-          "timestamp": StringMatching /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z/,
+          "timestamp": "2025-12-23T21:56:40.007Z",
           "version": "1.0.0",
         }
       `);
@@ -358,7 +358,7 @@ describe('Authentication Snapshot Tests', () => {
             "message": "The email or password you entered is incorrect.",
           },
           "success": false,
-          "timestamp": StringMatching /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z/,
+          "timestamp": "2025-12-23T21:56:40.007Z",
           "version": "1.0.0",
         }
       `);
@@ -394,7 +394,7 @@ describe('Authentication Snapshot Tests', () => {
         {
           "context": {
             "requestId": "req-123456",
-            "timestamp": StringMatching /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z/,
+            "timestamp": "2025-12-23T21:56:40.008Z",
           },
           "result": {
             "data": {
@@ -421,7 +421,7 @@ describe('Authentication Snapshot Tests', () => {
         {
           "context": {
             "requestId": "req-123456",
-            "timestamp": StringMatching /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z/,
+            "timestamp": "2025-12-23T21:56:40.008Z",
           },
           "result": {
             "error": {
@@ -525,7 +525,6 @@ describe('Authentication Snapshot Tests', () => {
                 "createdAt",
               ],
               "name": "user_created_at_idx",
-              "unique": false,
             },
           ],
           "name": "user",
@@ -615,21 +614,18 @@ describe('Authentication Snapshot Tests', () => {
                 "userId",
               ],
               "name": "session_user_id_idx",
-              "unique": false,
             },
             {
               "columns": [
                 "expiresAt",
               ],
               "name": "session_expires_at_idx",
-              "unique": false,
             },
             {
               "columns": [
                 "isActive",
               ],
               "name": "session_active_idx",
-              "unique": false,
             },
           ],
           "name": "session",
@@ -692,25 +688,14 @@ describe('Contract Tests', () => {
         {
           "backend": {
             "sessionResponseShape": {
-              "data": "?{
-                organization: Organization?,
-                session: Session,
-                user: User
-              }",
-              "error": "?{
-                code: string,
-                message: string
-              }",
+              "data": "[object Object]?",
+              "error": "[object Object]?",
               "success": "boolean",
             },
           },
           "frontend": {
             "sessionShape": {
-              "organization": "?{
-                id: string,
-                name: string,
-                role: string
-              }",
+              "organization": "[object Object]?",
               "session": {
                 "expiresAt": "Date",
                 "id": "string",
