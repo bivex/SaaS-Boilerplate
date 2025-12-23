@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T09:45:12
- * Last Updated: 2025-12-23T09:45:36
+ * Last Updated: 2025-12-23T09:50:18
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -17,7 +17,7 @@
 
 import { Monitor, Moon, Palette, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -28,6 +28,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+
+const getInitialColorTheme = () => {
+  const element = document.documentElement;
+  if (element.classList.contains('blue')) {
+    return 'blue';
+  } else if (element.classList.contains('green')) {
+    return 'green';
+  } else if (element.classList.contains('purple')) {
+    return 'purple';
+  } else {
+    return 'light';
+  }
+};
 
 const colorThemes = [
   {
@@ -72,21 +85,7 @@ const modeThemes = [
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
-  const [currentColorTheme, setCurrentColorTheme] = useState('light');
-
-  // Initialize color theme from DOM classes on mount
-  useEffect(() => {
-    const element = document.documentElement;
-    if (element.classList.contains('blue')) {
-      setCurrentColorTheme('blue');
-    } else if (element.classList.contains('green')) {
-      setCurrentColorTheme('green');
-    } else if (element.classList.contains('purple')) {
-      setCurrentColorTheme('purple');
-    } else {
-      setCurrentColorTheme('light');
-    }
-  }, []);
+  const [currentColorTheme, setCurrentColorTheme] = useState(() => getInitialColorTheme());
 
   const setColorTheme = (colorTheme: string) => {
     // Update state immediately for UI feedback

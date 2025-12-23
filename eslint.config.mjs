@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2025 Bivex
+ *
+ * Author: Bivex
+ * Available for contact via email: support@b-b.top
+ * For up-to-date contact information:
+ * https://github.com/bivex
+ *
+ * Created: 2025-12-23T09:47:38
+ * Last Updated: 2025-12-23T09:47:38
+ *
+ * Licensed under the MIT License.
+ * Commercial licensing available upon request.
+ */
+
 import antfu from '@antfu/eslint-config';
 import nextPlugin from '@next/eslint-plugin-next';
 import jestDom from 'eslint-plugin-jest-dom';
@@ -57,6 +72,8 @@ export default antfu({
   rules: {
     'import/order': 'off', // Avoid conflicts with `simple-import-sort` plugin
     'sort-imports': 'off', // Avoid conflicts with `simple-import-sort` plugin
+    'perfectionist/sort-imports': 'off', // Avoid conflicts with `simple-import-sort` plugin
+    'style/object-curly-spacing': ['error', 'always'], // Ensure consistent spacing within curly braces
     'style/brace-style': ['error', '1tbs'], // Use the default brace style
     'ts/consistent-type-definitions': ['error', 'type'], // Use `type` instead of `interface`
     'react/prefer-destructuring-assignment': 'off', // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
