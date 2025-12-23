@@ -14,7 +14,7 @@
  */
 
 import { z } from 'zod';
-import { authClient } from '@/libs/auth-client';
+import { auth } from '@/libs/auth';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/trpc';
 
 export const authRouter = createTRPCRouter({
@@ -26,24 +26,32 @@ export const authRouter = createTRPCRouter({
   // Sign up with email and password
   signUp: publicProcedure
     .input(z.object({
-      email: z.string().email(),
-      password: z.string().min(8),
-      name: z.string().min(1),
+      email: z.string(),
+      password: z.string(),
+      name: z.string(),
     }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       try {
-        const result = await authClient.signUp.email({
-          email: input.email,
-          password: input.password,
-          name: input.name,
+        // Create a proper context for Better Auth server API
+        const context = {
+          request: ctx.req,
+          headers: ctx.req.headers,
+          url: ctx.req.url,
+          method: ctx.req.method,
+        };
+
+        const result = await auth.api.signUpEmail({
+          body: {
+            email: input.email,
+            password: input.password,
+            name: input.name,
+          },
+          ...context,
         });
 
-        if (result.error) {
-          throw new Error(result.error.message || 'Sign up failed');
-        }
-
-        return { success: true, data: result.data };
+        return { success: true, data: result };
       } catch (error) {
+        console.error('Sign up error:', error);
         throw new Error(error instanceof Error ? error.message : 'Sign up failed');
       }
     }),
@@ -54,29 +62,47 @@ export const authRouter = createTRPCRouter({
       email: z.string().email(),
       password: z.string().min(1),
     }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       try {
-        const result = await authClient.signIn.email({
-          email: input.email,
-          password: input.password,
+        // Create a proper context for Better Auth server API
+        const context = {
+          request: ctx.req,
+          headers: ctx.req.headers,
+          url: ctx.req.url,
+          method: ctx.req.method,
+        };
+
+        const result = await auth.api.signInEmail({
+          body: {
+            email: input.email,
+            password: input.password,
+          },
+          ...context,
         });
 
-        if (result.error) {
-          throw new Error(result.error.message || 'Sign in failed');
-        }
-
-        return { success: true, data: result.data };
+        return { success: true, data: result };
       } catch (error) {
+        console.error('Sign in error:', error);
         throw new Error(error instanceof Error ? error.message : 'Sign in failed');
       }
     }),
 
   // Sign out
-  signOut: protectedProcedure.mutation(async () => {
+  signOut: protectedProcedure.mutation(async ({ ctx }) => {
     try {
-      await authClient.signOut();
-      return { success: true };
+      // Create a proper context for Better Auth server API
+      const context = {
+        request: ctx.req,
+        headers: ctx.req.headers,
+        url: ctx.req.url,
+        method: ctx.req.method,
+      };
+
+      const result = await auth.api.signOut(context);
+
+      return { success: true, data: result };
     } catch (error) {
+      console.error('Sign out error:', error);
       throw new Error(error instanceof Error ? error.message : 'Sign out failed');
     }
   }),

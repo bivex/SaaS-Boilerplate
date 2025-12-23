@@ -33,7 +33,7 @@ vi.mock('crypto', () => ({
   randomBytes: vi.fn(),
   createHash: vi.fn(() => ({
     update: vi.fn().mockReturnThis(),
-    digest: vi.fn(),
+    digest: vi.fn().mockReturnValue('mocked-hash'),
   })),
 }));
 
@@ -277,16 +277,21 @@ describe('Security Components', () => {
 
     it('should generate secure CSRF token', () => {
       const tokenBytes = Buffer.from('randomcsrfbytes');
-      randomBytes.mockReturnValue(tokenBytes);
+      const mockRandomBytes = vi.fn().mockReturnValue(tokenBytes);
+      const mockCreateHash = vi.fn(() => ({
+        update: vi.fn().mockReturnThis(),
+        digest: vi.fn().mockReturnValue('csrf-token-hash'),
+      }));
 
-      const hash = createHash();
-      hash.digest.mockReturnValue('csrf-token-hash');
+      vi.mocked(require('crypto')).randomBytes = mockRandomBytes;
+      vi.mocked(require('crypto')).createHash = mockCreateHash;
 
       // Simulate token generation
-      const token = randomBytes(32).toString('hex');
+      const token = mockRandomBytes(32).toString('hex');
+      const hash = mockCreateHash('sha256');
       const hashedToken = hash.update(token).digest('hex');
 
-      expect(randomBytes).toHaveBeenCalledWith(32);
+      expect(mockRandomBytes).toHaveBeenCalledWith(32);
       expect(token).toBe('72616e646f6d637372666279746573'); // hex of 'randomcsrfbytes'
       expect(hashedToken).toBe('csrf-token-hash');
     });

@@ -37,8 +37,7 @@ describe('useAuth hooks', () => {
 
   describe('useSession', () => {
     it('should return loading state initially', () => {
-      const mockGetSession = vi.fn().mockResolvedValue({ data: null });
-      vi.mocked(authClient.getSession).mockImplementation(mockGetSession);
+      (authClient.getSession as any).mockResolvedValue({ data: null });
 
       const { result } = renderHook(() => useSession());
 
@@ -51,8 +50,7 @@ describe('useAuth hooks', () => {
         user: { id: '1', email: 'test@example.com', name: 'Test User' },
         organization: null,
       };
-      const mockGetSession = vi.fn().mockResolvedValue({ data: mockSession });
-      vi.mocked(authClient.getSession).mockImplementation(mockGetSession);
+      (authClient.getSession as any).mockResolvedValue({ data: mockSession });
 
       const { result } = renderHook(() => useSession());
 
@@ -65,8 +63,7 @@ describe('useAuth hooks', () => {
 
     it('should handle errors gracefully', async () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      const mockGetSession = vi.fn().mockRejectedValue(new Error('Auth error'));
-      vi.mocked(authClient.getSession).mockImplementation(mockGetSession);
+      (authClient.getSession as any).mockRejectedValue(new Error('Auth error'));
 
       const { result } = renderHook(() => useSession());
 
@@ -85,8 +82,7 @@ describe('useAuth hooks', () => {
     it('should return user data from session', async () => {
       const mockUser = { id: '1', email: 'test@example.com', name: 'Test User' };
       const mockSession = { user: mockUser, organization: null };
-      const mockGetSession = vi.fn().mockResolvedValue({ data: mockSession });
-      vi.mocked(authClient.getSession).mockImplementation(mockGetSession);
+      (authClient.getSession as any).mockResolvedValue({ data: mockSession });
 
       const { result } = renderHook(() => useUser());
 
@@ -98,8 +94,7 @@ describe('useAuth hooks', () => {
     });
 
     it('should return null when no session', () => {
-      const mockGetSession = vi.fn().mockResolvedValue({ data: null });
-      vi.mocked(authClient.getSession).mockImplementation(mockGetSession);
+      (authClient.getSession as any).mockResolvedValue({ data: null });
 
       const { result } = renderHook(() => useUser());
 
@@ -110,8 +105,7 @@ describe('useAuth hooks', () => {
 
   describe('useSignOut', () => {
     it('should call signOut and redirect on success', async () => {
-      const mockSignOut = vi.fn().mockResolvedValue({ success: true });
-      vi.mocked(authClient.signOut).mockImplementation(mockSignOut);
+      (authClient.signOut as any).mockResolvedValue({ success: true });
 
       // Mock window.location
       const originalLocation = window.location;
@@ -124,7 +118,7 @@ describe('useAuth hooks', () => {
         await result.current.signOut();
       });
 
-      expect(mockSignOut).toHaveBeenCalledTimes(1);
+      expect(authClient.signOut).toHaveBeenCalledTimes(1);
       expect(window.location.href).toBe('/');
 
       // Restore window.location
@@ -133,8 +127,7 @@ describe('useAuth hooks', () => {
 
     it('should handle signOut errors gracefully', async () => {
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-      const mockSignOut = vi.fn().mockRejectedValue(new Error('Sign out failed'));
-      vi.mocked(authClient.signOut).mockImplementation(mockSignOut);
+      (authClient.signOut as any).mockRejectedValue(new Error('Sign out failed'));
 
       const { result } = renderHook(() => useSignOut());
 
@@ -142,7 +135,7 @@ describe('useAuth hooks', () => {
         await result.current.signOut();
       });
 
-      expect(mockSignOut).toHaveBeenCalledTimes(1);
+      expect(authClient.signOut).toHaveBeenCalledTimes(1);
       expect(consoleErrorSpy).toHaveBeenCalledWith('Error signing out:', expect.any(Error));
 
       consoleErrorSpy.mockRestore();

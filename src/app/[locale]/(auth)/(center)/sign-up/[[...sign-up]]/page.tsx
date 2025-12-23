@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:40:00
- * Last Updated: 2025-12-23T21:05:23
+ * Last Updated: 2025-12-23T21:50:30
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -32,6 +32,7 @@ import { getI18nPath } from '@/utils/Helpers';
 export default function SignUpPage() {
   const t = useTranslations('SignUp');
   const router = useRouter();
+  const signUpMutation = trpc.auth.signUp.useMutation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -51,7 +52,7 @@ export default function SignUpPage() {
     }
 
     try {
-      await trpc.auth.signUp.mutate({
+      await signUpMutation.mutateAsync({
         email,
         password,
         name,
