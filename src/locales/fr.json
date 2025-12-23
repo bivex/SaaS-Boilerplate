@@ -80,11 +80,33 @@
   },
   "SignIn": {
     "meta_title": "Se connecter",
-    "meta_description": "Connectez-vous à votre compte avec facilité."
+    "meta_description": "Connectez-vous à votre compte avec facilité.",
+    "title": "Bienvenue",
+    "description": "Connectez-vous à votre compte pour continuer",
+    "email": "Email",
+    "password": "Mot de passe",
+    "sign_in": "Se connecter",
+    "or_continue_with": "Ou continuer avec",
+    "google": "Google",
+    "github": "GitHub",
+    "dont_have_account": "Vous n'avez pas de compte ?",
+    "sign_up": "S'inscrire"
   },
   "SignUp": {
     "meta_title": "S'inscrire",
-    "meta_description": "Créez un compte sans effort grâce à notre processus d'inscription intuitif."
+    "meta_description": "Créez un compte sans effort grâce à notre processus d'inscription intuitif.",
+    "title": "Créez votre compte",
+    "description": "Commencez avec votre nouveau compte aujourd'hui",
+    "name": "Nom complet",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "sign_up": "S'inscrire",
+    "or_continue_with": "Ou continuer avec",
+    "google": "Google",
+    "github": "GitHub",
+    "already_have_account": "Vous avez déjà un compte ?",
+    "sign_in": "Se connecter"
   },
   "DashboardLayout": {
     "home": "Accueil",
