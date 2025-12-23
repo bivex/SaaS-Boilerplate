@@ -46,6 +46,36 @@ function ThemeToggleComponent() {
       value: 'system',
       icon: Monitor,
     },
+    {
+      name: 'Ocean',
+      value: 'ocean',
+      icon: Sun, // Можно добавить кастомную иконку позже
+    },
+    {
+      name: 'Sunset',
+      value: 'sunset',
+      icon: Moon, // Можно добавить кастомную иконку позже
+    },
+    {
+      name: 'Forest',
+      value: 'forest',
+      icon: Sun, // Можно добавить кастомную иконку позже
+    },
+    {
+      name: 'Midnight',
+      value: 'midnight',
+      icon: Moon, // Можно добавить кастомную иконку позже
+    },
+    {
+      name: 'Lavender',
+      value: 'lavender',
+      icon: Sun, // Можно добавить кастомную иконку позже
+    },
+    {
+      name: 'Amber',
+      value: 'amber',
+      icon: Moon, // Можно добавить кастомную иконку позже
+    },
   ], []);
 
   return (
