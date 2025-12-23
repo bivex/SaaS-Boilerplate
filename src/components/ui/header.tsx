@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:15:55
- * Last Updated: 2025-12-23T19:18:17
+ * Last Updated: 2025-12-23T19:22:15
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -24,6 +24,7 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Menu, MoveRight, X } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
@@ -147,6 +148,7 @@ function Header1() {
                     </Link>
                 </div>
                 <div className="flex justify-end w-full gap-4">
+                    <ThemeToggle />
                     <Link href="/contact">
                         <Button variant="ghost" className="hidden md:inline">
                             Book a demo
