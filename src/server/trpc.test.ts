@@ -87,7 +87,7 @@ describe('tRPC Context Creation', () => {
     });
 
     it('should handle getSession errors gracefully', async () => {
-      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       mockGetSession.mockRejectedValue(new Error('Session error'));
 
       const { createTRPCContext } = await import('@/server/trpc');
@@ -108,8 +108,8 @@ describe('tRPC Context Creation', () => {
         req: mockReq,
       });
 
-      expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to get session:', expect.any(Error));
-      consoleWarnSpy.mockRestore();
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to get session in tRPC context:', expect.any(Error));
+      consoleErrorSpy.mockRestore();
     });
   });
 
