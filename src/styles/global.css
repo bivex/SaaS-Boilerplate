@@ -45,9 +45,9 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
-/* Dark theme via prefers-color-scheme */
+/* System preference dark theme - low specificity for when no explicit class is set */
 @media (prefers-color-scheme: dark) {
-  :root {
+  html:not([class]) :root {
     --color-border: hsl(217.2 32.6% 17.5%);
     --color-input: hsl(217.2 32.6% 17.5%);
     --color-ring: hsl(212.7 26.8% 83.9%);
@@ -77,172 +77,202 @@
   }
 }
 
+/* Light theme via .light class */
+html.light {
+  --color-border: hsl(214.3 31.8% 91.4%) !important;
+  --color-input: hsl(214.3 31.8% 91.4%) !important;
+  --color-ring: hsl(222.2 84% 4.9%) !important;
+  --color-background: hsl(0 0% 100%) !important;
+  --color-foreground: hsl(222.2 84% 4.9%) !important;
+
+  --color-primary: hsl(222.2 47.4% 11.2%) !important;
+  --color-primary-foreground: hsl(210 40% 98%) !important;
+
+  --color-secondary: hsl(210 40% 96.1%) !important;
+  --color-secondary-foreground: hsl(222.2 47.4% 11.2%) !important;
+
+  --color-destructive: hsl(0 84.2% 60.2%) !important;
+  --color-destructive-foreground: hsl(210 40% 98%) !important;
+
+  --color-muted: hsl(210 40% 96.1%) !important;
+  --color-muted-foreground: hsl(215.4 16.3% 46.9%) !important;
+
+  --color-accent: hsl(210 40% 96.1%) !important;
+  --color-accent-foreground: hsl(222.2 47.4% 11.2%) !important;
+
+  --color-popover: hsl(0 0% 100%) !important;
+  --color-popover-foreground: hsl(222.2 84% 4.9%) !important;
+
+  --color-card: hsl(0 0% 100%) !important;
+  --color-card-foreground: hsl(222.2 84% 4.9%) !important;
+}
+
 /* Dark theme via .dark class */
-.dark {
-  --color-border: hsl(217.2 32.6% 17.5%);
-  --color-input: hsl(217.2 32.6% 17.5%);
-  --color-ring: hsl(212.7 26.8% 83.9%);
-  --color-background: hsl(222.2 84% 4.9%);
-  --color-foreground: hsl(210 40% 98%);
+html.dark {
+  --color-border: hsl(217.2 32.6% 17.5%) !important;
+  --color-input: hsl(217.2 32.6% 17.5%) !important;
+  --color-ring: hsl(212.7 26.8% 83.9%) !important;
+  --color-background: hsl(222.2 84% 4.9%) !important;
+  --color-foreground: hsl(210 40% 98%) !important;
 
-  --color-primary: hsl(210 40% 98%);
-  --color-primary-foreground: hsl(222.2 47.4% 11.2%);
+  --color-primary: hsl(210 40% 98%) !important;
+  --color-primary-foreground: hsl(222.2 47.4% 11.2%) !important;
 
-  --color-secondary: hsl(217.2 32.6% 17.5%);
-  --color-secondary-foreground: hsl(210 40% 98%);
+  --color-secondary: hsl(217.2 32.6% 17.5%) !important;
+  --color-secondary-foreground: hsl(210 40% 98%) !important;
 
-  --color-destructive: hsl(0 62.8% 30.6%);
-  --color-destructive-foreground: hsl(210 40% 98%);
+  --color-destructive: hsl(0 62.8% 30.6%) !important;
+  --color-destructive-foreground: hsl(210 40% 98%) !important;
 
-  --color-muted: hsl(217.2 32.6% 17.5%);
-  --color-muted-foreground: hsl(215 20.2% 65.1%);
+  --color-muted: hsl(217.2 32.6% 17.5%) !important;
+  --color-muted-foreground: hsl(215 20.2% 65.1%) !important;
 
-  --color-accent: hsl(217.2 32.6% 17.5%);
-  --color-accent-foreground: hsl(210 40% 98%);
+  --color-accent: hsl(217.2 32.6% 17.5%) !important;
+  --color-accent-foreground: hsl(210 40% 98%) !important;
 
-  --color-popover: hsl(222.2 84% 4.9%);
-  --color-popover-foreground: hsl(210 40% 98%);
+  --color-popover: hsl(222.2 84% 4.9%) !important;
+  --color-popover-foreground: hsl(210 40% 98%) !important;
 
-  --color-card: hsl(222.2 84% 4.9%);
-  --color-card-foreground: hsl(210 40% 98%);
+  --color-card: hsl(222.2 84% 4.9%) !important;
+  --color-card-foreground: hsl(210 40% 98%) !important;
 }
 
 /* Custom theme: ocean */
-.ocean {
-  --color-background: hsl(200 100% 95%);
-  --color-foreground: hsl(200 100% 10%);
-  --color-primary: hsl(200 100% 40%);
-  --color-primary-foreground: hsl(200 100% 95%);
-  --color-accent: hsl(180 100% 35%);
-  --color-accent-foreground: hsl(180 100% 95%);
-  --color-secondary: hsl(200 50% 85%);
-  --color-secondary-foreground: hsl(200 100% 20%);
-  --color-muted: hsl(200 40% 90%);
-  --color-muted-foreground: hsl(200 20% 50%);
-  --color-border: hsl(200 30% 80%);
-  --color-input: hsl(200 30% 80%);
-  --color-ring: hsl(200 100% 40%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(200 100% 95%);
-  --color-popover: hsl(200 100% 98%);
-  --color-popover-foreground: hsl(200 100% 10%);
-  --color-card: hsl(200 100% 98%);
-  --color-card-foreground: hsl(200 100% 10%);
+html.ocean {
+  --color-background: hsl(200 100% 95%) !important;
+  --color-foreground: hsl(200 100% 10%) !important;
+  --color-primary: hsl(200 100% 40%) !important;
+  --color-primary-foreground: hsl(200 100% 95%) !important;
+  --color-accent: hsl(180 100% 35%) !important;
+  --color-accent-foreground: hsl(180 100% 95%) !important;
+  --color-secondary: hsl(200 50% 85%) !important;
+  --color-secondary-foreground: hsl(200 100% 20%) !important;
+  --color-muted: hsl(200 40% 90%) !important;
+  --color-muted-foreground: hsl(200 20% 50%) !important;
+  --color-border: hsl(200 30% 80%) !important;
+  --color-input: hsl(200 30% 80%) !important;
+  --color-ring: hsl(200 100% 40%) !important;
+  --color-destructive: hsl(0 84.2% 60.2%) !important;
+  --color-destructive-foreground: hsl(200 100% 95%) !important;
+  --color-popover: hsl(200 100% 98%) !important;
+  --color-popover-foreground: hsl(200 100% 10%) !important;
+  --color-card: hsl(200 100% 98%) !important;
+  --color-card-foreground: hsl(200 100% 10%) !important;
 }
 
 /* Custom theme: sunset */
-.sunset {
-  --color-background: hsl(20 100% 98%);
-  --color-foreground: hsl(20 100% 10%);
-  --color-primary: hsl(20 100% 50%);
-  --color-primary-foreground: hsl(20 100% 95%);
-  --color-accent: hsl(340 100% 50%);
-  --color-accent-foreground: hsl(340 100% 95%);
-  --color-secondary: hsl(20 50% 90%);
-  --color-secondary-foreground: hsl(20 100% 20%);
-  --color-muted: hsl(20 40% 95%);
-  --color-muted-foreground: hsl(20 20% 50%);
-  --color-border: hsl(20 30% 85%);
-  --color-input: hsl(20 30% 85%);
-  --color-ring: hsl(20 100% 50%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(20 100% 95%);
-  --color-popover: hsl(20 100% 98%);
-  --color-popover-foreground: hsl(20 100% 10%);
-  --color-card: hsl(20 100% 98%);
-  --color-card-foreground: hsl(20 100% 10%);
+html.sunset {
+  --color-background: hsl(20 100% 98%) !important;
+  --color-foreground: hsl(20 100% 10%) !important;
+  --color-primary: hsl(20 100% 50%) !important;
+  --color-primary-foreground: hsl(20 100% 95%) !important;
+  --color-accent: hsl(340 100% 50%) !important;
+  --color-accent-foreground: hsl(340 100% 95%) !important;
+  --color-secondary: hsl(20 50% 90%) !important;
+  --color-secondary-foreground: hsl(20 100% 20%) !important;
+  --color-muted: hsl(20 40% 95%) !important;
+  --color-muted-foreground: hsl(20 20% 50%) !important;
+  --color-border: hsl(20 30% 85%) !important;
+  --color-input: hsl(20 30% 85%) !important;
+  --color-ring: hsl(20 100% 50%) !important;
+  --color-destructive: hsl(0 84.2% 60.2%) !important;
+  --color-destructive-foreground: hsl(20 100% 95%) !important;
+  --color-popover: hsl(20 100% 98%) !important;
+  --color-popover-foreground: hsl(20 100% 10%) !important;
+  --color-card: hsl(20 100% 98%) !important;
+  --color-card-foreground: hsl(20 100% 10%) !important;
 }
 
 /* Custom theme: forest */
-.forest {
-  --color-background: hsl(120 40% 98%);
-  --color-foreground: hsl(120 100% 8%);
-  --color-primary: hsl(142 76% 36%);
-  --color-primary-foreground: hsl(120 40% 98%);
-  --color-accent: hsl(158 64% 52%);
-  --color-accent-foreground: hsl(120 40% 98%);
-  --color-secondary: hsl(120 30% 88%);
-  --color-secondary-foreground: hsl(120 100% 15%);
-  --color-muted: hsl(120 20% 92%);
-  --color-muted-foreground: hsl(120 10% 45%);
-  --color-border: hsl(120 20% 82%);
-  --color-input: hsl(120 20% 82%);
-  --color-ring: hsl(142 76% 36%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(120 40% 98%);
-  --color-popover: hsl(120 40% 98%);
-  --color-popover-foreground: hsl(120 100% 8%);
-  --color-card: hsl(120 40% 98%);
-  --color-card-foreground: hsl(120 100% 8%);
+html.forest {
+  --color-background: hsl(120 40% 98%) !important;
+  --color-foreground: hsl(120 100% 8%) !important;
+  --color-primary: hsl(142 76% 36%) !important;
+  --color-primary-foreground: hsl(120 40% 98%) !important;
+  --color-accent: hsl(158 64% 52%) !important;
+  --color-accent-foreground: hsl(120 40% 98%) !important;
+  --color-secondary: hsl(120 30% 88%) !important;
+  --color-secondary-foreground: hsl(120 100% 15%) !important;
+  --color-muted: hsl(120 20% 92%) !important;
+  --color-muted-foreground: hsl(120 10% 45%) !important;
+  --color-border: hsl(120 20% 82%) !important;
+  --color-input: hsl(120 20% 82%) !important;
+  --color-ring: hsl(142 76% 36%) !important;
+  --color-destructive: hsl(0 84.2% 60.2%) !important;
+  --color-destructive-foreground: hsl(120 40% 98%) !important;
+  --color-popover: hsl(120 40% 98%) !important;
+  --color-popover-foreground: hsl(120 100% 8%) !important;
+  --color-card: hsl(120 40% 98%) !important;
+  --color-card-foreground: hsl(120 100% 8%) !important;
 }
 
 /* Custom theme: midnight */
-.midnight {
-  --color-background: hsl(222 84% 4.9%);
-  --color-foreground: hsl(210 40% 98%);
-  --color-primary: hsl(217 91% 60%);
-  --color-primary-foreground: hsl(222 84% 4.9%);
-  --color-accent: hsl(262 83% 58%);
-  --color-accent-foreground: hsl(210 40% 98%);
-  --color-secondary: hsl(217 33% 17%);
-  --color-secondary-foreground: hsl(210 40% 98%);
-  --color-muted: hsl(217 19% 12%);
-  --color-muted-foreground: hsl(215 20% 65%);
-  --color-border: hsl(217 19% 12%);
-  --color-input: hsl(217 19% 12%);
-  --color-ring: hsl(217 91% 60%);
-  --color-destructive: hsl(0 63% 31%);
-  --color-destructive-foreground: hsl(210 40% 98%);
-  --color-popover: hsl(222 84% 4.9%);
-  --color-popover-foreground: hsl(210 40% 98%);
-  --color-card: hsl(217 33% 17%);
-  --color-card-foreground: hsl(210 40% 98%);
+html.midnight {
+  --color-background: hsl(222 84% 4.9%) !important;
+  --color-foreground: hsl(210 40% 98%) !important;
+  --color-primary: hsl(217 91% 60%) !important;
+  --color-primary-foreground: hsl(222 84% 4.9%) !important;
+  --color-accent: hsl(262 83% 58%) !important;
+  --color-accent-foreground: hsl(210 40% 98%) !important;
+  --color-secondary: hsl(217 33% 17%) !important;
+  --color-secondary-foreground: hsl(210 40% 98%) !important;
+  --color-muted: hsl(217 19% 12%) !important;
+  --color-muted-foreground: hsl(215 20% 65%) !important;
+  --color-border: hsl(217 19% 12%) !important;
+  --color-input: hsl(217 19% 12%) !important;
+  --color-ring: hsl(217 91% 60%) !important;
+  --color-destructive: hsl(0 63% 31%) !important;
+  --color-destructive-foreground: hsl(210 40% 98%) !important;
+  --color-popover: hsl(222 84% 4.9%) !important;
+  --color-popover-foreground: hsl(210 40% 98%) !important;
+  --color-card: hsl(217 33% 17%) !important;
+  --color-card-foreground: hsl(210 40% 98%) !important;
 }
 
 /* Custom theme: lavender */
-.lavender {
-  --color-background: hsl(270 100% 98%);
-  --color-foreground: hsl(270 100% 8%);
-  --color-primary: hsl(262 83% 58%);
-  --color-primary-foreground: hsl(270 100% 98%);
-  --color-accent: hsl(291 64% 42%);
-  --color-accent-foreground: hsl(270 100% 98%);
-  --color-secondary: hsl(270 30% 88%);
-  --color-secondary-foreground: hsl(270 100% 15%);
-  --color-muted: hsl(270 20% 92%);
-  --color-muted-foreground: hsl(270 10% 45%);
-  --color-border: hsl(270 20% 82%);
-  --color-input: hsl(270 20% 82%);
-  --color-ring: hsl(262 83% 58%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(270 100% 98%);
-  --color-popover: hsl(270 100% 98%);
-  --color-popover-foreground: hsl(270 100% 8%);
-  --color-card: hsl(270 100% 98%);
-  --color-card-foreground: hsl(270 100% 8%);
+html.lavender {
+  --color-background: hsl(270 100% 98%) !important;
+  --color-foreground: hsl(270 100% 8%) !important;
+  --color-primary: hsl(262 83% 58%) !important;
+  --color-primary-foreground: hsl(270 100% 98%) !important;
+  --color-accent: hsl(291 64% 42%) !important;
+  --color-accent-foreground: hsl(270 100% 98%) !important;
+  --color-secondary: hsl(270 30% 88%) !important;
+  --color-secondary-foreground: hsl(270 100% 15%) !important;
+  --color-muted: hsl(270 20% 92%) !important;
+  --color-muted-foreground: hsl(270 10% 45%) !important;
+  --color-border: hsl(270 20% 82%) !important;
+  --color-input: hsl(270 20% 82%) !important;
+  --color-ring: hsl(262 83% 58%) !important;
+  --color-destructive: hsl(0 84.2% 60.2%) !important;
+  --color-destructive-foreground: hsl(270 100% 98%) !important;
+  --color-popover: hsl(270 100% 98%) !important;
+  --color-popover-foreground: hsl(270 100% 8%) !important;
+  --color-card: hsl(270 100% 98%) !important;
+  --color-card-foreground: hsl(270 100% 8%) !important;
 }
 
 /* Custom theme: amber */
-.amber {
-  --color-background: hsl(48 100% 98%);
-  --color-foreground: hsl(48 100% 8%);
-  --color-primary: hsl(45 93% 47%);
-  --color-primary-foreground: hsl(48 100% 98%);
-  --color-accent: hsl(25 95% 53%);
-  --color-accent-foreground: hsl(48 100% 98%);
-  --color-secondary: hsl(48 30% 88%);
-  --color-secondary-foreground: hsl(48 100% 15%);
-  --color-muted: hsl(48 20% 92%);
-  --color-muted-foreground: hsl(48 10% 45%);
-  --color-border: hsl(48 20% 82%);
-  --color-input: hsl(48 20% 82%);
-  --color-ring: hsl(45 93% 47%);
-  --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(48 100% 98%);
-  --color-popover: hsl(48 100% 98%);
-  --color-popover-foreground: hsl(48 100% 8%);
-  --color-card: hsl(48 100% 98%);
-  --color-card-foreground: hsl(48 100% 8%);
+html.amber {
+  --color-background: hsl(48 100% 98%) !important;
+  --color-foreground: hsl(48 100% 8%) !important;
+  --color-primary: hsl(45 93% 47%) !important;
+  --color-primary-foreground: hsl(48 100% 98%) !important;
+  --color-accent: hsl(25 95% 53%) !important;
+  --color-accent-foreground: hsl(48 100% 98%) !important;
+  --color-secondary: hsl(48 30% 88%) !important;
+  --color-secondary-foreground: hsl(48 100% 15%) !important;
+  --color-muted: hsl(48 20% 92%) !important;
+  --color-muted-foreground: hsl(48 10% 45%) !important;
+  --color-border: hsl(48 20% 82%) !important;
+  --color-input: hsl(48 20% 82%) !important;
+  --color-ring: hsl(45 93% 47%) !important;
+  --color-destructive: hsl(0 84.2% 60.2%) !important;
+  --color-destructive-foreground: hsl(48 100% 98%) !important;
+  --color-popover: hsl(48 100% 98%) !important;
+  --color-popover-foreground: hsl(48 100% 8%) !important;
+  --color-card: hsl(48 100% 98%) !important;
+  --color-card-foreground: hsl(48 100% 8%) !important;
 }
 
 /* Анимации для accordion */
@@ -275,14 +305,14 @@
 
 /* Специфические переходы для тем */
 :root,
-.light,
-.dark,
-.ocean,
-.sunset,
-.forest,
-.midnight,
-.lavender,
-.amber {
+html.light,
+html.dark,
+html.ocean,
+html.sunset,
+html.forest,
+html.midnight,
+html.lavender,
+html.amber {
   color-scheme: light dark;
 }
 
