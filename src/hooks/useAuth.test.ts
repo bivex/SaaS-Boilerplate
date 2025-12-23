@@ -36,13 +36,19 @@ describe('useAuth hooks', () => {
   });
 
   describe('useSession', () => {
-    it('should return loading state initially', () => {
+    it('should return loading state initially', async () => {
       (authClient.getSession as any).mockResolvedValue({ data: null });
 
       const { result } = renderHook(() => useSession());
 
+      // Check initial state
       expect(result.current.session).toBeNull();
       expect(result.current.loading).toBe(true);
+
+      // Wait for async operations to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
     });
 
     it('should return session data when available', async () => {
