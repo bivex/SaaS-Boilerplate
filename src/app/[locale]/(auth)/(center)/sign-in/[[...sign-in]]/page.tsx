@@ -7,16 +7,15 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-23T19:47:00
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import { SignIn } from '@clerk/nextjs';
+import { getSignInUrl } from '@workos-inc/authkit-nextjs';
 import { getTranslations } from 'next-intl/server';
-
-import { getI18nPath } from '@/utils/Helpers';
+import { redirect } from 'next/navigation';
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
   const params = await props.params;
@@ -31,15 +30,9 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   };
 }
 
-const SignInPage = async (props: { params: Promise<{ locale: string }> }) => {
-  const params = await props.params;
-  return (
-    <SignIn
-      path={getI18nPath('/sign-in', params.locale)}
-      routing="path"
-      signUpUrl={getI18nPath('/sign-up', params.locale)}
-    />
-  );
+const SignInPage = async () => {
+  const signInUrl = await getSignInUrl();
+  redirect(signInUrl);
 };
 
 export default SignInPage;

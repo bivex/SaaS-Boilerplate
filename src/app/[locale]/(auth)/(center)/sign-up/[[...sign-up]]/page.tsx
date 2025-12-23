@@ -1,22 +1,19 @@
 /**
  * Copyright (c) 2025 Bivex
- *
- * Author: Bivex
  * Available for contact via email: support@b-b.top
  * For up-to-date contact information:
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-23T19:47:00
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import { SignUp } from '@clerk/nextjs';
+import { getSignUpUrl } from '@workos-inc/authkit-nextjs';
 import { getTranslations } from 'next-intl/server';
-
-import { getI18nPath } from '@/utils/Helpers';
+import { redirect } from 'next/navigation';
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
   const params = await props.params;
@@ -31,16 +28,9 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   };
 }
 
-const SignUpPage = async (props: { params: Promise<{ locale: string }> }) => {
-  const params = await props.params;
-  return (
-    <SignUp
-      path={getI18nPath('/sign-up', params.locale)}
-      routing="path"
-      signInUrl={getI18nPath('/sign-in', params.locale)}
-      forceRedirectUrl={getI18nPath('/dashboard', params.locale)}
-    />
-  );
+const SignUpPage = async () => {
+  const signUpUrl = await getSignUpUrl();
+  redirect(signUpUrl);
 };
 
 export default SignUpPage;
