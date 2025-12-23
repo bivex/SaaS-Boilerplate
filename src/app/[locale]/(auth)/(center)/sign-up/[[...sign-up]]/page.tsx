@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:40:00
- * Last Updated: 2025-12-23T22:40:00
+ * Last Updated: 2025-12-23T21:05:23
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -26,6 +26,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { authClient } from '@/libs/auth-client';
+import { trpc } from '@/trpc/client';
 import { getI18nPath } from '@/utils/Helpers';
 
 export default function SignUpPage() {
@@ -50,24 +51,17 @@ export default function SignUpPage() {
     }
 
     try {
-      const result = await authClient.signUp.email({
+      await trpc.auth.signUp.mutate({
         email,
         password,
         name,
       });
 
-      console.log('Sign-up result:', result);
-
-      if (result.error) {
-        console.error('Sign-up error:', result.error);
-        setError(result.error.message || 'An error occurred');
-      } else {
-        console.log('Sign-up successful, redirecting to dashboard');
-        router.push('/dashboard');
-      }
+      console.log('Sign-up successful, redirecting to dashboard');
+      router.push('/dashboard');
     } catch (error) {
-      console.error('Sign-up exception:', error);
-      setError('An unexpected error occurred');
+      console.error('Sign-up error:', error);
+      setError(error instanceof Error ? error.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }

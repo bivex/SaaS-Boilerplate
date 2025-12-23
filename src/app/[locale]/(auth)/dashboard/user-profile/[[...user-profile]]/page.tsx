@@ -17,11 +17,11 @@
 
 import { useTranslations } from 'next-intl';
 
-import { TitleBar } from '@/features/dashboard/TitleBar';
-import { useUser } from '@/hooks/useAuth';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { TitleBar } from '@/features/dashboard/TitleBar';
+import { useUser } from '@/hooks/useAuth';
 
 const UserProfilePage = () => {
   const { user, loading } = useUser();

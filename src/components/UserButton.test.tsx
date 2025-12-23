@@ -13,10 +13,10 @@
  * Commercial licensing available upon request.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useSignOut, useUser } from '@/hooks/useAuth';
 import { UserButton } from './UserButton';
-import { useUser, useSignOut } from '@/hooks/useAuth';
 
 // Mock the hooks
 vi.mock('@/hooks/useAuth', () => ({
@@ -55,9 +55,11 @@ describe('UserButton', () => {
     render(<UserButton />);
 
     const signInButton = screen.getByText('sign_in');
+
     expect(signInButton).toBeInTheDocument();
 
     fireEvent.click(signInButton);
+
     expect(mockPush).toHaveBeenCalledWith('/sign-in');
   });
 
@@ -77,6 +79,7 @@ describe('UserButton', () => {
 
     // Avatar should be rendered
     const avatar = screen.getByRole('button');
+
     expect(avatar).toBeInTheDocument();
 
     // Click to open dropdown
@@ -106,6 +109,7 @@ describe('UserButton', () => {
 
     // Should show "JD" as initials
     const fallback = screen.getByText('JD');
+
     expect(fallback).toBeInTheDocument();
   });
 
@@ -122,6 +126,7 @@ describe('UserButton', () => {
     render(<UserButton />);
 
     const fallback = screen.getByText('T');
+
     expect(fallback).toBeInTheDocument();
   });
 

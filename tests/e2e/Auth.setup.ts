@@ -13,8 +13,8 @@
  * Commercial licensing available upon request.
  */
 
+import { execSync } from 'node:child_process';
 import { test as setup } from '@playwright/test';
-import { execSync } from 'child_process';
 
 setup('setup database for e2e tests', async () => {
   // Ensure database is migrated and ready

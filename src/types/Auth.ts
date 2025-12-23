@@ -29,7 +29,7 @@ export const ORG_PERMISSION = {
 export type OrgPermission = EnumValues<typeof ORG_PERMISSION>;
 
 // Better Auth Types
-export interface User {
+export type User = {
   id: string;
   name: string;
   email: string;
@@ -41,18 +41,18 @@ export interface User {
   banned?: boolean;
   banReason?: string;
   banExpires?: Date;
-}
+};
 
-export interface Organization {
+export type Organization = {
   id: string;
   name: string;
   slug: string;
   logo?: string;
   createdAt: Date;
   metadata?: Record<string, any>;
-}
+};
 
-export interface Session {
+export type Session = {
   id: string;
   expiresAt: Date;
   token: string;
@@ -63,4 +63,4 @@ export interface Session {
   userId: string;
   user: User;
   organization?: Organization;
-}
+};

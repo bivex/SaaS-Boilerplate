@@ -13,7 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { authClient } from './auth-client';
 
 describe('auth-client', () => {
