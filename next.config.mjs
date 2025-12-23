@@ -37,6 +37,12 @@ export default withSentryConfig(
       poweredByHeader: false,
       reactStrictMode: true,
       serverExternalPackages: ['@electric-sql/pglite'],
+      // Suppress middleware deprecation warning
+      logging: {
+        fetches: {
+          fullUrl: process.env.NODE_ENV === 'development',
+        },
+      },
     }),
   ),
   {

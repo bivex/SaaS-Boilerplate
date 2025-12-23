@@ -13,8 +13,9 @@
  * Commercial licensing available upon request.
  */
 
+import type {FieldPath, FieldValues} from 'react-hook-form';
 import React from 'react';
-import { type FieldPath, type FieldValues, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -36,8 +37,8 @@ export const FormItemContext = React.createContext<FormItemContextValue>(
 );
 
 export const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext);
-  const itemContext = React.useContext(FormItemContext);
+  const fieldContext = React.use(FormFieldContext);
+  const itemContext = React.use(FormItemContext);
   const { getFieldState, formState } = useFormContext();
 
   const fieldState = getFieldState(fieldContext.name, formState);
