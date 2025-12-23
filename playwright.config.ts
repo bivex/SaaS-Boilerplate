@@ -7,13 +7,17 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-23T20:48:03
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
 import { defineConfig, devices } from '@playwright/test';
+import { config } from 'dotenv';
+
+// Load environment variables from .env file
+config();
 
 // Use process.env.PORT by default and fallback to port 3000
 const PORT = process.env.PORT || 3000;
@@ -26,8 +30,9 @@ const baseURL = `http://localhost:${PORT}`;
  */
 export default defineConfig({
   testDir: './tests',
-  // Look for files with the .spec.js or .e2e.js extension
+  // Look for files with the .spec.js or .e2e.js extension, exclude visual tests
   testMatch: '*.@(spec|e2e).?(c|m)[jt]s?(x)',
+  testIgnore: '**/Visual.e2e.ts',
   // Timeout per test
   timeout: 30 * 1000,
   // Fail the build on CI if you accidentally left test.only in the source code.
@@ -43,7 +48,7 @@ export default defineConfig({
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
   webServer: {
-    command: process.env.CI ? 'npm run start' : 'npm run dev:next',
+    command: process.env.CI ? 'npm run start' : 'npm run dev',
     url: baseURL,
     timeout: 2 * 60 * 1000,
     reuseExistingServer: !process.env.CI,
@@ -64,10 +69,10 @@ export default defineConfig({
 
   projects: [
     // `setup` and `teardown` are used to run code before and after all E2E tests.
-    // These functions can be used to configure Clerk for testing purposes. For example, bypassing bot detection.
-    // In the `setup` file, you can create an account in `Test mode`.
-    // For each test, an organization can be created within this account to ensure total isolation.
-    // After all tests are completed, the `teardown` file can delete the account and all associated organizations.
+    // These functions can be used to configure Better Auth for testing purposes.
+    // In the `setup` file, you can create test users and organizations.
+    // For each test, ensure proper cleanup of test data.
+    // After all tests are completed, the `teardown` file can clean up test data.
     // You can find the `setup` and `teardown` files at: https://nextjs-boilerplate.com/pro-saas-starter-kit
     { name: 'setup', testMatch: /.*\.setup\.ts/, teardown: 'teardown' },
     { name: 'teardown', testMatch: /.*\.teardown\.ts/ },

@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-23T20:29:36
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -16,9 +16,9 @@
 export default {
   out: './migrations',
   schema: './src/models/Schema.ts',
-  dialect: 'postgresql',
+  dialect: 'sqlite',
   dbCredentials: {
-    url: process.env.DATABASE_URL ?? '',
+    url: './sqlite.db',
   },
   verbose: true,
   strict: true,

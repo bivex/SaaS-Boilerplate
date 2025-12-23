@@ -80,11 +80,35 @@
   },
   "SignIn": {
     "meta_title": "Войти",
-    "meta_description": "Легко войдите в свою учетную запись с помощью нашего удобного процесса входа."
+    "meta_description": "Легко войдите в свою учетную запись с помощью нашего удобного процесса входа.",
+    "title": "Добро пожаловать обратно",
+    "description": "Войдите в свою учетную запись, чтобы продолжить",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "sign_in": "Войти",
+    "signing_in": "Вход...",
+    "or_continue_with": "Или продолжить с",
+    "google": "Google",
+    "github": "GitHub",
+    "dont_have_account": "Нет учетной записи?",
+    "sign_up": "Регистрация"
   },
   "SignUp": {
     "meta_title": "Регистрация",
-    "meta_description": "Легко создайте учетную запись с помощью нашего интуитивного процесса регистрации."
+    "meta_description": "Легко создайте учетную запись с помощью нашего интуитивного процесса регистрации.",
+    "title": "Создайте свою учетную запись",
+    "description": "Начните работу с новой учетной записью сегодня",
+    "name": "Полное имя",
+    "email": "Электронная почта",
+    "password": "Пароль",
+    "confirm_password": "Подтвердите пароль",
+    "sign_up": "Регистрация",
+    "signing_up": "Регистрация...",
+    "or_continue_with": "Или продолжить с",
+    "google": "Google",
+    "github": "GitHub",
+    "already_have_account": "Уже есть учетная запись?",
+    "sign_in": "Войти"
   },
   "DashboardLayout": {
     "home": "Главная",
@@ -112,6 +136,18 @@
   "OrganizationProfile": {
     "title_bar": "Управление организацией",
     "title_bar_description": "Управление вашей организацией"
+  },
+  "UserButton": {
+    "sign_in": "Войти",
+    "profile": "Профиль",
+    "organization": "Организация",
+    "sign_out": "Выйти"
+  },
+  "OrganizationSwitcher": {
+    "create_org": "Создать организацию",
+    "personal": "Личный",
+    "organizations": "Организации",
+    "manage_orgs": "Управление организациями"
   },
   "Billing": {
     "title_bar": "Оплата",

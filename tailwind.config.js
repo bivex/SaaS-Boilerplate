@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T10:15:00
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-23T20:44:54
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -69,16 +69,16 @@ const config = {
       animation: {
         'accordion-down': 'var(--animate-accordion-down)',
         'accordion-up': 'var(--animate-accordion-up)',
-        marquee: 'marquee var(--duration, 30s) linear infinite',
+        'marquee': 'marquee var(--duration, 30s) linear infinite',
         'marquee-reverse': 'marquee-reverse var(--duration, 30s) linear infinite',
       },
       keyframes: {
-        marquee: {
-          to: { transform: 'translateX(-50%)' }
+        'marquee': {
+          to: { transform: 'translateX(-50%)' },
         },
         'marquee-reverse': {
-          to: { transform: 'translateX(50%)' }
-        }
+          to: { transform: 'translateX(50%)' },
+        },
       },
     },
   },

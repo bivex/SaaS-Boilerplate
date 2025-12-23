@@ -15,23 +15,24 @@
 
 'use client';
 
-import { UserProfile } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { TitleBar } from '@/features/dashboard/TitleBar';
-import { getI18nPath } from '@/utils/Helpers';
+import { useUser } from '@/hooks/useAuth';
 
-const UserProfilePage = (props: { params: Promise<{ locale: string }> }) => {
-  const [params, setParams] = useState<{ locale: string } | null>(null);
+const UserProfilePage = () => {
+  const { user, loading } = useUser();
   const t = useTranslations('UserProfile');
 
-  useEffect(() => {
-    props.params.then(setParams);
-  }, [props.params]);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  if (!params) {
-    return null;
+  if (!user) {
+    return <div>Please sign in</div>;
   }
 
   return (
@@ -41,16 +42,36 @@ const UserProfilePage = (props: { params: Promise<{ locale: string }> }) => {
         description={t('title_bar_description')}
       />
 
-      <UserProfile
-        routing="path"
-        path={getI18nPath('/dashboard/user-profile', params.locale)}
-        appearance={{
-          elements: {
-            rootBox: 'w-full',
-            cardBox: 'w-full flex',
-          },
-        }}
-      />
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>{t('profile_settings')}</CardTitle>
+          <CardDescription>
+            {t('manage_account')}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">{t('name')}</Label>
+            <Input
+              id="name"
+              value={user.name || ''}
+              disabled
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">{t('email')}</Label>
+            <Input
+              id="email"
+              type="email"
+              value={user.email}
+              disabled
+            />
+          </div>
+          <div className="text-sm text-muted-foreground">
+            {t('profile_note')}
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 };

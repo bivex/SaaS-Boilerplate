@@ -15,13 +15,13 @@
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { Footer } from '@/components/ui/footer-section';
+import { Header1 } from '@/components/ui/header';
 import { TestimonialsSection } from '@/components/ui/testimonial-v2';
 import { CTA } from '@/templates/CTA';
 import { DemoBanner } from '@/templates/DemoBanner';
 import { FAQ } from '@/templates/FAQ';
 import { Features } from '@/templates/Features';
-import { Footer } from '@/components/ui/footer-section';
-import { Header1 } from '@/components/ui/header';
 import { Hero } from '@/templates/Hero';
 import { Pricing } from '@/templates/Pricing';
 import { Sponsors } from '@/templates/Sponsors';
