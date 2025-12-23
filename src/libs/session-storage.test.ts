@@ -70,99 +70,115 @@ describe('Session Storage Adapters', () => {
 
   describe('Database Session Storage', () => {
     it('should store session in database', async () => {
-      const { db } = await import('@/libs/DB');
+      const { DatabaseSessionStorage } = await import('@/libs/session-storage');
+      const storage = new DatabaseSessionStorage();
 
       const sessionData = {
         id: 'session-1',
         userId: 'user-1',
         expiresAt: new Date(Date.now() + 3600000),
         token: 'session-token',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
-      mockDb.insert.mockResolvedValue([sessionData]);
-
-      // Simulate session creation
-      await db.insert({
-        id: sessionData.id,
-        userId: sessionData.userId,
-        expiresAt: sessionData.expiresAt,
-        token: sessionData.token,
+      // Mock the db.insert chain
+      const mockValues = vi.fn().mockReturnValue({
+        onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
       });
-
-      expect(mockDb.insert).toHaveBeenCalledWith({
-        id: sessionData.id,
-        userId: sessionData.userId,
-        expiresAt: sessionData.expiresAt,
-        token: sessionData.token,
+      const mockInsert = vi.fn().mockReturnValue({
+        values: mockValues,
       });
+      mockDb.insert = mockInsert;
+
+      await storage.store(sessionData);
+
+      expect(mockInsert).toHaveBeenCalled();
+      expect(mockValues).toHaveBeenCalled();
     });
 
     it('should retrieve session from database', async () => {
-      const { db } = await import('@/libs/DB');
+      const { DatabaseSessionStorage } = await import('@/libs/session-storage');
+      const storage = new DatabaseSessionStorage();
 
       const sessionData = {
         id: 'session-1',
         userId: 'user-1',
         expiresAt: new Date(Date.now() + 3600000),
         token: 'session-token',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
-      mockDb.select.mockResolvedValue([sessionData]);
+      // Mock the db.select chain
+      const mockLimit = vi.fn().mockResolvedValue([sessionData]);
+      const mockWhere = vi.fn().mockReturnValue({ limit: mockLimit });
+      const mockFrom = vi.fn().mockReturnValue({ where: mockWhere });
+      const mockSelect = vi.fn().mockReturnValue({ from: mockFrom });
+      mockDb.select = mockSelect;
 
-      const result = await db.select().where({ token: 'session-token' });
+      const result = await storage.retrieve('session-1');
 
-      expect(mockDb.select).toHaveBeenCalled();
-      expect(result).toEqual([sessionData]);
+      expect(mockSelect).toHaveBeenCalled();
+      expect(result?.id).toBe('session-1');
     });
 
     it('should handle database connection failures', async () => {
-      const { db } = await import('@/libs/DB');
+      const { DatabaseSessionStorage } = await import('@/libs/session-storage');
+      const storage = new DatabaseSessionStorage();
 
-      mockDb.select.mockRejectedValue(new Error('Database connection failed'));
+      // Mock the db.select chain to throw error
+      const mockLimit = vi.fn().mockRejectedValue(new Error('Database connection failed'));
+      const mockWhere = vi.fn().mockReturnValue({ limit: mockLimit });
+      const mockFrom = vi.fn().mockReturnValue({ where: mockWhere });
+      const mockSelect = vi.fn().mockReturnValue({ from: mockFrom });
+      mockDb.select = mockSelect;
 
-      await expect(
-        db.select().where({ token: 'session-token' }),
-      ).rejects.toThrow('Database connection failed');
+      await expect(storage.retrieve('session-1')).rejects.toThrow('Database connection failed');
     });
 
     it('should clean up expired sessions', async () => {
-      const { db } = await import('@/libs/DB');
+      const { DatabaseSessionStorage } = await import('@/libs/session-storage');
+      const storage = new DatabaseSessionStorage();
 
-      const expiredSessions = [
-        { id: 'expired-1', expiresAt: new Date(Date.now() - 1000) },
-        { id: 'expired-2', expiresAt: new Date(Date.now() - 2000) },
-      ];
+      // Mock the db.delete chain
+      const mockWhere = vi.fn().mockResolvedValue(undefined);
+      const mockDelete = vi.fn().mockReturnValue({ where: mockWhere });
+      mockDb.delete = mockDelete;
 
-      mockDb.select.mockResolvedValue(expiredSessions);
-      mockDb.delete.mockResolvedValue({ count: 2 });
+      await storage.cleanup();
 
-      // Simulate cleanup logic
-      const expiredIds = expiredSessions.map(s => s.id);
-      await db.delete().where({ id: { in: expiredIds } });
-
-      expect(mockDb.delete).toHaveBeenCalledWith({
-        where: { id: { in: expiredIds } },
-      });
+      expect(mockDelete).toHaveBeenCalled();
+      expect(mockWhere).toHaveBeenCalled();
     });
   });
 
   describe('Redis Session Storage', () => {
-    it('should initialize Redis client', () => {
-      const { Redis } = require('@upstash/redis');
+    it('should initialize Redis client', async () => {
+      const { Redis } = await import('@upstash/redis');
+      const { RedisSessionStorage } = await import('@/libs/session-storage');
 
       // Redis is initialized in constructor
-      const redisStorage = new (require('../../libs/session-storage').RedisSessionStorage)();
+      const redisStorage = new RedisSessionStorage();
 
       expect(Redis).toHaveBeenCalled();
     });
 
     it('should store session in Redis with TTL', async () => {
-      const { Redis } = require('@upstash/redis');
-      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
-        set: vi.fn(),
+      const { Redis } = await import('@upstash/redis');
+      const { RedisSessionStorage } = await import('@/libs/session-storage');
+
+      const mockSet = vi.fn().mockResolvedValue('OK');
+      const mockRedisInstance = {
+        set: mockSet,
+        get: vi.fn(),
+        del: vi.fn(),
       };
 
-      const redisStorage = new (require('../../libs/session-storage').RedisSessionStorage)();
+      // Update the mock to return our instance
+      (Redis as any).mockImplementation(() => mockRedisInstance);
+
+      const redisStorage = new RedisSessionStorage();
       const sessionData = {
         id: 'session-1',
         userId: 'user-1',
@@ -173,16 +189,14 @@ describe('Session Storage Adapters', () => {
 
       await redisStorage.store(sessionData);
 
-      expect(mockRedis.set).toHaveBeenCalled();
+      expect(mockSet).toHaveBeenCalled();
     });
 
     it('should retrieve session from Redis', async () => {
-      const { Redis } = require('@upstash/redis');
-      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
-        get: vi.fn(),
-      };
+      const { Redis } = await import('@upstash/redis');
+      const { RedisSessionStorage } = await import('@/libs/session-storage');
 
-      mockRedis.get.mockResolvedValue(JSON.stringify({
+      const mockGet = vi.fn().mockResolvedValue(JSON.stringify({
         id: 'session-1',
         userId: 'user-1',
         expiresAt: new Date(Date.now() + 3600000).toISOString(),
@@ -190,7 +204,15 @@ describe('Session Storage Adapters', () => {
         updatedAt: new Date().toISOString(),
       }));
 
-      const redisStorage = new (require('../../libs/session-storage').RedisSessionStorage)();
+      const mockRedisInstance = {
+        get: mockGet,
+        set: vi.fn(),
+        del: vi.fn(),
+      };
+
+      (Redis as any).mockImplementation(() => mockRedisInstance);
+
+      const redisStorage = new RedisSessionStorage();
       const result = await redisStorage.retrieve('session-1');
 
       expect(result).toBeDefined();
@@ -198,14 +220,19 @@ describe('Session Storage Adapters', () => {
     });
 
     it('should handle Redis key not found', async () => {
-      const { Redis } = require('@upstash/redis');
-      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
-        get: vi.fn(),
+      const { Redis } = await import('@upstash/redis');
+      const { RedisSessionStorage } = await import('@/libs/session-storage');
+
+      const mockGet = vi.fn().mockResolvedValue(null);
+      const mockRedisInstance = {
+        get: mockGet,
+        set: vi.fn(),
+        del: vi.fn(),
       };
 
-      mockRedis.get.mockResolvedValue(null);
+      (Redis as any).mockImplementation(() => mockRedisInstance);
 
-      const redisStorage = new (require('../../libs/session-storage').RedisSessionStorage)();
+      const redisStorage = new RedisSessionStorage();
       const result = await redisStorage.retrieve('nonexistent');
 
       expect(result).toBeNull();
@@ -214,7 +241,27 @@ describe('Session Storage Adapters', () => {
 
   describe('Hybrid Storage Strategy', () => {
     it('should use Redis for hot data and database for persistence', async () => {
-      const hybridStorage = new (require('../../libs/session-storage').HybridSessionStorage)();
+      const { Redis } = await import('@upstash/redis');
+      const { HybridSessionStorage } = await import('@/libs/session-storage');
+
+      const mockSet = vi.fn().mockResolvedValue('OK');
+      const mockRedisInstance = {
+        set: mockSet,
+        get: vi.fn(),
+        del: vi.fn(),
+      };
+
+      (Redis as any).mockImplementation(() => mockRedisInstance);
+
+      const mockValues = vi.fn().mockReturnValue({
+        onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
+      });
+      const mockInsert = vi.fn().mockReturnValue({
+        values: mockValues,
+      });
+      mockDb.insert = mockInsert;
+
+      const hybridStorage = new HybridSessionStorage();
       const sessionData = {
         id: 'session-1',
         userId: 'user-1',
@@ -223,31 +270,29 @@ describe('Session Storage Adapters', () => {
         updatedAt: new Date(),
       };
 
-      // Mock successful storage in both
-      const { Redis } = require('@upstash/redis');
-      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
-        set: vi.fn().mockResolvedValue('OK'),
-      };
-
-      mockDb.insert.mockResolvedValue([sessionData]);
-
       await hybridStorage.store(sessionData);
 
       // Should attempt to store in both
-      expect(mockRedis.set).toHaveBeenCalled();
-      expect(mockDb.insert).toHaveBeenCalled();
+      expect(mockSet).toHaveBeenCalled();
+      expect(mockInsert).toHaveBeenCalled();
     });
 
     it('should fallback to database when Redis fails', async () => {
-      const hybridStorage = new (require('../../libs/session-storage').HybridSessionStorage)();
+      const { Redis } = await import('@upstash/redis');
+      const { HybridSessionStorage } = await import('@/libs/session-storage');
 
-      // Mock Redis failure and DB success
-      const { Redis } = require('@upstash/redis');
-      const mockRedis = Redis.mock.results[Redis.mock.calls.length - 1]?.value || {
-        get: vi.fn().mockRejectedValue(new Error('Redis down')),
+      // Mock Redis to throw error
+      const mockGet = vi.fn().mockRejectedValue(new Error('Redis down'));
+      const mockRedisInstance = {
+        set: vi.fn(),
+        get: mockGet,
+        del: vi.fn(),
       };
 
-      mockDb.select.mockResolvedValue([{
+      (Redis as any).mockImplementation(() => mockRedisInstance);
+
+      // Mock DB success
+      const sessionData = {
         id: 'session-1',
         userId: 'user-1',
         token: 'token-1',
@@ -256,8 +301,15 @@ describe('Session Storage Adapters', () => {
         userAgent: null,
         createdAt: new Date(),
         updatedAt: new Date(),
-      }]);
+      };
 
+      const mockLimit = vi.fn().mockResolvedValue([sessionData]);
+      const mockWhere = vi.fn().mockReturnValue({ limit: mockLimit });
+      const mockFrom = vi.fn().mockReturnValue({ where: mockWhere });
+      const mockSelect = vi.fn().mockReturnValue({ from: mockFrom });
+      mockDb.select = mockSelect;
+
+      const hybridStorage = new HybridSessionStorage();
       const result = await hybridStorage.retrieve('session-1');
 
       expect(result).toBeDefined();
