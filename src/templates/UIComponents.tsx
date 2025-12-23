@@ -18,6 +18,7 @@
 import { memo, useCallback, useState } from 'react';
 
 import { Background } from '@/components/Background';
+import { ContactForm } from '@/components/ContactForm';
 import { CSSDebugger } from '@/components/CSSDebugger';
 import { ProfileForm } from '@/components/ExampleForm';
 import { ThemeDemo } from '@/components/ThemeDemo';
@@ -219,6 +220,21 @@ const FormSection = memo(({ inputValue, onInputChange }: {
 ));
 FormSection.displayName = 'FormSection';
 
+// Memoized Contact Form Section
+const ContactFormSection = memo(() => (
+  <div className="space-y-4">
+    <h3 className="text-2xl font-bold">Contact Form Component</h3>
+    <div className="max-w-4xl">
+      <ContactForm />
+    </div>
+    <p className="text-sm text-muted-foreground">
+      This contact form demonstrates a complete form implementation with validation,
+      responsive design, and proper accessibility using Shadcn UI components.
+    </p>
+  </div>
+));
+ContactFormSection.displayName = 'ContactFormSection';
+
 // Memoized CSS Debug Section
 const CSSDebugSection = memo(() => {
   const [showGrid, setShowGrid] = useState(false);
@@ -402,6 +418,8 @@ const UIComponentsComponent = () => {
           <TooltipSection />
           <Separator />
           <FormSection inputValue={inputValue} onInputChange={handleInputChange} />
+          <Separator />
+          <ContactFormSection />
           <Separator />
           <CardSection />
           <Separator />
