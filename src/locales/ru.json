@@ -86,6 +86,7 @@
     "email": "Электронная почта",
     "password": "Пароль",
     "sign_in": "Войти",
+    "signing_in": "Вход...",
     "or_continue_with": "Или продолжить с",
     "google": "Google",
     "github": "GitHub",
@@ -102,6 +103,7 @@
     "password": "Пароль",
     "confirm_password": "Подтвердите пароль",
     "sign_up": "Регистрация",
+    "signing_up": "Регистрация...",
     "or_continue_with": "Или продолжить с",
     "google": "Google",
     "github": "GitHub",
@@ -134,6 +136,18 @@
   "OrganizationProfile": {
     "title_bar": "Управление организацией",
     "title_bar_description": "Управление вашей организацией"
+  },
+  "UserButton": {
+    "sign_in": "Войти",
+    "profile": "Профиль",
+    "organization": "Организация",
+    "sign_out": "Выйти"
+  },
+  "OrganizationSwitcher": {
+    "create_org": "Создать организацию",
+    "personal": "Личный",
+    "organizations": "Организации",
+    "manage_orgs": "Управление организациями"
   },
   "Billing": {
     "title_bar": "Оплата",

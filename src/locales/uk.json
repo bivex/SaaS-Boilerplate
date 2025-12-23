@@ -86,6 +86,7 @@
     "email": "Електронна пошта",
     "password": "Пароль",
     "sign_in": "Увійти",
+    "signing_in": "Вхід...",
     "or_continue_with": "Або продовжити з",
     "google": "Google",
     "github": "GitHub",
@@ -102,6 +103,7 @@
     "password": "Пароль",
     "confirm_password": "Підтвердіть пароль",
     "sign_up": "Реєстрація",
+    "signing_up": "Реєстрація...",
     "or_continue_with": "Або продовжити з",
     "google": "Google",
     "github": "GitHub",
@@ -134,6 +136,18 @@
   "OrganizationProfile": {
     "title_bar": "Управління організацією",
     "title_bar_description": "Керування вашою організацією"
+  },
+  "UserButton": {
+    "sign_in": "Увійти",
+    "profile": "Профіль",
+    "organization": "Організація",
+    "sign_out": "Вийти"
+  },
+  "OrganizationSwitcher": {
+    "create_org": "Створити організацію",
+    "personal": "Особисте",
+    "organizations": "Організації",
+    "manage_orgs": "Керування організаціями"
   },
   "Billing": {
     "title_bar": "Оплата",
