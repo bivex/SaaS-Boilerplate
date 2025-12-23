@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:25:50
+ * Last Updated: 2025-12-23T19:29:51
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -27,7 +27,7 @@ const Logos = {
       <img
         src="/assets/images/clerk-logo-dark.png"
         alt="Clerk logo"
-        className="h-[37px] w-auto dark:invert"
+        className="h-[40px] w-auto object-contain dark:invert"
       />
     </a>
   ),
@@ -41,7 +41,7 @@ const Logos = {
       <img
         src="/assets/images/crowdin-dark.png"
         alt="Crowdin logo"
-        className="h-[26px] w-auto dark:invert"
+        className="h-[40px] w-auto object-contain dark:invert"
       />
     </a>
   ),
@@ -55,7 +55,7 @@ const Logos = {
       <img
         src="/assets/images/sentry-dark.png"
         alt="Sentry logo"
-        className="h-[38px] w-auto dark:invert"
+        className="h-[40px] w-auto object-contain dark:invert"
       />
     </a>
   ),
@@ -69,7 +69,7 @@ const Logos = {
       <img
         src="/assets/images/arcjet-light.svg"
         alt="Arcjet logo"
-        className="h-[56px] w-auto dark:invert"
+        className="h-[40px] w-auto object-contain dark:invert"
       />
     </a>
   ),
@@ -83,7 +83,7 @@ const Logos = {
       <img
         src="/assets/images/nextjs-boilerplate-saas.png"
         alt="Nextjs SaaS Boilerplate"
-        className="h-[30px] w-auto"
+        className="h-[40px] w-auto object-contain"
       />
     </a>
   ),
