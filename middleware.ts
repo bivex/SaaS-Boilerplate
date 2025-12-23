@@ -25,37 +25,30 @@ const intlMiddleware = createIntlMiddleware({
   defaultLocale: AppConfig.defaultLocale,
 });
 
-// Create a combined middleware that handles both i18n and auth
-export default async function middleware(request: NextRequest) {
-  // First handle internationalization
-  const intlResponse = intlMiddleware(request);
-
-  // If intl middleware wants to redirect, return that response
-  if (intlResponse && intlResponse.status !== 200 && intlResponse.headers.has('location')) {
-    return intlResponse;
-  }
-
-  // Then handle authentication with WorkOS AuthKit
-  return authkitMiddleware({
-    middlewareAuth: {
-      enabled: true,
-      unauthenticatedPaths: [
-        '/',           // Root page
-        '/en',         // English locale pages
-        '/fr',         // French locale pages
-        '/ru',         // Russian locale pages
-        '/uk',         // Ukrainian locale pages
-        '/sign-in',    // Sign in pages
-        '/sign-up',    // Sign up pages
-        '/login',      // Login redirect
-        '/callback',   // Auth callback
-        '/demo',       // Demo pages
-        '/demo/**',    // All demo subpages
-      ],
-    },
-  })(request);
-}
+// Create combined middleware using authkitMiddleware's beforeAuth
+export default authkitMiddleware({
+  middlewareAuth: {
+    enabled: true,
+    unauthenticatedPaths: [
+      '/',           // Root page
+      '/sign-in',    // Sign in pages
+      '/sign-up',    // Sign up pages
+      '/login',      // Login redirect
+      '/callback',   // Auth callback
+      '/demo',       // Demo pages
+      '/demo/**',    // All demo subpages
+    ],
+  },
+  // Handle i18n before auth
+  beforeAuth: (request) => {
+    const intlResponse = intlMiddleware(request);
+    if (intlResponse && intlResponse.status !== 200 && intlResponse.headers.has('location')) {
+      return intlResponse;
+    }
+    return undefined; // Continue with auth
+  },
+});
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/'],
 };
