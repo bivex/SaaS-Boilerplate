@@ -13,7 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import '@testing-library/jest-dom/vitest';
+import '@testing-library/jest-dom';
 
 // Set up environment variables for testing
 process.env.BILLING_PLAN_ENV = 'test';
