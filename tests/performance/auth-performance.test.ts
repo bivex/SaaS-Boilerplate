@@ -320,12 +320,10 @@ describe('Authentication Performance Tests', () => {
       mockDb.select.mockReturnValue({
         from: vi.fn().mockResolvedValue([...expiredSessions, ...activeSessions]),
       });
-      mockDb.delete.mockReturnValue({
+      const mockDeleteQuery = {
         where: vi.fn().mockResolvedValue({ count: expiredSessions.length }),
-      });
-
-      // Also set up direct delete mock for the transaction
-      mockDb.delete.mockResolvedValue({ count: expiredSessions.length });
+      };
+      mockDb.delete.mockReturnValue(mockDeleteQuery);
 
       const startTime = performance.now();
 
@@ -342,8 +340,8 @@ describe('Authentication Performance Tests', () => {
 
       // Should complete efficiently
       expect(duration).toBeLessThan(100);
-      expect(mockDb.delete).toHaveBeenCalledWith({
-        where: { id: { in: expiredIds } },
+      expect(mockDeleteQuery.where).toHaveBeenCalledWith({
+        id: { in: expiredIds },
       });
       expect(expiredIds).toHaveLength(expiredSessions.length);
     });
