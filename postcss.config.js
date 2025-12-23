@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:33
- * Last Updated: 2025-12-18T21:10:33
+ * Last Updated: 2025-12-23T09:28:57
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -19,8 +19,8 @@
 /** @type {import('postcss-load-config').Config} */
 module.exports = {
   plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
+    '@tailwindcss/postcss': {},
+    'autoprefixer': {},
     ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {}),
   },
 };
