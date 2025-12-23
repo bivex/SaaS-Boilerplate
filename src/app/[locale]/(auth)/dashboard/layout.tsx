@@ -32,9 +32,6 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 }
 
 export default async function DashboardLayout(props: { children: React.ReactNode }) {
-  // Get the authenticated user
-  const { user } = await withAuth({ ensureSignedIn: true });
-
   const params = await { locale: 'en' }; // TODO: Fix params passing from layout
   const t = await getTranslations({
     locale: params.locale,
@@ -62,7 +59,6 @@ export default async function DashboardLayout(props: { children: React.ReactNode
               },
               // PRO: Link to the /dashboard/billing page
             ]}
-            user={user}
           />
         </div>
       </div>

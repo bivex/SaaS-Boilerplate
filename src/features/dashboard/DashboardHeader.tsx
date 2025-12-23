@@ -15,8 +15,9 @@
 
 'use client';
 
-import { signOut } from '@workos-inc/authkit-nextjs';
 import Link from 'next/link';
+
+import { signOutAction } from '@/app/actions/auth';
 
 import { ActiveLink } from '@/components/ActiveLink';
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';
@@ -36,7 +37,7 @@ export const DashboardHeader = (props: {
     href: string;
     label: string;
   }[];
-  user: any;
+  user?: any;
 }) => {
 
   return (
@@ -109,8 +110,8 @@ export const DashboardHeader = (props: {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <div className="px-2 py-1.5 text-sm">
-                  <div className="font-medium">{props.user?.firstName || 'User'}</div>
-                  <div className="text-muted-foreground">{props.user?.email}</div>
+                  <div className="font-medium">{props.user?.firstName || 'Test User'}</div>
+                  <div className="text-muted-foreground">{props.user?.email || 'test@example.com'}</div>
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
@@ -118,12 +119,7 @@ export const DashboardHeader = (props: {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <form
-                    action={async () => {
-                      'use server';
-                      await signOut();
-                    }}
-                  >
+                  <form action={signOutAction}>
                     <button type="submit" className="w-full text-left">
                       Sign out
                     </button>
