@@ -13,7 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import { Github } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { badgeVariants } from '@/components/ui/badgeVariants';
@@ -34,7 +34,7 @@ export const Hero = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <GitHubLogoIcon className="mr-1 size-5" />
+            <Github className="mr-1 size-5" />
             {' '}
             {t('follow_twitter')}
           </a>
@@ -60,7 +60,7 @@ export const Hero = () => {
               className={buttonVariants({ variant: 'outline', size: 'lg' })}
               href="https://github.com/ixartz/SaaS-Boilerplate"
             >
-              <GitHubLogoIcon className="mr-2 size-5" />
+              <Github className="mr-2 size-5" />
               {t('secondary_button')}
             </a>
           </>

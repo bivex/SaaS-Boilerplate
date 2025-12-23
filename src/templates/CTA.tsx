@@ -13,7 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import { Github } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { buttonVariants } from '@/components/ui/buttonVariants';
@@ -33,7 +33,7 @@ export const CTA = () => {
             className={buttonVariants({ variant: 'outline', size: 'lg' })}
             href="https://github.com/ixartz/SaaS-Boilerplate"
           >
-            <GitHubLogoIcon className="mr-2 size-5" />
+            <Github className="mr-2 size-5" />
             {t('button_text')}
           </a>
         )}
