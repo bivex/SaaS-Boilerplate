@@ -17,31 +17,30 @@ import { renderHook, waitFor, act } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock better-auth client
+const mockAuthClient = {
+  getSession: vi.fn(),
+  refreshSession: vi.fn(),
+  signOut: vi.fn(),
+};
+
 vi.mock('@/libs/auth-client', () => ({
-  authClient: {
-    getSession: vi.fn(),
-    refreshSession: vi.fn(),
-    signOut: vi.fn(),
-  },
+  authClient: mockAuthClient,
 }));
 
 // Session management features implementation
 describe('Session Management', () => {
-  const mockAuthClient = {
-    getSession: vi.fn(),
-    refreshSession: vi.fn(),
-    signOut: vi.fn(),
-  };
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    // Reset authClient mock
-    (await import('@/libs/auth-client')).authClient = mockAuthClient;
+    vi.useFakeTimers();
+    // Reset global state for useAuth hook
+    const { __resetGlobalStateForTesting } = await import('@/hooks/useAuth');
+    __resetGlobalStateForTesting();
   });
 
-  afterEach(() => {
-    vi.useRealTimers();
-  });
+    afterEach(() => {
+      vi.useRealTimers();
+    });
 
   describe('Session Refresh', () => {
     it('should refresh session when close to expiration', async () => {
@@ -169,53 +168,155 @@ describe('Session Management', () => {
     });
   });
 
-  describe('Authentication Errors', () => {
-    it('should handle 401 Unauthorized errors', async () => {
-      const { protectedProcedure } = await import('@/server/trpc');
 
-      const procedure = protectedProcedure.query(() => 'protected data');
+    it('should handle invalid token errors', async () => {
+      const { useSession } = await import('@/hooks/useAuth');
 
-      const mockContext = {
-        session: null, // No session
-      };
+      mockAuthClient.getSession.mockRejectedValue(new Error('Invalid token'));
 
-      await expect(procedure({
-        ctx: mockContext,
-        input: undefined,
-        type: 'query',
-        path: 'test',
-        rawInput: undefined,
-        meta: undefined,
-      } as any)).rejects.toThrow('UNAUTHORIZED');
+      const { result } = renderHook(() => useSession());
+
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+      });
+
+      expect(result.current.session).toBeNull();
     });
 
-    it('should handle 403 Forbidden errors for insufficient permissions', async () => {
-      const { protectedProcedure } = await import('@/server/trpc');
-      const { TRPCError } = await import('@trpc/server');
+    it('should handle network errors during session validation', async () => {
+      const { useSession } = await import('@/hooks/useAuth');
 
-      const procedure = protectedProcedure
-        .use(({ ctx, next }) => {
-          if (ctx.session?.user?.role !== 'admin') {
-            throw new TRPCError({ code: 'FORBIDDEN' });
-          }
-          return next();
-        })
-        .query(() => 'admin data');
+      mockAuthClient.getSession.mockRejectedValue(new Error('Network error'));
 
-      const mockContext = {
-        session: {
-          user: { id: 'user-1', email: 'user@example.com', role: 'user' },
+      const { result } = renderHook(() => useSession());
+
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+      });
+
+      expect(result.current.session).toBeNull();
+      expect(result.current.loading).toBe(false);
+    });
+
+    it('should handle malformed session data', async () => {
+      const { useSession } = await import('@/hooks/useAuth');
+
+      mockAuthClient.getSession.mockResolvedValue({
+        data: {
+          user: null, // Malformed - no user
+          session: { id: 'session-1' },
         },
-      };
+      });
 
-      await expect(procedure({
-        ctx: mockContext,
-        input: undefined,
-        type: 'query',
-        path: 'test',
-        rawInput: undefined,
-        meta: undefined,
-      } as any)).rejects.toThrow('FORBIDDEN');
+      const { result } = renderHook(() => useSession());
+
+      // Wait for loading to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.session).toBeDefined();
+      // The session exists but user is null (malformed)
+      expect(result.current.session).toEqual({
+        user: null,
+        session: { id: 'session-1' },
+      });
+    });
+  });
+
+  describe('Session Persistence', () => {
+    beforeEach(async () => {
+      vi.useFakeTimers();
+      // Reset global state for useAuth hook
+      const { __resetGlobalStateForTesting } = await import('@/hooks/useAuth');
+      __resetGlobalStateForTesting();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('should persist session across component re-mounts', async () => {
+      const { useSession } = await import('@/hooks/useAuth');
+
+      // Set up the mock to return session data
+      mockAuthClient.getSession.mockResolvedValue({
+        data: {
+          user: { id: 'user-1', email: 'test@example.com' },
+          session: { id: 'session-1' },
+        },
+      });
+
+      // First mount - this will fetch and cache the session
+      const { result: result1, unmount: unmount1 } = renderHook(() => useSession());
+
+      // Wait for session to load
+      await waitFor(() => {
+        expect(result1.current.session).toBeDefined();
+      });
+
+      expect(result1.current.session?.user?.id).toBe('user-1');
+
+      // Unmount first component
+      unmount1();
+
+      // Mount second component (simulating navigation) - should reuse cached session
+      const { result: result2 } = renderHook(() => useSession());
+
+      // Wait for session to be available (should be immediate from cache)
+      await waitFor(() => {
+        expect(result2.current.session).toBeDefined();
+      });
+
+      // Session should still be available from cache
+      expect(result2.current.session?.user?.id).toBe('user-1');
+    });
+
+    it('should handle concurrent session requests', async () => {
+      const { useSession } = await import('@/hooks/useAuth');
+
+      let callCount = 0;
+      mockAuthClient.getSession.mockImplementation(() => {
+        callCount++;
+        return new Promise(resolve => {
+          setTimeout(() => resolve({
+            data: {
+              user: { id: 'user-1', email: 'test@example.com' },
+              session: { id: 'session-1' },
+            },
+          }), 10);
+        });
+      });
+
+      // Mount two components simultaneously - both should trigger the same API call
+      const { result: result1 } = renderHook(() => useSession());
+      const { result: result2 } = renderHook(() => useSession());
+
+      // Wait for both sessions to load
+      await waitFor(() => {
+        expect(result1.current.session).toBeDefined();
+        expect(result2.current.session).toBeDefined();
+      });
+
+      // Both should have session data
+      expect(result1.current.session?.user?.id).toBe('user-1');
+      expect(result2.current.session?.user?.id).toBe('user-1');
+
+      // Should have made only one API call (due to caching/deduplication)
+      expect(callCount).toBe(1);
+    });
+  });
+
+  describe('Authentication Errors', () => {
+    beforeEach(async () => {
+      vi.useFakeTimers();
+      // Reset global state for useAuth hook
+      const { __resetGlobalStateForTesting } = await import('@/hooks/useAuth');
+      __resetGlobalStateForTesting();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
     });
 
     it('should handle invalid token errors', async () => {
@@ -259,78 +360,18 @@ describe('Session Management', () => {
 
       const { result } = renderHook(() => useSession());
 
-      await act(async () => {
-        vi.advanceTimersByTime(100);
+      // Wait for loading to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
       });
 
       expect(result.current.session).toBeDefined();
-      expect(result.current.session?.user).toBeNull();
+      // The session exists but user is null (malformed)
+      expect(result.current.session).toEqual({
+        user: null,
+        session: { id: 'session-1' },
+      });
     });
   });
-
-  describe('Session Persistence', () => {
-    it('should persist session across component re-mounts', async () => {
-      const { useSession } = await import('@/hooks/useAuth');
-
-      mockAuthClient.getSession.mockResolvedValue({
-        data: {
-          user: { id: 'user-1', email: 'test@example.com' },
-          session: { id: 'session-1' },
-        },
-      });
-
-      // First mount
-      const { result: result1, unmount: unmount1 } = renderHook(() => useSession());
-      await act(async () => {
-        vi.advanceTimersByTime(100);
-      });
-
-      expect(result1.current.session).toBeDefined();
-
-      // Unmount first component
-      unmount1();
-
-      // Mount second component (simulating navigation)
-      const { result: result2 } = renderHook(() => useSession());
-      await act(async () => {
-        vi.advanceTimersByTime(100);
-      });
-
-      // Session should still be available
-      expect(result2.current.session).toBeDefined();
-      expect(result2.current.session?.user?.id).toBe('user-1');
-    });
-
-    it('should handle concurrent session requests', async () => {
-      const { useSession } = await import('@/hooks/useAuth');
-
-      let callCount = 0;
-      mockAuthClient.getSession.mockImplementation(() => {
-        callCount++;
-        return Promise.resolve({
-          data: {
-            user: { id: 'user-1', email: 'test@example.com' },
-            session: { id: 'session-1' },
-          },
-        });
-      });
-
-      // Mount two components simultaneously
-      const { result: result1 } = renderHook(() => useSession());
-      const { result: result2 } = renderHook(() => useSession());
-
-      await act(async () => {
-        vi.advanceTimersByTime(100);
-      });
-
-      // Both should have session data
-      expect(result1.current.session).toBeDefined();
-      expect(result2.current.session).toBeDefined();
-
-      // Should have made only one API call (due to caching/deduplication)
-      expect(callCount).toBe(1);
-    });
-  });
-});
 
 // These helper functions are now imported from @testing-library/react

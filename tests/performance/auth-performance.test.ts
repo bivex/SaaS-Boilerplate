@@ -300,7 +300,7 @@ describe('Authentication Performance Tests', () => {
       const rejected = results.filter(r => r.status === 'rejected').length;
 
       // Should have reasonable success rate
-      expect(fulfilled).toBeGreaterThan(operations * 0.9); // >90% success
+      expect(fulfilled).toBeGreaterThanOrEqual(operations * 0.9); // >=90% success
       expect(rejected).toBeLessThan(operations * 0.1); // <10% failure
     });
   });

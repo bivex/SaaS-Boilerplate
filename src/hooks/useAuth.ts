@@ -198,3 +198,11 @@ export function useSignOut() {
 
   return { signOut };
 }
+
+// Test utility function to reset global state
+export function __resetGlobalStateForTesting() {
+  globalSession = null;
+  globalLoading = true;
+  sessionPromise = null;
+  sessionSubscribers.clear();
+}

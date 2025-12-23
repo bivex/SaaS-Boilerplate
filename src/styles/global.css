@@ -34,6 +34,19 @@
   --color-brand: hsl(280 100% 50%);
   --color-brand-light: hsl(280 100% 70%);
 
+  /* Simple Hue Colors */
+  --color-simple-hue-50: oklch(0.949 0.002 247.73);
+  --color-simple-hue-100: oklch(0.905 0.014 277.11);
+  --color-simple-hue-200: oklch(0.829 0.04 272.89);
+  --color-simple-hue-300: oklch(0.751 0.082 271.05);
+  --color-simple-hue-400: oklch(0.675 0.132 266.83);
+  --color-simple-hue-500: oklch(0.603 0.218 257.42);
+  --color-simple-hue-600: oklch(0.531 0.145 262.08);
+  --color-simple-hue-700: oklch(0.469 0.104 264.69);
+  --color-simple-hue-800: oklch(0.4 0.067 267.92);
+  --color-simple-hue-900: oklch(0.336 0.036 271.43);
+  --color-simple-hue-950: oklch(0.302 0.011 271.05);
+
   /* Border radius tokens */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -283,6 +296,29 @@ html.amber {
   --color-card-foreground: hsl(48 100% 8%) !important;
 }
 
+/* Custom theme: simple-hue */
+html.simple-hue {
+  --color-background: oklch(0.949 0.002 247.73) !important;
+  --color-foreground: oklch(0.302 0.011 271.05) !important;
+  --color-primary: oklch(0.603 0.218 257.42) !important;
+  --color-primary-foreground: oklch(0.949 0.002 247.73) !important;
+  --color-accent: oklch(0.531 0.145 262.08) !important;
+  --color-accent-foreground: oklch(0.949 0.002 247.73) !important;
+  --color-secondary: oklch(0.829 0.04 272.89) !important;
+  --color-secondary-foreground: oklch(0.302 0.011 271.05) !important;
+  --color-muted: oklch(0.829 0.04 272.89) !important;
+  --color-muted-foreground: oklch(0.4 0.067 267.92) !important;
+  --color-border: oklch(0.751 0.082 271.05) !important;
+  --color-input: oklch(0.751 0.082 271.05) !important;
+  --color-ring: oklch(0.603 0.218 257.42) !important;
+  --color-destructive: hsl(0 84.2% 60.2%) !important;
+  --color-destructive-foreground: oklch(0.949 0.002 247.73) !important;
+  --color-popover: oklch(0.949 0.002 247.73) !important;
+  --color-popover-foreground: oklch(0.302 0.011 271.05) !important;
+  --color-card: oklch(0.949 0.002 247.73) !important;
+  --color-card-foreground: oklch(0.302 0.011 271.05) !important;
+}
+
 /* Анимации для accordion */
 @keyframes accordion-down {
   from {
@@ -320,7 +356,8 @@ html.sunset,
 html.forest,
 html.midnight,
 html.lavender,
-html.amber {
+html.amber,
+html.simple-hue {
   color-scheme: light dark;
 }
 

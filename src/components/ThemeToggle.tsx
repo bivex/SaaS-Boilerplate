@@ -15,7 +15,7 @@
 
 'use client';
 
-import { Monitor, Moon, Sun } from 'lucide-react';
+import { Monitor, Moon, Palette, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { memo, useMemo } from 'react';
 
@@ -75,6 +75,11 @@ function ThemeToggleComponent() {
       name: 'Amber',
       value: 'amber',
       icon: Moon, // Можно добавить кастомную иконку позже
+    },
+    {
+      name: 'Simple Hue',
+      value: 'simple-hue',
+      icon: Palette, // Design tokens theme
     },
   ], []);
 

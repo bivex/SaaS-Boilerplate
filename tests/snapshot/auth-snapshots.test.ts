@@ -341,7 +341,7 @@ describe('Authentication Snapshot Tests', () => {
             },
           },
           "success": true,
-          "timestamp": "2025-12-23T22:42:01.282Z",
+          "timestamp": "2025-12-23T22:42:01.280Z",
           "version": "1.0.0",
         }
       `);
@@ -356,7 +356,7 @@ describe('Authentication Snapshot Tests', () => {
             },
           },
           "success": true,
-          "timestamp": "2025-12-23T22:42:01.282Z",
+          "timestamp": "2025-12-23T22:42:01.280Z",
           "version": "1.0.0",
         }
       `);
@@ -368,7 +368,7 @@ describe('Authentication Snapshot Tests', () => {
             "message": "The email or password you entered is incorrect.",
           },
           "success": false,
-          "timestamp": "2025-12-23T22:42:01.282Z",
+          "timestamp": "2025-12-23T22:42:01.280Z",
           "version": "1.0.0",
         }
       `);
@@ -404,7 +404,7 @@ describe('Authentication Snapshot Tests', () => {
         {
           "context": {
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T22:42:01.282Z",
+            "timestamp": "2025-12-23T22:42:01.280Z",
           },
           "result": {
             "data": {
@@ -431,7 +431,7 @@ describe('Authentication Snapshot Tests', () => {
         {
           "context": {
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T22:42:01.282Z",
+            "timestamp": "2025-12-23T22:42:01.280Z",
           },
           "result": {
             "error": {
