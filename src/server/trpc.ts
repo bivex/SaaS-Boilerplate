@@ -14,7 +14,6 @@
  */
 
 /// <reference types="node" />
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import superjson from 'superjson';
@@ -23,22 +22,19 @@ import { ZodError } from 'zod';
 
 export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
   try {
-    // Create a proper context for Better Auth
-    const context = {
-      request: opts.req,
-      headers: opts.req.headers,
-      url: opts.req.url,
-      method: opts.req.method,
-    };
-
-    const session = await auth.api.getSessionFromCtx(context);
+    // Get session using proper Better Auth API
+    // Convert Request headers to Headers object for better-auth
+    const headers = new Headers(opts.req.headers);
+    const session = await auth.api.getSession({
+      headers,
+    });
     return {
       session,
       req: opts.req,
     };
   } catch (error) {
     // If session fetching fails, return null session
-    console.warn('Failed to get session:', error);
+    console.error('Failed to get session in tRPC context:', error);
     return {
       session: null,
       req: opts.req,

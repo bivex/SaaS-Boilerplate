@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:05:00
- * Last Updated: 2025-12-23T21:01:25
+ * Last Updated: 2025-12-23T21:58:59
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -35,10 +35,10 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
 
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      transformer: superjson,
       links: [
         httpBatchLink({
           url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/trpc`,
+          transformer: superjson,
         }),
       ],
     }),

@@ -49,7 +49,8 @@ export const authRouter = createTRPCRouter({
           ...context,
         });
 
-        return { success: true, data: result };
+        // Return only serializable data
+        return { success: true, user: result?.user, message: 'User created successfully' };
       } catch (error) {
         console.error('Sign up error:', error);
         throw new Error(error instanceof Error ? error.message : 'Sign up failed');
@@ -80,7 +81,8 @@ export const authRouter = createTRPCRouter({
           ...context,
         });
 
-        return { success: true, data: result };
+        // Return only serializable data
+        return { success: true, user: result?.user, message: 'Signed in successfully' };
       } catch (error) {
         console.error('Sign in error:', error);
         throw new Error(error instanceof Error ? error.message : 'Sign in failed');
@@ -100,7 +102,8 @@ export const authRouter = createTRPCRouter({
 
       const result = await auth.api.signOut(context);
 
-      return { success: true, data: result };
+      // Return only serializable data
+      return { success: true, message: 'Signed out successfully' };
     } catch (error) {
       console.error('Sign out error:', error);
       throw new Error(error instanceof Error ? error.message : 'Sign out failed');
