@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-23T19:43:41
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,8 +15,7 @@
 
 'use client';
 
-import { OrganizationSwitcher, UserButton } from '@clerk/nextjs';
-import { useLocale } from 'next-intl';
+import { signOut } from '@workos-inc/authkit-nextjs';
 import Link from 'next/link';
 
 import { ActiveLink } from '@/components/ActiveLink';
@@ -26,19 +25,19 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { Logo } from '@/templates/Logo';
-import { getI18nPath } from '@/utils/Helpers';
 
 export const DashboardHeader = (props: {
   menu: {
     href: string;
     label: string;
   }[];
+  user: any;
 }) => {
-  const locale = useLocale();
 
   return (
     <>
@@ -59,21 +58,7 @@ export const DashboardHeader = (props: {
           <path d="M17 5 7 19" />
         </svg>
 
-        <OrganizationSwitcher
-          organizationProfileMode="navigation"
-          organizationProfileUrl={getI18nPath(
-            '/dashboard/organization-profile',
-            locale,
-          )}
-          afterCreateOrganizationUrl="/dashboard"
-          hidePersonal
-          skipInvitationScreen
-          appearance={{
-            elements: {
-              organizationSwitcherTrigger: 'max-w-28 sm:max-w-52',
-            },
-          }}
-        />
+        {/* Organization/Workspace selector would go here if using WorkOS organizations */}
 
         <nav className="ml-3 max-lg:hidden">
           <ul className="flex flex-row items-center gap-x-3 text-lg font-medium [&_a:hover]:opacity-100 [&_a]:opacity-75">
@@ -116,15 +101,36 @@ export const DashboardHeader = (props: {
           </li>
 
           <li>
-            <UserButton
-              userProfileMode="navigation"
-              userProfileUrl="/dashboard/user-profile"
-              appearance={{
-                elements: {
-                  rootBox: 'px-2 py-1.5',
-                },
-              }}
-            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90">
+                  {props.user?.firstName?.charAt(0) || props.user?.email?.charAt(0) || 'U'}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <div className="px-2 py-1.5 text-sm">
+                  <div className="font-medium">{props.user?.firstName || 'User'}</div>
+                  <div className="text-muted-foreground">{props.user?.email}</div>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/user-profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <form
+                    action={async () => {
+                      'use server';
+                      await signOut();
+                    }}
+                  >
+                    <button type="submit" className="w-full text-left">
+                      Sign out
+                    </button>
+                  </form>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </li>
         </ul>
       </div>

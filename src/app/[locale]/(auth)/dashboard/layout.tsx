@@ -7,13 +7,13 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-23T19:52:00
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import { useTranslations } from 'next-intl';
+import { withAuth } from '@workos-inc/authkit-nextjs';
 import { getTranslations } from 'next-intl/server';
 
 import { DashboardHeader } from '@/features/dashboard/DashboardHeader';
@@ -31,8 +31,15 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   };
 }
 
-export default function DashboardLayout(props: { children: React.ReactNode }) {
-  const t = useTranslations('DashboardLayout');
+export default async function DashboardLayout(props: { children: React.ReactNode }) {
+  // Get the authenticated user
+  const { user } = await withAuth({ ensureSignedIn: true });
+
+  const params = await { locale: 'en' }; // TODO: Fix params passing from layout
+  const t = await getTranslations({
+    locale: params.locale,
+    namespace: 'DashboardLayout',
+  });
 
   return (
     <>
@@ -55,6 +62,7 @@ export default function DashboardLayout(props: { children: React.ReactNode }) {
               },
               // PRO: Link to the /dashboard/billing page
             ]}
+            user={user}
           />
         </div>
       </div>
