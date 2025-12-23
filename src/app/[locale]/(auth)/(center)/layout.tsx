@@ -13,13 +13,16 @@
  * Commercial licensing available upon request.
  */
 
-import { auth } from '@clerk/nextjs/server';
+import { auth } from '@/libs/auth';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export default async function CenteredLayout(props: { children: React.ReactNode }) {
-  const { userId } = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  if (userId) {
+  if (session?.user) {
     redirect('/dashboard');
   }
 

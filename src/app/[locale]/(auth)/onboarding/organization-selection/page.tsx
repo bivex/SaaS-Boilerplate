@@ -13,7 +13,6 @@
  * Commercial licensing available upon request.
  */
 
-import { OrganizationList } from '@clerk/nextjs';
 import { getTranslations } from 'next-intl/server';
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
@@ -31,12 +30,11 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 
 const OrganizationSelectionPage = () => (
   <div className="flex min-h-screen items-center justify-center">
-    <OrganizationList
-      afterSelectOrganizationUrl="/dashboard"
-      afterCreateOrganizationUrl="/dashboard"
-      hidePersonal
-      skipInvitationScreen
-    />
+    {/* TODO: Implement organization selection UI */}
+    <div className="text-center">
+      <h1 className="text-2xl font-bold mb-4">Organization Setup</h1>
+      <p className="text-muted-foreground mb-4">Organization selection will be implemented here.</p>
+    </div>
   </div>
 );
 
