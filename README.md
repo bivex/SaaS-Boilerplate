@@ -217,10 +217,10 @@ This project offers both a free open-source version and a premium Pro version. H
 | **VSCode Configuration** | ✅ | ✅ |
 | **[Sentry Error Monitoring](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo)** | ✅ | ✅ |
 | **Shadcn UI** | ✅ | ✅ |
-| **Next.js** | 14 | 16 |
-| **React** | 18 | 19 |
-| **Tailwind CSS** | 3 | 4 |
-| **ESLint** | 8 | 9 |
+| **Next.js** | 16 | 16 |
+| **React** | 19 | 19 |
+| **Tailwind CSS** | 4 | 4 |
+| **ESLint** | 9 | 9 |
 | **User Dashboard** | Basic | Extended |
 | **Code Quality Tools** | Basic | Extended |
 | **Testing: Unit, Integration, E2E, Visual** | Basic | Extended |
