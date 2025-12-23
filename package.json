@@ -55,6 +55,8 @@
   "devDependencies": {
     "@antfu/eslint-config": "^6.7.3",
     "@clerk/testing": "^1.13.26",
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
     "@faker-js/faker": "^10.1.0",
     "@next/bundle-analyzer": "^16.1.1",
     "@playwright/test": "^1.57.0",
