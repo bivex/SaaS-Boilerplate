@@ -7,113 +7,127 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-23T19:25:50
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import Image from 'next/image';
+// import Image from 'next/image'; // Using regular img tags for marquee compatibility
+import { Marquee } from '@/components/ui/marquee';
 
-import { LogoCloud } from '@/features/landing/LogoCloud';
-
-export const SponsorLogos = () => (
-  <LogoCloud text="Sponsored by">
+const Logos = {
+  clerk: () => (
     <a
       href="https://clerk.com?utm_source=github&utm_medium=sponsorship&utm_campaign=nextjs-boilerplate"
       target="_blank"
       rel="noopener"
+      className="flex items-center"
     >
-      <Image
+      <img
         src="/assets/images/clerk-logo-dark.png"
         alt="Clerk logo dark"
-        className="dark:hidden"
-        width="128"
-        height="37"
+        className="dark:hidden h-[37px] w-auto"
       />
-      <Image
+      <img
         src="/assets/images/clerk-logo-white.png"
         alt="Clerk logo light"
-        className="hidden dark:block"
-        width="128"
-        height="37"
+        className="hidden dark:block h-[37px] w-auto"
       />
     </a>
-
+  ),
+  crowdin: () => (
     <a
       href="https://l.crowdin.com/next-js"
       target="_blank"
       rel="noopener"
+      className="flex items-center"
     >
-      <Image
+      <img
         src="/assets/images/crowdin-dark.png"
         alt="Crowdin logo dark"
-        className="dark:hidden"
-        width="128"
-        height="26"
+        className="dark:hidden h-[26px] w-auto"
       />
-      <Image
+      <img
         src="/assets/images/crowdin-white.png"
         alt="Crowdin logo light"
-        className="hidden dark:block"
-        width="128"
-        height="26"
+        className="hidden dark:block h-[26px] w-auto"
       />
     </a>
-
+  ),
+  sentry: () => (
     <a
       href="https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo"
       target="_blank"
       rel="noopener"
+      className="flex items-center"
     >
-      <Image
+      <img
         src="/assets/images/sentry-dark.png"
         alt="Sentry logo dark"
-        className="dark:hidden"
-        width="128"
-        height="38"
+        className="dark:hidden h-[38px] w-auto"
       />
-      <Image
+      <img
         src="/assets/images/sentry-white.png"
         alt="Sentry logo light"
-        className="hidden dark:block"
-        width="128"
-        height="38"
+        className="hidden dark:block h-[38px] w-auto"
       />
     </a>
-
+  ),
+  arcjet: () => (
     <a
       href="https://launch.arcjet.com/Q6eLbRE"
       target="_blank"
       rel="noopener"
+      className="flex items-center"
     >
-      <Image
+      <img
         src="/assets/images/arcjet-light.svg"
         alt="Arcjet logo dark"
-        className="dark:hidden"
-        width="128"
-        height="56"
+        className="dark:hidden h-[56px] w-auto"
       />
-      <Image
+      <img
         src="/assets/images/arcjet-dark.svg"
         alt="Arcjet logo light"
-        className="hidden dark:block"
-        width="128"
-        height="56"
+        className="hidden dark:block h-[56px] w-auto"
       />
     </a>
-
+  ),
+  nextjsSaaS: () => (
     <a
       href="https://nextjs-boilerplate.com/pro-saas-starter-kit"
       target="_blank"
       rel="noopener"
+      className="flex items-center"
     >
-      <Image
+      <img
         src="/assets/images/nextjs-boilerplate-saas.png"
         alt="Nextjs SaaS Boilerplate"
-        width="128"
-        height="30"
+        className="h-[30px] w-auto"
       />
     </a>
-  </LogoCloud>
-);
+  ),
+};
+
+export const SponsorLogos = () => {
+  const sponsorLogos = [
+    Logos.clerk,
+    Logos.crowdin,
+    Logos.sentry,
+    Logos.arcjet,
+    Logos.nextjsSaaS,
+  ];
+
+  return (
+    <Marquee pauseOnHover={true} speed={25}>
+      {sponsorLogos.map((Logo, index) => (
+        <div
+          key={index}
+          className="relative h-full w-fit mx-[3rem] flex items-center justify-start"
+        >
+          <Logo />
+        </div>
+      ))}
+    </Marquee>
+  );
+};
