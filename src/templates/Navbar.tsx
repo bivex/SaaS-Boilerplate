@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { buttonVariants } from '@/components/ui/buttonVariants';
 import { CenteredMenu } from '@/features/landing/CenteredMenu';
 import { Section } from '@/features/landing/Section';
@@ -32,7 +33,9 @@ export const Navbar = () => {
         logo={<Logo />}
         rightMenu={(
           <>
-            {/* PRO: Dark mode toggle button */}
+            <li data-fade>
+              <ThemeToggle />
+            </li>
             <li data-fade>
               <LocaleSwitcher />
             </li>
