@@ -13,10 +13,16 @@
  * Commercial licensing available upon request.
  */
 
+import { AuthKitProvider } from '@workos-inc/authkit-nextjs/components';
+
 export default function AuthLayout(props: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  // AuthKitProvider is now in the root layout, so this layout is simplified
-  return props.children;
+  // Add AuthKitProvider only for authenticated routes
+  return (
+    <AuthKitProvider>
+      {props.children}
+    </AuthKitProvider>
+  );
 }

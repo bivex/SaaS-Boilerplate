@@ -39,7 +39,19 @@ export default async function middleware(request: NextRequest) {
   return authkitMiddleware({
     middlewareAuth: {
       enabled: true,
-      unauthenticatedPaths: ['/sign-in', '/sign-up', '/login', '/callback'],
+      unauthenticatedPaths: [
+        '/',           // Root page
+        '/en',         // English locale pages
+        '/fr',         // French locale pages
+        '/ru',         // Russian locale pages
+        '/uk',         // Ukrainian locale pages
+        '/sign-in',    // Sign in pages
+        '/sign-up',    // Sign up pages
+        '/login',      // Login redirect
+        '/callback',   // Auth callback
+        '/demo',       // Demo pages
+        '/demo/**',    // All demo subpages
+      ],
     },
   })(request);
 }

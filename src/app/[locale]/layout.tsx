@@ -72,24 +72,22 @@ export default async function RootLayout(props: {
     <html lang={params.locale} suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
         {/* PRO: Dark mode support for Shadcn UI */}
-        <AuthKitProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextIntlClientProvider
+            locale={params.locale}
+            messages={messages}
           >
-            <NextIntlClientProvider
-              locale={params.locale}
-              messages={messages}
-            >
-              {props.children}
-              <div className="fixed bottom-4 right-4 z-50">
-                <LocaleSwitcher />
-              </div>
-            </NextIntlClientProvider>
-          </ThemeProvider>
-        </AuthKitProvider>
+            {props.children}
+            <div className="fixed bottom-4 right-4 z-50">
+              <LocaleSwitcher />
+            </div>
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
