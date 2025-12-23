@@ -17,7 +17,26 @@ import { TRPCError } from '@trpc/server';
 import { describe, expect, it, vi } from 'vitest';
 import { requireRole, requireScope, requireOwnership, rateLimit } from './middleware';
 import { createCallerFactory } from '@trpc/server/unstable-core-do-not-import';
-import type { t } from './trpc';
+import { t } from './trpc';
+
+// Mock environment variables
+vi.mock('@/libs/Env', () => ({
+  Env: {
+    BETTER_AUTH_SECRET: 'test-secret',
+    BETTER_AUTH_URL: 'http://localhost:3000',
+    DATABASE_URL: './sqlite.db',
+  },
+}));
+
+// Mock the database
+vi.mock('@/libs/DB', () => ({
+  db: {
+    select: vi.fn(),
+    insert: vi.fn(),
+    update: vi.fn(),
+    delete: vi.fn(),
+  },
+}));
 
 // Mock the rate limit manager
 vi.mock('@/libs/security', () => ({
@@ -60,7 +79,7 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = createCaller(appRouter, mockContext);
+      const caller = createCallerFactory(appRouter)(mockContext);
 
       await expect(caller.adminData()).rejects.toThrow(TRPCError);
 
@@ -85,7 +104,7 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = createCaller(appRouter, mockContext);
+      const caller = createCallerFactory(appRouter)(mockContext);
       const result = await caller.managementData();
 
       expect(result).toBe('management data');
@@ -94,9 +113,11 @@ describe('Authorization Middleware', () => {
 
   describe('Scope-Based Permissions', () => {
     it('should allow access with required scope', async () => {
-      const scopedProcedure = t.procedure
-        .use(requireScope('read:users'))
-        .query(() => 'scoped data');
+      const appRouter = t.router({
+        scopedData: t.procedure
+          .use(requireScope('read:users'))
+          .query(() => 'scoped data'),
+      });
 
       const mockContext = {
         session: {
@@ -108,16 +129,18 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(scopedProcedure)(mockContext);
-      const result = await caller();
+      const caller = createCallerFactory(appRouter)(mockContext);
+      const result = await caller.scopedData();
 
       expect(result).toBe('scoped data');
     });
 
     it('should deny access without required scope', async () => {
-      const scopedProcedure = t.procedure
-        .use(requireScope('admin:delete'))
-        .mutation(() => 'deleted');
+      const appRouter = t.router({
+        deleteData: t.procedure
+          .use(requireScope('admin:delete'))
+          .mutation(() => 'deleted'),
+      });
 
       const mockContext = {
         session: {
@@ -129,15 +152,17 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(scopedProcedure)(mockContext);
+      const caller = createCallerFactory(appRouter)(mockContext);
 
-      await expect(caller()).rejects.toThrow(TRPCError);
+      await expect(caller.deleteData()).rejects.toThrow(TRPCError);
     });
 
     it('should allow access with wildcard scope', async () => {
-      const wildcardProcedure = t.procedure
-        .use(requireScope('admin:*'))
-        .query(() => 'wildcard data');
+      const appRouter = t.router({
+        wildcardData: t.procedure
+          .use(requireScope('admin:*'))
+          .query(() => 'wildcard data'),
+      });
 
       const mockContext = {
         session: {
@@ -149,8 +174,8 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(wildcardProcedure)(mockContext);
-      const result = await caller();
+      const caller = createCallerFactory(appRouter)(mockContext);
+      const result = await caller.wildcardData();
 
       expect(result).toBe('wildcard data');
     });
@@ -158,14 +183,16 @@ describe('Authorization Middleware', () => {
 
   describe('Resource Ownership Checks', () => {
     it('should allow access to owned resources', async () => {
-      const ownershipProcedure = t.procedure
-        .input((input: { resourceId: string }) => input)
-        .use(requireOwnership((ctx, input) => {
-          // Simulate database check for resource ownership
-          const resourceOwnerId = 'user-1'; // Would come from DB
-          return ctx.session?.user?.id === resourceOwnerId;
-        }))
-        .query(({ input }) => `resource ${input.resourceId} data`);
+      const appRouter = t.router({
+        resourceData: t.procedure
+          .input((input: { resourceId: string }) => input)
+          .use(requireOwnership((ctx, input) => {
+            // Simulate database check for resource ownership
+            const resourceOwnerId = 'user-1'; // Would come from DB
+            return ctx.session?.user?.id === resourceOwnerId;
+          }))
+          .query(({ input }) => `resource ${input.resourceId} data`),
+      });
 
       const mockContext = {
         session: {
@@ -173,20 +200,22 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(ownershipProcedure)(mockContext);
-      const result = await caller({ resourceId: 'resource-1' });
+      const caller = createCallerFactory(appRouter)(mockContext);
+      const result = await caller.resourceData({ resourceId: 'resource-1' });
 
       expect(result).toBe('resource resource-1 data');
     });
 
     it('should deny access to non-owned resources', async () => {
-      const ownershipProcedure = t.procedure
-        .input((input: { resourceId: string }) => input)
-        .use(requireOwnership((ctx, input) => {
-          const resourceOwnerId = 'user-2'; // Different owner
-          return ctx.session?.user?.id === resourceOwnerId;
-        }))
-        .query(() => 'resource data');
+      const appRouter = t.router({
+        resourceData: t.procedure
+          .input((input: { resourceId: string }) => input)
+          .use(requireOwnership((ctx, input) => {
+            const resourceOwnerId = 'user-2'; // Different owner
+            return ctx.session?.user?.id === resourceOwnerId;
+          }))
+          .query(() => 'resource data'),
+      });
 
       const mockContext = {
         session: {
@@ -194,25 +223,19 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(ownershipProcedure)(mockContext);
+      const caller = createCallerFactory(appRouter)(mockContext);
 
-      await expect(caller({ resourceId: 'resource-1' })).rejects.toThrow(TRPCError);
+      await expect(caller.resourceData({ resourceId: 'resource-1' })).rejects.toThrow(TRPCError);
     });
   });
 
   describe('Rate Limiting Middleware', () => {
     it('should allow requests within rate limit', async () => {
-      const { rateLimitManager } = await import('@/libs/security');
-
-      // Mock rate limit check to allow request
-      vi.mocked(rateLimitManager.check).mockResolvedValue({
-        allowed: true,
-        reset: new Date(Date.now() + 15 * 60 * 1000),
+      const appRouter = t.router({
+        rateLimitedData: t.procedure
+          .use(rateLimit())
+          .query(() => 'rate limited data'),
       });
-
-      const rateLimitedProcedure = t.procedure
-        .use(rateLimit())
-        .query(() => 'rate limited data');
 
       const mockContext = {
         session: {
@@ -220,25 +243,19 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(rateLimitedProcedure)(mockContext);
-      const result = await caller();
+      const caller = createCallerFactory(appRouter)(mockContext);
+      const result = await caller.rateLimitedData();
 
       expect(result).toBe('rate limited data');
-      expect(rateLimitManager.check).toHaveBeenCalledWith('user-1');
+      expect((rateLimitManager.check as any)).toHaveBeenCalledWith('user-1');
     });
 
     it('should block requests over rate limit', async () => {
-      const { rateLimitManager } = await import('@/libs/security');
-
-      // Mock rate limit check to block request
-      vi.mocked(rateLimitManager.check).mockResolvedValue({
-        allowed: false,
-        reset: new Date(Date.now() + 15 * 60 * 1000),
+      const appRouter = t.router({
+        rateLimitedData: t.procedure
+          .use(rateLimit())
+          .query(() => 'rate limited data'),
       });
-
-      const rateLimitedProcedure = t.procedure
-        .use(rateLimit())
-        .query(() => 'rate limited data');
 
       const mockContext = {
         session: {
@@ -246,12 +263,12 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(rateLimitedProcedure)(mockContext);
+      const caller = createCallerFactory(appRouter)(mockContext);
 
-      await expect(caller()).rejects.toThrow(TRPCError);
+      await expect(caller.rateLimitedData()).rejects.toThrow(TRPCError);
 
       try {
-        await caller();
+        await caller.rateLimitedData();
       } catch (error) {
         expect(error).toBeInstanceOf(TRPCError);
         expect((error as TRPCError).code).toBe('TOO_MANY_REQUESTS');
@@ -263,23 +280,25 @@ describe('Authorization Middleware', () => {
     it('should execute middleware in correct order', async () => {
       const executionOrder: string[] = [];
 
-      const chainedProcedure = t.procedure
-        .use((opts) => {
-          executionOrder.push('middleware1');
-          return opts.next();
-        })
-        .use((opts) => {
-          executionOrder.push('middleware2');
-          return opts.next();
-        })
-        .use((opts) => {
-          executionOrder.push('middleware3');
-          return opts.next();
-        })
-        .query(() => {
-          executionOrder.push('resolver');
-          return 'chained result';
-        });
+      const appRouter = t.router({
+        chainedData: t.procedure
+          .use((opts) => {
+            executionOrder.push('middleware1');
+            return opts.next();
+          })
+          .use((opts) => {
+            executionOrder.push('middleware2');
+            return opts.next();
+          })
+          .use((opts) => {
+            executionOrder.push('middleware3');
+            return opts.next();
+          })
+          .query(() => {
+            executionOrder.push('resolver');
+            return 'chained result';
+          }),
+      });
 
       const mockContext = {
         session: {
@@ -287,8 +306,8 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(chainedProcedure)(mockContext);
-      const result = await caller();
+      const caller = createCallerFactory(appRouter)(mockContext);
+      const result = await caller.chainedData();
 
       expect(result).toBe('chained result');
       expect(executionOrder).toEqual(['middleware1', 'middleware2', 'middleware3', 'resolver']);
@@ -297,23 +316,25 @@ describe('Authorization Middleware', () => {
     it('should stop execution on middleware error', async () => {
       const executionOrder: string[] = [];
 
-      const failingProcedure = t.procedure
-        .use((opts) => {
-          executionOrder.push('middleware1');
-          return opts.next();
-        })
-        .use(() => {
-          executionOrder.push('middleware2');
-          throw new TRPCError({ code: 'FORBIDDEN' });
-        })
-        .use((opts) => {
-          executionOrder.push('middleware3'); // Should not execute
-          return opts.next();
-        })
-        .query(() => {
-          executionOrder.push('resolver'); // Should not execute
-          return 'result';
-        });
+      const appRouter = t.router({
+        failingData: t.procedure
+          .use((opts) => {
+            executionOrder.push('middleware1');
+            return opts.next();
+          })
+          .use(() => {
+            executionOrder.push('middleware2');
+            throw new TRPCError({ code: 'FORBIDDEN' });
+          })
+          .use((opts) => {
+            executionOrder.push('middleware3'); // Should not execute
+            return opts.next();
+          })
+          .query(() => {
+            executionOrder.push('resolver'); // Should not execute
+            return 'result';
+          }),
+      });
 
       const mockContext = {
         session: {
@@ -321,9 +342,9 @@ describe('Authorization Middleware', () => {
         },
       };
 
-      const caller = t.createCallerFactory(failingProcedure)(mockContext);
+      const caller = createCallerFactory(appRouter)(mockContext);
 
-      await expect(caller()).rejects.toThrow(TRPCError);
+      await expect(caller.failingData()).rejects.toThrow(TRPCError);
 
       expect(executionOrder).toEqual(['middleware1', 'middleware2']);
     });

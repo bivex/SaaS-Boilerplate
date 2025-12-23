@@ -42,8 +42,8 @@ describe('UserButton', () => {
   });
 
   it('should show loading state when user data is loading', () => {
-    vi.mocked(useUser).mockReturnValue({ user: null, loading: true });
-    vi.mocked(useSignOut).mockReturnValue({ signOut: vi.fn() });
+    (useUser as any).mockReturnValue({ user: null, loading: true });
+    (useSignOut as any).mockReturnValue({ signOut: vi.fn() });
 
     render(<UserButton />);
 
@@ -51,8 +51,8 @@ describe('UserButton', () => {
   });
 
   it('should show sign in button when no user', () => {
-    vi.mocked(useUser).mockReturnValue({ user: null, loading: false });
-    vi.mocked(useSignOut).mockReturnValue({ signOut: vi.fn() });
+    (useUser as any).mockReturnValue({ user: null, loading: false });
+    (useSignOut as any).mockReturnValue({ signOut: vi.fn() });
 
     render(<UserButton />);
 
@@ -74,8 +74,8 @@ describe('UserButton', () => {
     };
     const mockSignOut = vi.fn();
 
-    vi.mocked(useUser).mockReturnValue({ user: mockUser, loading: false });
-    vi.mocked(useSignOut).mockReturnValue({ signOut: mockSignOut });
+    (useUser as any).mockReturnValue({ user: mockUser, loading: false });
+    (useSignOut as any).mockReturnValue({ signOut: mockSignOut });
 
     render(<UserButton />);
 
@@ -105,8 +105,8 @@ describe('UserButton', () => {
       name: 'John Doe',
     };
 
-    vi.mocked(useUser).mockReturnValue({ user: mockUser, loading: false });
-    vi.mocked(useSignOut).mockReturnValue({ signOut: vi.fn() });
+    (useUser as any).mockReturnValue({ user: mockUser, loading: false });
+    (useSignOut as any).mockReturnValue({ signOut: vi.fn() });
 
     render(<UserButton />);
 
@@ -123,8 +123,8 @@ describe('UserButton', () => {
       name: '',
     };
 
-    vi.mocked(useUser).mockReturnValue({ user: mockUser, loading: false });
-    vi.mocked(useSignOut).mockReturnValue({ signOut: vi.fn() });
+    (useUser as any).mockReturnValue({ user: mockUser, loading: false });
+    (useSignOut as any).mockReturnValue({ signOut: vi.fn() });
 
     render(<UserButton />);
 
@@ -140,8 +140,8 @@ describe('UserButton', () => {
       name: 'Test User',
     };
 
-    vi.mocked(useUser).mockReturnValue({ user: mockUser, loading: false });
-    vi.mocked(useSignOut).mockReturnValue({ signOut: vi.fn() });
+    (useUser as any).mockReturnValue({ user: mockUser, loading: false });
+    (useSignOut as any).mockReturnValue({ signOut: vi.fn() });
 
     render(<UserButton />);
 
@@ -166,8 +166,8 @@ describe('UserButton', () => {
       name: 'Test User',
     };
 
-    vi.mocked(useUser).mockReturnValue({ user: mockUser, loading: false });
-    vi.mocked(useSignOut).mockReturnValue({ signOut: vi.fn() });
+    (useUser as any).mockReturnValue({ user: mockUser, loading: false });
+    (useSignOut as any).mockReturnValue({ signOut: vi.fn() });
 
     render(<UserButton />);
 
@@ -193,8 +193,8 @@ describe('UserButton', () => {
     };
     const mockSignOut = vi.fn();
 
-    vi.mocked(useUser).mockReturnValue({ user: mockUser, loading: false });
-    vi.mocked(useSignOut).mockReturnValue({ signOut: mockSignOut });
+    (useUser as any).mockReturnValue({ user: mockUser, loading: false });
+    (useSignOut as any).mockReturnValue({ signOut: mockSignOut });
 
     render(<UserButton />);
 

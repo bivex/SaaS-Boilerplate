@@ -42,7 +42,7 @@ describe('OrganizationSwitcher', () => {
   });
 
   it('should show loading state when session is loading', () => {
-    vi.mocked(useSession).mockReturnValue({ session: null, loading: true });
+    (useSession as any).mockReturnValue({ session: null, loading: true });
 
     render(<OrganizationSwitcher />);
 
@@ -50,7 +50,7 @@ describe('OrganizationSwitcher', () => {
   });
 
   it('should show create organization button when no organization', async () => {
-    vi.mocked(useSession).mockReturnValue({
+    (useSession as any).mockReturnValue({
       session: { user: { id: '1', organizations: [] }, organization: null },
       loading: false,
     });
@@ -68,7 +68,7 @@ describe('OrganizationSwitcher', () => {
   });
 
   it('should show create button when no active organization and no organizations', () => {
-    vi.mocked(useSession).mockReturnValue({
+    (useSession as any).mockReturnValue({
       session: {
         user: { id: '1', organizations: [] },
         organization: null,
@@ -90,7 +90,7 @@ describe('OrganizationSwitcher', () => {
       role: 'admin',
     };
 
-    vi.mocked(useSession).mockReturnValue({
+    (useSession as any).mockReturnValue({
       session: {
         user: { id: '1', organizations: [mockOrg] },
         organization: mockOrg,
@@ -118,7 +118,7 @@ describe('OrganizationSwitcher', () => {
       role: 'member',
     };
 
-    vi.mocked(useSession).mockReturnValue({
+    (useSession as any).mockReturnValue({
       session: {
         user: { id: '1', organizations: [mockOrg1, mockOrg2] },
         organization: mockOrg1,
@@ -151,7 +151,7 @@ describe('OrganizationSwitcher', () => {
       role: 'admin',
     };
 
-    vi.mocked(useSession).mockReturnValue({
+    (useSession as any).mockReturnValue({
       session: {
         user: { id: '1', organizations: [mockOrg] },
         organization: mockOrg,
@@ -182,7 +182,7 @@ describe('OrganizationSwitcher', () => {
       role: 'admin',
     };
 
-    vi.mocked(useSession).mockReturnValue({
+    (useSession as any).mockReturnValue({
       session: {
         user: { id: '1', organizations: [mockOrg] },
         organization: mockOrg,
@@ -212,7 +212,7 @@ describe('OrganizationSwitcher', () => {
       role: 'admin',
     };
 
-    vi.mocked(useSession).mockReturnValue({
+    (useSession as any).mockReturnValue({
       session: {
         user: { id: '1', organizations: [mockOrg] },
         organization: mockOrg,

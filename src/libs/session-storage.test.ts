@@ -61,7 +61,7 @@ describe('Session Storage Adapters', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    vi.mocked(await import('@/libs/DB')).db = mockDb;
+    (await import('@/libs/DB')).db = mockDb;
   });
 
   afterEach(() => {
