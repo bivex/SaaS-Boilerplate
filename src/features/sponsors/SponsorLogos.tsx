@@ -90,16 +90,16 @@ export const SponsorLogos = () => (
       <Image
         src="/assets/images/arcjet-light.svg"
         alt="Arcjet logo dark"
-        className="dark:hidden"
+        className="dark:hidden h-auto"
         width="128"
-        height="32"
+        height="56"
       />
       <Image
         src="/assets/images/arcjet-dark.svg"
         alt="Arcjet logo light"
-        className="hidden dark:block"
+        className="hidden dark:block h-auto"
         width="128"
-        height="32"
+        height="56"
       />
     </a>
 
