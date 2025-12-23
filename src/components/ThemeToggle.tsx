@@ -30,6 +30,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const getInitialColorTheme = () => {
+  if (typeof window === 'undefined') {
+    return 'light'; // Default to light theme on the server
+  }
   const element = document.documentElement;
   if (element.classList.contains('blue')) {
     return 'blue';

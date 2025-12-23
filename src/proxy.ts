@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T09:55:03
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -35,7 +35,7 @@ const isProtectedRoute = createRouteMatcher([
   '/:locale/api(.*)',
 ]);
 
-export default function middleware(
+export default function proxy(
   request: NextRequest,
   event: NextFetchEvent,
 ) {

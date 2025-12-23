@@ -4,7 +4,7 @@
   "scripts": {
     "dev:spotlight": "bunx @spotlightjs/spotlight",
     "dev:next": "next dev",
-    "dev": "concurrently \"bun run dev:next\" \"bun run dev:spotlight\"",
+    "dev": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true && concurrently \"bun run dev:next\" \"bun run dev:spotlight\"",
     "build": "next build",
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true npm run build",
