@@ -39,9 +39,10 @@ vi.mock('@/libs/DB', () => ({
 }));
 
 // Mock the rate limit manager
+const mockRateLimitCheck = vi.fn();
 vi.mock('@/libs/security', () => ({
   rateLimitManager: {
-    check: vi.fn(),
+    check: mockRateLimitCheck,
   },
 }));
 
@@ -231,6 +232,14 @@ describe('Authorization Middleware', () => {
 
   describe('Rate Limiting Middleware', () => {
     it('should allow requests within rate limit', async () => {
+      const { rateLimitManager } = await import('@/libs/security');
+
+      // Mock rate limit check to allow request
+      (rateLimitManager.check as any).mockResolvedValue({
+        allowed: true,
+        reset: new Date(Date.now() + 900000),
+      });
+
       const appRouter = t.router({
         rateLimitedData: t.procedure
           .use(rateLimit())
@@ -247,10 +256,18 @@ describe('Authorization Middleware', () => {
       const result = await caller.rateLimitedData();
 
       expect(result).toBe('rate limited data');
-      expect((rateLimitManager.check as any)).toHaveBeenCalledWith('user-1');
+      expect(rateLimitManager.check).toHaveBeenCalledWith('user-1');
     });
 
     it('should block requests over rate limit', async () => {
+      const { rateLimitManager } = await import('@/libs/security');
+
+      // Mock rate limit check to block request
+      (rateLimitManager.check as any).mockResolvedValue({
+        allowed: false,
+        reset: new Date(Date.now() + 900000),
+      });
+
       const appRouter = t.router({
         rateLimitedData: t.procedure
           .use(rateLimit())
