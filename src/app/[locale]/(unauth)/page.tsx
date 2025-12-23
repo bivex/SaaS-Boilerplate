@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:01:13
- * Last Updated: 2025-12-23T17:24:56
+ * Last Updated: 2025-12-23T18:31:11
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,6 +15,7 @@
 
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { TestimonialsSection } from '@/components/ui/testimonial-v2';
 import { CTA } from '@/templates/CTA';
 import { DemoBanner } from '@/templates/DemoBanner';
 import { FAQ } from '@/templates/FAQ';
@@ -25,7 +26,6 @@ import { Navbar } from '@/templates/Navbar';
 import { Pricing } from '@/templates/Pricing';
 import { Sponsors } from '@/templates/Sponsors';
 import { UIComponents } from '@/templates/UIComponents';
-import { TestimonialsSection } from '@/components/ui/testimonial-v2';
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
   const params = await props.params;
