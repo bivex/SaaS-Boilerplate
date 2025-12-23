@@ -7,26 +7,23 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T16:53:34
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-'use client';
-
-import * as SeparatorPrimitive from '@radix-ui/react-separator';
 import * as React from 'react';
 
 import { cn } from '@/utils/Helpers';
 
-const Separator = (
-  { ref, className, orientation = 'horizontal', decorative = true, ...props }: React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> & { ref?: React.RefObject<React.ElementRef<typeof SeparatorPrimitive.Root> | null> },
-) => (
-  <SeparatorPrimitive.Root
+type SeparatorProps = {
+  orientation?: 'horizontal' | 'vertical';
+} & React.HTMLAttributes<HTMLDivElement>;
+
+const Separator = ({ ref, className, orientation = 'horizontal', ...props }: SeparatorProps & { ref?: React.RefObject<HTMLDivElement | null> }) => (
+  <div
     ref={ref}
-    decorative={decorative}
-    orientation={orientation}
     className={cn(
       'shrink-0 bg-border',
       orientation === 'horizontal' ? 'h-[1px] w-full' : 'h-full w-[1px]',
@@ -35,6 +32,6 @@ const Separator = (
     {...props}
   />
 );
-Separator.displayName = SeparatorPrimitive.Root.displayName;
+Separator.displayName = 'Separator';
 
 export { Separator };
