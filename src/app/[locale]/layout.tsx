@@ -72,7 +72,7 @@ export default async function RootLayout(props: {
       <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
         {/* PRO: Dark mode support for Shadcn UI */}
         <ThemeProvider
-          attribute="data-dark"
+          attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
