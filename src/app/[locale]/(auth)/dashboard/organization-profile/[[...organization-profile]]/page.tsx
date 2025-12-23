@@ -13,6 +13,8 @@
  * Commercial licensing available upon request.
  */
 
+'use client';
+
 import { OrganizationProfile } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
