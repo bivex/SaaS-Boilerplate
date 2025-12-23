@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T17:32:07
+ * Last Updated: 2025-12-23T19:02:50
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -31,7 +31,7 @@ export const CTA = () => {
         buttons={(
           <a
             className={buttonVariants({ variant: 'outline', size: 'lg' })}
-            href="https://github.com/ixartz/SaaS-Boilerplate"
+            href="https://github.com/bivex/SaaS-Boilerplate"
           >
             <Github className="mr-2 size-5" />
             {t('button_text')}
