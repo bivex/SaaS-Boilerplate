@@ -7,14 +7,14 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T17:05:00
+ * Last Updated: 2025-12-23T17:07:04
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import * as LabelPrimitive from '@radix-ui/react-label';
 import type { VariantProps } from 'class-variance-authority';
+import * as LabelPrimitive from '@radix-ui/react-label';
 import { cva } from 'class-variance-authority';
 import * as React from 'react';
 

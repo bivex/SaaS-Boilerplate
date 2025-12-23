@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T17:07:04
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -16,8 +16,8 @@
 'use client';
 
 import { OrganizationSwitcher, UserButton } from '@clerk/nextjs';
-import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import Link from 'next/link';
 
 import { ActiveLink } from '@/components/ActiveLink';
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';

@@ -7,14 +7,14 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T17:07:04
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { CenteredFooter } from '@/features/landing/CenteredFooter';
 import { Section } from '@/features/landing/Section';

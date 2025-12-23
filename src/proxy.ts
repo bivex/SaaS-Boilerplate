@@ -7,16 +7,16 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T09:55:03
+ * Last Updated: 2025-12-23T17:07:03
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import type { NextFetchEvent, NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import createMiddleware from 'next-intl/middleware';
+import { NextResponse } from 'next/server';
 
 import { AllLocales, AppConfig } from './utils/AppConfig';
 
