@@ -13,7 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import { GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons';
+import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
 import { badgeVariants } from '@/components/ui/badgeVariants';
@@ -30,11 +30,11 @@ export const Hero = () => {
         banner={(
           <a
             className={badgeVariants()}
-            href="https://twitter.com/ixartz"
+            href="https://github.com/bivex/SaaS-Boilerplate"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <TwitterLogoIcon className="mr-1 size-5" />
+            <GitHubLogoIcon className="mr-1 size-5" />
             {' '}
             {t('follow_twitter')}
           </a>
