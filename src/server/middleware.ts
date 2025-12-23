@@ -36,95 +36,92 @@ export interface AuthContext {
  * Role-Based Access Control (RBAC) Middleware
  */
 export function requireRole(allowedRoles: string | string[]) {
-  return <T extends AuthContext>(middleware: MiddlewareBuilder<T, T>) =>
-    middleware.use(({ ctx, next }) => {
-      if (!ctx.session?.user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
-      }
+  return async ({ ctx, next }: { ctx: AuthContext; next: any }) => {
+    if (!ctx.session?.user) {
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
+    }
 
-      const userRole = ctx.session.user.role;
-      const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+    const userRole = ctx.session.user.role;
+    const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
 
-      if (!userRole || !roles.includes(userRole)) {
-        throw new TRPCError({ code: 'FORBIDDEN' });
-      }
+    if (!userRole || !roles.includes(userRole)) {
+      throw new TRPCError({ code: 'FORBIDDEN' });
+    }
 
-      return next();
-    });
+    return next();
+  };
 }
 
 /**
  * Scope-Based Permissions Middleware
  */
 export function requireScope(requiredScopes: string | string[]) {
-  return <T extends AuthContext>(middleware: MiddlewareBuilder<T, T>) =>
-    middleware.use(({ ctx, next }) => {
-      if (!ctx.session?.user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+  return async ({ ctx, next }: { ctx: AuthContext; next: any }) => {
+    if (!ctx.session?.user) {
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
+    }
+
+    const userScopes = ctx.session.user.scopes || [];
+    const scopes = Array.isArray(requiredScopes) ? requiredScopes : [requiredScopes];
+
+    const hasRequiredScopes = scopes.every(scope => {
+      // Check for exact match
+      if (userScopes.includes(scope)) {
+        return true;
       }
 
-      const userScopes = ctx.session.user.scopes || [];
-      const scopes = Array.isArray(requiredScopes) ? requiredScopes : [requiredScopes];
+      // Check for wildcard matches
+      if (scope.includes('*')) {
+        const scopeParts = scope.split(':');
+        const wildcardPattern = scopeParts.map(part =>
+          part === '*' ? '.*' : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        ).join(':');
 
-      const hasRequiredScopes = scopes.every(scope => {
-        // Check for exact match
-        if (userScopes.includes(scope)) {
-          return true;
-        }
-
-        // Check for wildcard matches
-        if (scope.includes('*')) {
-          const scopeParts = scope.split(':');
-          const wildcardPattern = scopeParts.map(part =>
-            part === '*' ? '.*' : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-          ).join(':');
-
-          return userScopes.some(userScope =>
-            new RegExp(`^${wildcardPattern}$`).test(userScope)
-          );
-        }
-
-        // Check if user has wildcard permission for the scope category
-        const scopeCategory = scope.split(':')[0];
         return userScopes.some(userScope =>
-          userScope === '*' || userScope === `${scopeCategory}:*`
+          new RegExp(`^${wildcardPattern}$`).test(userScope)
         );
-      });
-
-      if (!hasRequiredScopes) {
-        throw new TRPCError({ code: 'FORBIDDEN' });
       }
 
-      return next();
+      // Check if user has wildcard permission for the scope category
+      const scopeCategory = scope.split(':')[0];
+      return userScopes.some(userScope =>
+        userScope === '*' || userScope === `${scopeCategory}:*`
+      );
     });
+
+    if (!hasRequiredScopes) {
+      throw new TRPCError({ code: 'FORBIDDEN' });
+    }
+
+    return next();
+  };
 }
 
 /**
  * Resource Ownership Middleware
  */
-export function requireOwnership<T extends AuthContext>(
+export function requireOwnership<T extends AuthContext = AuthContext>(
   ownershipChecker: (ctx: T, input: any) => Promise<boolean> | boolean
 ) {
-  return <TInput>(middleware: MiddlewareBuilder<T, T, TInput>) =>
-    middleware.use(async ({ ctx, input, next }) => {
-      if (!ctx.session?.user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
-      }
+  return async ({ ctx, input, next }: { ctx: T; input: any; next: any }) => {
+    if (!ctx.session?.user) {
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
+    }
 
-      const isOwner = await ownershipChecker(ctx, input);
+    const isOwner = await ownershipChecker(ctx, input);
 
-      if (!isOwner) {
-        throw new TRPCError({ code: 'FORBIDDEN' });
-      }
+    if (!isOwner) {
+      throw new TRPCError({ code: 'FORBIDDEN' });
+    }
 
-      return next();
-    });
+    return next();
+  };
 }
 
 /**
  * Rate Limiting Middleware
  */
-export function rateLimit<T extends AuthContext>(
+export function rateLimit<T extends AuthContext = AuthContext>(
   options: {
     windowMs?: number;
     maxRequests?: number;
@@ -137,27 +134,26 @@ export function rateLimit<T extends AuthContext>(
     identifier = (ctx: T) => ctx.session?.user?.id || 'anonymous'
   } = options;
 
-  return (middleware: MiddlewareBuilder<T, T>) =>
-    middleware.use(async ({ ctx, next }) => {
-      const userId = identifier(ctx);
-      const { allowed, reset } = await rateLimitManager.check(userId);
+  return async ({ ctx, next }: { ctx: T; next: any }) => {
+    const userId = identifier(ctx);
+    const { allowed, reset } = await rateLimitManager.check(userId);
 
-      if (!allowed) {
-        const resetTime = reset.toISOString();
-        const retryAfter = Math.ceil((reset.getTime() - Date.now()) / 1000);
+    if (!allowed) {
+      const resetTime = reset.toISOString();
+      const retryAfter = Math.ceil((reset.getTime() - Date.now()) / 1000);
 
-        throw new TRPCError({
-          code: 'TOO_MANY_REQUESTS',
-          message: `Rate limit exceeded. Try again after ${resetTime}.`,
-          cause: {
-            retryAfter,
-            resetTime,
-          },
-        });
-      }
+      throw new TRPCError({
+        code: 'TOO_MANY_REQUESTS',
+        message: `Rate limit exceeded. Try again after ${resetTime}.`,
+        cause: {
+          retryAfter,
+          resetTime,
+        },
+      });
+    }
 
-      return next();
-    });
+    return next();
+  };
 }
 
 /**
