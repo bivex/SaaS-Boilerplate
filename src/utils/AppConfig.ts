@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T16:49:34
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -29,6 +29,8 @@ export const AppConfig = {
       name: 'English',
     },
     { id: 'fr', name: 'Français' },
+    { id: 'ru', name: 'Русский' },
+    { id: 'uk', name: 'Українська' },
   ],
   defaultLocale: 'en',
   localePrefix,

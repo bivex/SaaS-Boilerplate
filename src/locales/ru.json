@@ -1,0 +1,166 @@
+{
+  "Index": {
+    "meta_title": "SaaS Template - Идеальный SaaS шаблон для создания и масштабирования вашего бизнеса.",
+    "meta_description": "Бесплатный и открытый шаблон целевой страницы для вашего SaaS бизнеса, построенный с React, TypeScript, Shadcn UI и Tailwind CSS."
+  },
+  "Navbar": {
+    "sign_in": "Войти",
+    "sign_up": "Регистрация",
+    "product": "Продукт",
+    "docs": "Документы",
+    "blog": "Блог",
+    "community": "Сообщество",
+    "company": "Компания"
+  },
+  "Hero": {
+    "follow_twitter": "Посмотреть на GitHub",
+    "title": "Идеальный <important>SaaS шаблон</important> для создания и масштабирования вашего бизнеса.",
+    "description": "Бесплатный и открытый шаблон целевой страницы для вашего SaaS бизнеса, построенный с React, TypeScript, Shadcn UI и Tailwind CSS.",
+    "primary_button": "Начать",
+    "secondary_button": "Добавить звезду на GitHub"
+  },
+  "Sponsors": {
+    "title": "Спонсируется"
+  },
+  "Features": {
+    "section_subtitle": "Функции",
+    "section_title": "Раскройте полный потенциал SaaS шаблона",
+    "section_description": "Бесплатный и открытый шаблон целевой страницы для вашего SaaS бизнеса, построенный с React, TypeScript, Shadcn UI и Tailwind CSS.",
+    "feature1_title": "Node.js",
+    "feature2_title": "React",
+    "feature3_title": "Tailwind CSS",
+    "feature4_title": "TypeScript",
+    "feature5_title": "Shadcn UI",
+    "feature6_title": "ESLint",
+    "feature_description": "Бесплатный и открытый шаблон целевой страницы для вашего SaaS бизнеса, построенный с React, TypeScript, Shadcn UI и Tailwind CSS."
+  },
+  "Pricing": {
+    "section_subtitle": "Функции",
+    "section_title": "Раскройте полный потенциал SaaS шаблона",
+    "section_description": "Бесплатный и открытый шаблон целевой страницы для вашего SaaS бизнеса, построенный с React, TypeScript, Shadcn UI и Tailwind CSS.",
+    "button_text": "Начать"
+  },
+  "PricingPlan": {
+    "free_plan_name": "Бесплатный",
+    "premium_plan_name": "Премиум",
+    "enterprise_plan_name": "Корпоративный",
+    "free_plan_description": "Для частных лиц",
+    "premium_plan_description": "Для малых команд",
+    "enterprise_plan_description": "Для лидеров отрасли",
+    "feature_team_member": "{number} участников",
+    "feature_website": "{number} сайтов",
+    "feature_storage": "{number} ГБ хранилища",
+    "feature_transfer": "{number} ТБ трафика",
+    "feature_email_support": "Поддержка по email",
+    "plan_interval_month": "месяц",
+    "plan_interval_year": "год",
+    "next_renew_date": "Ваша подписка будет продлена {date}"
+  },
+  "FAQ": {
+    "question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam enim dui, id consequat turpis ullamcorper ac. Mauris id quam dolor. Nullam eu egestas turpis. Proin risus elit, sollicitudin in mi a, accumsan euismod turpis. In euismod mi sed diam tristique hendrerit."
+  },
+  "CTA": {
+    "title": "Вы готовы?",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "button_text": "Добавить звезду на GitHub"
+  },
+  "Footer": {
+    "product": "Продукт",
+    "docs": "Документы",
+    "blog": "Блог",
+    "community": "Сообщество",
+    "company": "Компания",
+    "terms_of_service": "Условия использования",
+    "privacy_policy": "Политика конфиденциальности",
+    "designed_by": "Дизайн от <author></author>."
+  },
+  "ProtectFallback": {
+    "not_enough_permission": "У вас нет прав для выполнения этого действия"
+  },
+  "SignIn": {
+    "meta_title": "Войти",
+    "meta_description": "Легко войдите в свою учетную запись с помощью нашего удобного процесса входа."
+  },
+  "SignUp": {
+    "meta_title": "Регистрация",
+    "meta_description": "Легко создайте учетную запись с помощью нашего интуитивного процесса регистрации."
+  },
+  "DashboardLayout": {
+    "home": "Главная",
+    "todos": "Задачи",
+    "members": "Участники",
+    "billing": "Оплата",
+    "settings": "Настройки"
+  },
+  "Dashboard": {
+    "meta_title": "Панель управления SaaS шаблона",
+    "meta_description": "Бесплатный и открытый шаблон целевой страницы для вашего SaaS бизнеса, построенный с Next.js, TypeScript, Shadcn UI и Tailwind CSS."
+  },
+  "DashboardIndex": {
+    "title_bar": "Панель управления",
+    "title_bar_description": "Добро пожаловать в вашу панель управления",
+    "message_state_title": "Приступим",
+    "message_state_description": "Вы можете настроить эту страницу, отредактировав файл <code>dashboard/page.tsx</code>",
+    "message_state_button": "Добавить звезду на GitHub",
+    "message_state_alternative": "Хотите больше функций и последние обновления Next.js 16? Попробуйте <url></url>."
+  },
+  "UserProfile": {
+    "title_bar": "Профиль пользователя",
+    "title_bar_description": "Просмотр и управление профилем пользователя"
+  },
+  "OrganizationProfile": {
+    "title_bar": "Управление организацией",
+    "title_bar_description": "Управление вашей организацией"
+  },
+  "Billing": {
+    "title_bar": "Оплата",
+    "title_bar_description": "Управление оплатой и подпиской",
+    "current_section_title": "Текущий план",
+    "current_section_description": "Настройте план оплаты для наилучшего соответствия вашим требованиям",
+    "manage_subscription_button": "Управлять подпиской"
+  },
+  "BillingOptions": {
+    "current_plan": "Текущий план",
+    "upgrade_plan": "Начать"
+  },
+  "CheckoutConfirmation": {
+    "title_bar": "Подтверждение оплаты",
+    "message_state_title": "Оплата успешна",
+    "message_state_description": "Ваш платеж был успешно обработан. Спасибо за покупку!",
+    "message_state_button": "Вернуться к оплате"
+  },
+  "DataTable": {
+    "no_results": "Результатов нет."
+  },
+  "Todos": {
+    "title_bar": "Список задач",
+    "title_bar_description": "Просмотр и управление списком задач",
+    "add_todo_button": "Новая задача"
+  },
+  "TodoTableColumns": {
+    "open_menu": "Открыть меню",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "title_header": "Заголовок",
+    "message_header": "Сообщение",
+    "created_at_header": "Создано"
+  },
+  "AddTodo": {
+    "title_bar": "Добавить задачу",
+    "add_todo_section_title": "Создать новую задачу",
+    "add_todo_section_description": "Заполните форму ниже, чтобы создать новую задачу"
+  },
+  "EditTodo": {
+    "title_bar": "Редактировать задачу",
+    "edit_todo_section_title": "Изменить задачу",
+    "edit_todo_section_description": "Заполните форму ниже, чтобы изменить задачу"
+  },
+  "TodoForm": {
+    "title_label": "Заголовок",
+    "title_description": "Введите описательный заголовок для вашей задачи.",
+    "message_title": "Сообщение",
+    "message_description": "Введите подробное сообщение для вашей задачи.",
+    "submit_button": "Отправить"
+  }
+}
