@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2025 Bivex
+ *
+ * Author: Bivex
+ * Available for contact via email: support@b-b.top
+ * For up-to-date contact information:
+ * https://github.com/bivex
+ *
+ * Created: 2025-12-23T20:23:22
+ * Last Updated: 2025-12-23T20:23:22
+ *
+ * Licensed under the MIT License.
+ * Commercial licensing available upon request.
+ */
+
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
