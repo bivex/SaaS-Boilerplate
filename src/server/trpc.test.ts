@@ -16,21 +16,18 @@
 import { TRPCError } from '@trpc/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Mock better-auth
-vi.mock('better-auth/next-js', () => ({
-  getSession: vi.fn(),
-}));
-
 // Mock auth instance
+const mockGetSessionFromCtx = vi.fn();
 vi.mock('@/libs/auth', () => ({
   auth: {
+    api: {
+      getSessionFromCtx: mockGetSessionFromCtx,
+    },
     options: {},
   },
 }));
 
 describe('tRPC Context Creation', () => {
-  const mockGetSession = vi.mocked(await import('better-auth/next-js')).getSession;
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -42,59 +39,82 @@ describe('tRPC Context Creation', () => {
         session: { id: 'session-1' },
       };
 
-      mockGetSession.mockResolvedValue(mockSession);
+      mockGetSessionFromCtx.mockResolvedValue(mockSession);
 
       const { createTRPCContext } = await import('@/server/trpc');
 
-      const mockReq = { headers: {} } as any;
-      const mockRes = {} as any;
+      const mockReq = {
+        headers: new Headers(),
+        url: 'http://localhost:3000',
+        method: 'GET',
+      } as any;
 
       const context = await createTRPCContext({
         req: mockReq,
-        res: mockRes,
+        resHeaders: new Headers(),
       });
 
       expect(context).toEqual({
         session: mockSession,
         req: mockReq,
-        res: mockRes,
       });
 
-      expect(mockGetSession).toHaveBeenCalledWith(mockReq, mockRes, { auth: expect.any(Object) });
+      expect(mockGetSessionFromCtx).toHaveBeenCalledWith(
+        expect.objectContaining({
+          request: mockReq,
+          headers: mockReq.headers,
+          url: mockReq.url,
+          method: mockReq.method,
+        })
+      );
     });
 
     it('should create context with null session when not authenticated', async () => {
-      mockGetSession.mockResolvedValue(null);
+      mockGetSessionFromCtx.mockResolvedValue(null);
 
       const { createTRPCContext } = await import('@/server/trpc');
 
-      const mockReq = { headers: {} } as any;
-      const mockRes = {} as any;
+      const mockReq = {
+        headers: new Headers(),
+        url: 'http://localhost:3000',
+        method: 'GET',
+      } as any;
 
       const context = await createTRPCContext({
         req: mockReq,
-        res: mockRes,
+        resHeaders: new Headers(),
       });
 
       expect(context).toEqual({
         session: null,
         req: mockReq,
-        res: mockRes,
       });
     });
 
     it('should handle getSession errors gracefully', async () => {
-      mockGetSession.mockRejectedValue(new Error('Session error'));
+      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      mockGetSessionFromCtx.mockRejectedValue(new Error('Session error'));
 
       const { createTRPCContext } = await import('@/server/trpc');
 
-      const mockReq = { headers: {} } as any;
-      const mockRes = {} as any;
+      const mockReq = {
+        headers: new Headers(),
+        url: 'http://localhost:3000',
+        method: 'GET',
+      } as any;
 
-      await expect(createTRPCContext({
+      const context = await createTRPCContext({
         req: mockReq,
-        res: mockRes,
-      })).rejects.toThrow('Session error');
+        resHeaders: new Headers(),
+      });
+
+      expect(context).toEqual({
+        session: null,
+        req: mockReq,
+      });
+
+      expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to get session:', expect.any(Error));
+      consoleWarnSpy.mockRestore();
     });
   });
 

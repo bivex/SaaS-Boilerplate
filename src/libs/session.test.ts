@@ -31,7 +31,7 @@ describe('Session Management', () => {
     signOut: vi.fn(),
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
     // Reset authClient mock
     vi.mocked(await import('@/libs/auth-client')).authClient = mockAuthClient;

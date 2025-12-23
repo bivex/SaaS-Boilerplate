@@ -115,7 +115,6 @@
   },
   "devDependencies": {
     "vitest-mock-extended": "^2.0.0",
-    "@vitest/ui": "^4.0.16",
     "@anatine/zod-mock": "^3.14.0",
     "@antfu/eslint-config": "^6.7.3",
     "eslint-plugin-no-secrets": "^1.1.2",
@@ -139,7 +138,6 @@
     "@types/validator": "^13.15.0",
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "^4.0.16",
-    "@vitest/ui": "^4.0.16",
     "autoprefixer": "^10.4.20",
     "drizzle-kit": "^0.31.8",
     "drizzle-seed": "^0.3.0",

@@ -7,32 +7,46 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:05:00
- * Last Updated: 2025-12-23T21:01:24
+ * Last Updated: 2025-12-23T21:31:08
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
+/// <reference types="node" />
+import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { initTRPC, TRPCError } from '@trpc/server';
-import { getSession } from 'better-auth/next-js';
+import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import superjson from 'superjson';
 import { auth } from '@/libs/auth';
+import { ZodError } from 'zod';
 
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
+export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
+  try {
+    // Create a proper context for Better Auth
+    const context = {
+      request: opts.req,
+      headers: opts.req.headers,
+      url: opts.req.url,
+      method: opts.req.method,
+    };
 
-  // Get session from Better Auth
-  const session = await getSession({ req, res }, { auth });
-
-  return {
-    session,
-    req,
-    res,
-  };
+    const session = await auth.api.getSessionFromCtx(context);
+    return {
+      session,
+      req: opts.req,
+    };
+  } catch (error) {
+    // If session fetching fails, return null session
+    console.warn('Failed to get session:', error);
+    return {
+      session: null,
+      req: opts.req,
+    };
+  }
 };
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
+export const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -40,8 +54,8 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       data: {
         ...shape.data,
         zodError:
-          error.cause instanceof Error && error.cause.name === 'ZodError'
-            ? error.cause.flatten()
+          error.cause instanceof ZodError
+            ? (error.cause as ZodError).flatten()
             : null,
       },
     };

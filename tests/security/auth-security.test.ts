@@ -41,7 +41,7 @@ describe('Authentication Security Tests', () => {
 
       // Simulate input sanitization
       const sanitizeInput = (input: string) => {
-        return input.replace(/[<>'"&]/g, '');
+        return input.replace(/<[^>]*>/g, '').replace(/javascript:/gi, '');
       };
 
       const sanitized = sanitizeInput(maliciousEmail);

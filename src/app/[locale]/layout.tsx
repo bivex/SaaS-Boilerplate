@@ -20,6 +20,7 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';
 
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { TRPCProvider } from '@/trpc/provider';
 import { AllLocales } from '@/utils/AppConfig';
 import '@/styles/global.css';
 
@@ -77,15 +78,17 @@ export default async function RootLayout(props: {
           enableSystem
           disableTransitionOnChange
         >
-          <NextIntlClientProvider
-            locale={params.locale}
-            messages={messages}
-          >
-            {props.children}
-            <div className="fixed bottom-4 right-4 z-50">
-              <LocaleSwitcher />
-            </div>
-          </NextIntlClientProvider>
+          <TRPCProvider>
+            <NextIntlClientProvider
+              locale={params.locale}
+              messages={messages}
+            >
+              {props.children}
+              <div className="fixed bottom-4 right-4 z-50">
+                <LocaleSwitcher />
+              </div>
+            </NextIntlClientProvider>
+          </TRPCProvider>
         </ThemeProvider>
       </body>
     </html>

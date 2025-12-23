@@ -18,7 +18,7 @@ import { getSessionCookie } from 'better-auth/cookies';
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 
-import { AllLocales, AppConfig } from './utils/AppConfig';
+import { AllLocales, AppConfig } from './src/utils/AppConfig';
 
 const intlMiddleware = createMiddleware({
   locales: AllLocales,

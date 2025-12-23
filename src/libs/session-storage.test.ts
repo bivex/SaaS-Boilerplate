@@ -56,7 +56,7 @@ describe('Session Storage Adapters', () => {
     expire: vi.fn(),
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
     vi.mocked(await import('@/libs/DB')).db = mockDb;
     vi.mocked(await import('redis')).createClient.mockReturnValue(mockRedis);
