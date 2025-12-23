@@ -31,7 +31,18 @@ const bundleAnalyzer = withBundleAnalyzer({
 });
 
 // Tailwind v4 compatibility - Turbopack disabled by default if needed
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
+};
 
 /** @type {import('next').NextConfig} */
 export default withSentryConfig(
