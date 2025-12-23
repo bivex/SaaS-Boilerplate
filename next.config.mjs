@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T20:53:17
- * Last Updated: 2025-12-18T20:53:28
+ * Last Updated: 2025-12-23T21:57:09
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -41,6 +41,31 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/en',
+        permanent: false,
+      },
+      {
+        source: '/sign-up',
+        destination: '/en/sign-up',
+        permanent: false,
+      },
+      {
+        source: '/sign-in',
+        destination: '/en/sign-in',
+        permanent: false,
+      },
+      {
+        source: '/dashboard',
+        destination: '/en/dashboard',
+        permanent: false,
+      },
+      // Add more common routes as needed
+    ];
   },
 };
 
