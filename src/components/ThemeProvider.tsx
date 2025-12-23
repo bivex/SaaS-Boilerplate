@@ -21,5 +21,15 @@ import * as React from 'react';
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+  return (
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      themes={['light', 'dark', 'ocean', 'sunset', 'forest', 'midnight', 'lavender', 'amber']}
+      {...props}
+    >
+      {children}
+    </NextThemesProvider>
+  );
 }
