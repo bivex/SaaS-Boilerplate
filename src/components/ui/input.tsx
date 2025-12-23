@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T17:09:39
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -19,8 +19,8 @@ import { cn } from '@/utils/Helpers';
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input = ({ ref, className, type, ...props }: InputProps & { ref?: React.RefObject<HTMLInputElement | null> }) => {
-  return (
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => (
     <input
       type={type}
       className={cn(
@@ -30,8 +30,8 @@ const Input = ({ ref, className, type, ...props }: InputProps & { ref?: React.Re
       ref={ref}
       {...props}
     />
-  );
-};
+  ),
+);
 Input.displayName = 'Input';
 
 export { Input };
