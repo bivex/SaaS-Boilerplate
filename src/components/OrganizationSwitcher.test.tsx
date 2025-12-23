@@ -13,10 +13,10 @@
  * Commercial licensing available upon request.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { OrganizationSwitcher } from './OrganizationSwitcher';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSession } from '@/hooks/useAuth';
+import { OrganizationSwitcher } from './OrganizationSwitcher';
 
 // Mock the hooks
 vi.mock('@/hooks/useAuth', () => ({
@@ -56,9 +56,11 @@ describe('OrganizationSwitcher', () => {
     render(<OrganizationSwitcher />);
 
     const createButton = screen.getByText('create_org');
+
     expect(createButton).toBeInTheDocument();
 
     fireEvent.click(createButton);
+
     expect(mockPush).toHaveBeenCalledWith('/onboarding/organization-selection');
   });
 
@@ -66,7 +68,7 @@ describe('OrganizationSwitcher', () => {
     vi.mocked(useSession).mockReturnValue({
       session: {
         user: { id: '1', organizations: [] },
-        organization: null
+        organization: null,
       },
       loading: false,
     });
@@ -74,6 +76,7 @@ describe('OrganizationSwitcher', () => {
     render(<OrganizationSwitcher />);
 
     const button = screen.getByRole('button');
+
     expect(button).toHaveTextContent('personal');
   });
 
@@ -95,6 +98,7 @@ describe('OrganizationSwitcher', () => {
     render(<OrganizationSwitcher />);
 
     const button = screen.getByRole('button');
+
     expect(button).toHaveTextContent('Test Organization');
     expect(button).toHaveTextContent('admin');
   });
@@ -133,6 +137,7 @@ describe('OrganizationSwitcher', () => {
 
     // Check that active org shows badge
     const activeOrg = screen.getByText('Organization 1').closest('div');
+
     expect(activeOrg).toHaveTextContent('admin');
   });
 

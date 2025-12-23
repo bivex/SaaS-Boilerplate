@@ -17,8 +17,8 @@
 
 import { useTranslations } from 'next-intl';
 
-import { TitleBar } from '@/features/dashboard/TitleBar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { TitleBar } from '@/features/dashboard/TitleBar';
 
 const OrganizationProfilePage = () => {
   const t = useTranslations('OrganizationProfile');

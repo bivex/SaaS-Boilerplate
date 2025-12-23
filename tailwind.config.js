@@ -69,16 +69,16 @@ const config = {
       animation: {
         'accordion-down': 'var(--animate-accordion-down)',
         'accordion-up': 'var(--animate-accordion-up)',
-        marquee: 'marquee var(--duration, 30s) linear infinite',
+        'marquee': 'marquee var(--duration, 30s) linear infinite',
         'marquee-reverse': 'marquee-reverse var(--duration, 30s) linear infinite',
       },
       keyframes: {
-        marquee: {
-          to: { transform: 'translateX(-50%)' }
+        'marquee': {
+          to: { transform: 'translateX(-50%)' },
         },
         'marquee-reverse': {
-          to: { transform: 'translateX(50%)' }
-        }
+          to: { transform: 'translateX(50%)' },
+        },
       },
     },
   },

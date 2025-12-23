@@ -28,8 +28,8 @@ const intlMiddleware = createMiddleware({
 
 const isProtectedRoute = (pathname: string) => {
   return (
-    pathname.includes('/dashboard') ||
-    pathname.includes('/onboarding')
+    pathname.includes('/dashboard')
+    || pathname.includes('/onboarding')
     // API routes are now allowed through (auth routes handle their own auth)
   );
 };
@@ -46,16 +46,16 @@ export default function proxy(
 
   // If user is authenticated and trying to access auth pages, redirect to dashboard
   if (sessionCookie && isAuthPage(pathname)) {
-    const locale = pathname.match(/(\/.*)\/sign-in/)?.at(1) ??
-                  pathname.match(/(\/.*)\/sign-up/)?.at(1) ?? '';
+    const locale = pathname.match(/(\/.*)\/sign-in/)?.at(1)
+      ?? pathname.match(/(\/.*)\/sign-up/)?.at(1) ?? '';
     const dashboardUrl = new URL(`${locale}/dashboard`, request.url);
     return NextResponse.redirect(dashboardUrl);
   }
 
   // If user is not authenticated and trying to access protected routes, redirect to sign-in
   if (!sessionCookie && isProtectedRoute(pathname)) {
-    const locale = pathname.match(/(\/.*)\/dashboard/)?.at(1) ??
-                  pathname.match(/(\/.*)\/onboarding/)?.at(1) ?? '';
+    const locale = pathname.match(/(\/.*)\/dashboard/)?.at(1)
+      ?? pathname.match(/(\/.*)\/onboarding/)?.at(1) ?? '';
     const signInUrl = new URL(`${locale}/sign-in`, request.url);
     return NextResponse.redirect(signInUrl);
   }

@@ -13,7 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 // Generate unique test user credentials
 const testUser = {
@@ -79,10 +79,12 @@ test.describe('Authentication Flow', () => {
 
     // Click sign-up link
     await page.getByText(/don't have an account/i).click();
+
     await expect(page).toHaveURL(/.*sign-up/);
 
     // Click sign-in link
     await page.getByText(/already have an account/i).click();
+
     await expect(page).toHaveURL(/.*sign-in/);
   });
 
@@ -122,7 +124,7 @@ test.describe('Authentication Flow', () => {
 
     // Check browser console for errors
     const consoleMessages = [];
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       if (msg.type() === 'error') {
         consoleMessages.push(msg.text());
       }
@@ -227,6 +229,7 @@ test.describe('Authentication Flow', () => {
 
     // Look for user menu/avatar
     const userMenu = page.locator('[aria-label*="user" i], [data-testid*="user"], button').first();
+
     await expect(userMenu).toBeVisible();
 
     // Click to open user menu
@@ -240,10 +243,12 @@ test.describe('Authentication Flow', () => {
 
     // Should redirect to sign-in page
     await page.waitForURL('**/sign-in', { timeout: 5000 });
+
     await expect(page).toHaveURL(/.*sign-in/);
 
     // Try to access dashboard - should redirect back to sign-in
     await page.goto('/dashboard');
+
     await expect(page).toHaveURL(/.*sign-in/);
   });
 
@@ -287,16 +292,20 @@ test.describe('Authentication Flow', () => {
 
     // Check for proper ARIA labels
     const emailInput = page.getByLabel(/email/i);
+
     await expect(emailInput).toHaveAttribute('type', 'email');
 
     const passwordInput = page.getByLabel(/password/i);
+
     await expect(passwordInput).toHaveAttribute('type', 'password');
 
     // Check keyboard navigation
     await page.keyboard.press('Tab');
+
     await expect(emailInput).toBeFocused();
 
     await page.keyboard.press('Tab');
+
     await expect(passwordInput).toBeFocused();
   });
 });
@@ -347,6 +356,7 @@ test.describe('Dashboard Authentication', () => {
 
     // Should redirect to dashboard
     await page.waitForURL('**/dashboard');
+
     await expect(page).toHaveURL(/.*dashboard/);
   });
 
@@ -376,7 +386,6 @@ test.describe('Dashboard Authentication', () => {
       // Both should be authenticated
       await expect(page1).toHaveURL(/.*dashboard/);
       await expect(page2).toHaveURL(/.*dashboard/);
-
     } finally {
       await context1.close();
       await context2.close();

@@ -13,9 +13,9 @@
  * Commercial licensing available upon request.
  */
 
-import { auth } from '@/libs/auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { auth } from '@/libs/auth';
 
 export default async function CenteredLayout(props: { children: React.ReactNode }) {
   const session = await auth.api.getSession({
