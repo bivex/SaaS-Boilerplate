@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T17:40:00
- * Last Updated: 2025-12-23T17:42:25
+ * Last Updated: 2025-12-23T17:46:18
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -17,11 +17,11 @@
 
 import { useEffect, useState } from 'react';
 
-interface CSSDebuggerProps {
+type CSSDebuggerProps = {
   showGrid?: boolean;
   showOutlines?: boolean;
   showBreakpoints?: boolean;
-}
+};
 
 export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakpoints = false }: CSSDebuggerProps) {
   const [currentBreakpoint, setCurrentBreakpoint] = useState<string>('');
@@ -31,10 +31,15 @@ export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakp
     const updateBreakpoint = () => {
       const width = window.innerWidth;
       let breakpoint = 'xs';
-      if (width >= 1280) breakpoint = 'xl';
-      else if (width >= 1024) breakpoint = 'lg';
-      else if (width >= 768) breakpoint = 'md';
-      else if (width >= 640) breakpoint = 'sm';
+      if (width >= 1280) {
+        breakpoint = 'xl';
+      } else if (width >= 1024) {
+        breakpoint = 'lg';
+      } else if (width >= 768) {
+        breakpoint = 'md';
+      } else if (width >= 640) {
+        breakpoint = 'sm';
+      }
       setCurrentBreakpoint(breakpoint);
     };
 
@@ -92,17 +97,25 @@ export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakp
     styleElement.textContent = css;
 
     // Apply debug classes to body
-    if (showGrid) document.body.classList.add('debug-grid');
-    else document.body.classList.remove('debug-grid');
+    if (showGrid) {
+      document.body.classList.add('debug-grid');
+    } else {
+      document.body.classList.remove('debug-grid');
+    }
 
-    if (showOutlines) document.body.classList.add('debug-outlines');
-    else document.body.classList.remove('debug-outlines');
+    if (showOutlines) {
+      document.body.classList.add('debug-outlines');
+    } else {
+      document.body.classList.remove('debug-outlines');
+    }
 
     return () => {
       // Cleanup on unmount
       document.body.classList.remove('debug-grid', 'debug-outlines');
       const element = document.getElementById(styleId);
-      if (element) element.remove();
+      if (element) {
+        element.remove();
+      }
     };
   }, [showGrid, showOutlines]);
 
@@ -153,11 +166,7 @@ export const DebugUtils = {
     const root = document.documentElement;
     const styles = getComputedStyle(root);
     const vars = Array.from(styles).filter(prop => prop.startsWith('--color'));
-    console.group('🎨 Current Theme Variables');
-    vars.forEach(prop => {
-      console.log(`${prop}: ${styles.getPropertyValue(prop)}`);
-    });
-    console.groupEnd();
+    return vars.map(prop => `${prop}: ${styles.getPropertyValue(prop)}`);
   },
 
   // Toggle debug grid
@@ -174,10 +183,15 @@ export const DebugUtils = {
   showBreakpoint: () => {
     const width = window.innerWidth;
     let breakpoint = 'xs';
-    if (width >= 1280) breakpoint = 'xl';
-    else if (width >= 1024) breakpoint = 'lg';
-    else if (width >= 768) breakpoint = 'md';
-    else if (width >= 640) breakpoint = 'sm';
+    if (width >= 1280) {
+      breakpoint = 'xl';
+    } else if (width >= 1024) {
+      breakpoint = 'lg';
+    } else if (width >= 768) {
+      breakpoint = 'md';
+    } else if (width >= 640) {
+      breakpoint = 'sm';
+    }
     return breakpoint;
   },
 
@@ -189,7 +203,7 @@ export const DebugUtils = {
       return classes;
     }
     return [];
-  }
+  },
 };
 
 // Make DebugUtils available globally in development
