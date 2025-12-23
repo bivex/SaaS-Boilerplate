@@ -6,8 +6,8 @@
  * For up-to-date contact information:
  * https://github.com/bivex
  *
- * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T19:01:00
+ * Created: 2025-12-23T23:00:00
+ * Last Updated: 2025-12-23T23:00:00
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -16,8 +16,8 @@
 import type { EnumValues } from './Enum';
 
 export const ORG_ROLE = {
-  ADMIN: 'org:admin',
-  MEMBER: 'org:member',
+  ADMIN: 'admin',
+  MEMBER: 'member',
 } as const;
 
 export type OrgRole = EnumValues<typeof ORG_ROLE>;
@@ -27,3 +27,40 @@ export const ORG_PERMISSION = {
 } as const;
 
 export type OrgPermission = EnumValues<typeof ORG_PERMISSION>;
+
+// Better Auth Types
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  image?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  role?: string;
+  banned?: boolean;
+  banReason?: string;
+  banExpires?: Date;
+}
+
+export interface Organization {
+  id: string;
+  name: string;
+  slug: string;
+  logo?: string;
+  createdAt: Date;
+  metadata?: Record<string, any>;
+}
+
+export interface Session {
+  id: string;
+  expiresAt: Date;
+  token: string;
+  createdAt: Date;
+  updatedAt: Date;
+  ipAddress?: string;
+  userAgent?: string;
+  userId: string;
+  user: User;
+  organization?: Organization;
+}
