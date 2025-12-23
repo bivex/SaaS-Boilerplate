@@ -7,21 +7,21 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T16:49:34
+ * Last Updated: 2025-12-23T17:07:04
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import '@/styles/global.css';
-
 import type { Metadata } from 'next';
+
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
-
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';
+
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AllLocales } from '@/utils/AppConfig';
+import '@/styles/global.css';
 
 export const metadata: Metadata = {
   icons: [

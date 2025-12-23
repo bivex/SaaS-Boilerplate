@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T17:25:00
+ * Last Updated: 2025-12-23T17:07:04
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -75,15 +75,11 @@ const Accordion: React.FC<AccordionProps> = ({
 };
 
 const AccordionItem: React.FC<AccordionItemProps> = ({ value, children }) => {
-  const context = React.use(AccordionContext);
-  const isOpen = context?.value === value;
-
   return (
     <div className="border-b">
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
           return React.cloneElement(child as React.ReactElement<any>, {
-            'data-state': isOpen ? 'open' : 'closed',
             value,
           });
         }
@@ -93,17 +89,18 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ value, children }) => {
   );
 };
 
-const AccordionTrigger = ({ ref, className, children, ...props }: AccordionTriggerProps & { ref?: React.RefObject<HTMLButtonElement | null> }) => {
+const AccordionTrigger = ({ ref, className, children, value, ...props }: AccordionTriggerProps & { ref?: React.RefObject<HTMLButtonElement | null> }) => {
   const context = React.use(AccordionContext);
-  const itemValue = props.value;
+  const isOpen = context?.value === value;
 
   const handleClick = () => {
-    context?.onValueChange?.(itemValue || '');
+    context?.onValueChange?.(value || '');
   };
 
   return (
     <button
       ref={ref}
+      data-state={isOpen ? 'open' : 'closed'}
       className={cn(
         'flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
         className,
@@ -118,10 +115,9 @@ const AccordionTrigger = ({ ref, className, children, ...props }: AccordionTrigg
 };
 AccordionTrigger.displayName = 'AccordionTrigger';
 
-const AccordionContent = ({ ref, className, children, ...props }: AccordionContentProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
+const AccordionContent = ({ ref, className, children, value, ...props }: AccordionContentProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
   const context = React.use(AccordionContext);
-  const itemValue = props.value;
-  const isOpen = context?.value === itemValue;
+  const isOpen = context?.value === value;
 
   return (
     <div
