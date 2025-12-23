@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@config "../tailwind.config.ts";
+@config "../../tailwind.config.ts";
 
 @theme {
   --color-background: hsl(0 0% 100%);
