@@ -13,8 +13,8 @@
  * Commercial licensing available upon request.
  */
 
-import type { NextFetchEvent, NextRequest } from 'next/server';
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import type { NextRequest } from 'next/server';
+import { getSessionCookie } from 'better-auth/cookies';
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse } from 'next/server';
 
@@ -26,55 +26,38 @@ const intlMiddleware = createMiddleware({
   defaultLocale: AppConfig.defaultLocale,
 });
 
-const isProtectedRoute = createRouteMatcher([
-  '/dashboard(.*)',
-  '/:locale/dashboard(.*)',
-  '/onboarding(.*)',
-  '/:locale/onboarding(.*)',
-  '/api(.*)',
-  '/:locale/api(.*)',
-]);
+const isProtectedRoute = (pathname: string) => {
+  return (
+    pathname.includes('/dashboard') ||
+    pathname.includes('/onboarding') ||
+    pathname.includes('/api')
+  );
+};
+
+const isAuthPage = (pathname: string) => {
+  return pathname.includes('/sign-in') || pathname.includes('/sign-up');
+};
 
 export default function proxy(
   request: NextRequest,
-  event: NextFetchEvent,
 ) {
-  if (
-    request.nextUrl.pathname.includes('/sign-in')
-    || request.nextUrl.pathname.includes('/sign-up')
-    || isProtectedRoute(request)
-  ) {
-    return clerkMiddleware(async (auth, req) => {
-      if (isProtectedRoute(req)) {
-        const locale
-          = req.nextUrl.pathname.match(/(\/.*)\/dashboard/)?.at(1) ?? '';
+  const { pathname } = request.nextUrl;
+  const sessionCookie = getSessionCookie(request);
 
-        const signInUrl = new URL(`${locale}/sign-in`, req.url);
+  // If user is authenticated and trying to access auth pages, redirect to dashboard
+  if (sessionCookie && isAuthPage(pathname)) {
+    const locale = pathname.match(/(\/.*)\/sign-in/)?.at(1) ??
+                  pathname.match(/(\/.*)\/sign-up/)?.at(1) ?? '';
+    const dashboardUrl = new URL(`${locale}/dashboard`, request.url);
+    return NextResponse.redirect(dashboardUrl);
+  }
 
-        await auth.protect({
-          // `unauthenticatedUrl` is needed to avoid error: "Unable to find `next-intl` locale because the middleware didn't run on this request"
-          unauthenticatedUrl: signInUrl.toString(),
-        });
-      }
-
-      const authObj = await auth();
-
-      if (
-        authObj.userId
-        && !authObj.orgId
-        && req.nextUrl.pathname.includes('/dashboard')
-        && !req.nextUrl.pathname.endsWith('/organization-selection')
-      ) {
-        const orgSelection = new URL(
-          '/onboarding/organization-selection',
-          req.url,
-        );
-
-        return NextResponse.redirect(orgSelection);
-      }
-
-      return intlMiddleware(req);
-    })(request, event);
+  // If user is not authenticated and trying to access protected routes, redirect to sign-in
+  if (!sessionCookie && isProtectedRoute(pathname)) {
+    const locale = pathname.match(/(\/.*)\/dashboard/)?.at(1) ??
+                  pathname.match(/(\/.*)\/onboarding/)?.at(1) ?? '';
+    const signInUrl = new URL(`${locale}/sign-in`, request.url);
+    return NextResponse.redirect(signInUrl);
   }
 
   return intlMiddleware(request);
