@@ -49,7 +49,7 @@ const AccordionTrigger = ({ ref, className, children, ...props }: React.Componen
 );
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 
-const AccordionContent = ({ ref, className, children, ...props }: React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> & { ref?: React.RefObject<React.ElementRef<typeof AccordionPrimitive.Content> | null> }) => (
+const AccordionContentComponent = ({ ref, className, children, ...props }: React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> & { ref?: React.RefObject<React.ElementRef<typeof AccordionPrimitive.Content> | null> }) => (
   <AccordionPrimitive.Content
     ref={ref}
     className="overflow-hidden text-base text-muted-foreground transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
@@ -59,6 +59,8 @@ const AccordionContent = ({ ref, className, children, ...props }: React.Componen
   </AccordionPrimitive.Content>
 );
 
-AccordionContent.displayName = AccordionPrimitive.Content.displayName;
+AccordionContentComponent.displayName = AccordionPrimitive.Content.displayName;
+
+const AccordionContent = React.memo(AccordionContentComponent);
 
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };
