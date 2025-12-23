@@ -7,36 +7,66 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T16:55:06
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-'use client';
-
-import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import * as React from 'react';
 
 import { cn } from '@/utils/Helpers';
 
-const TooltipProvider = TooltipPrimitive.Provider;
+type TooltipProviderProps = {
+  children: React.ReactNode;
+  delayDuration?: number;
+};
 
-const Tooltip = TooltipPrimitive.Root;
+type TooltipProps = {
+  children: React.ReactNode;
+};
 
-const TooltipTrigger = TooltipPrimitive.Trigger;
+type TooltipTriggerProps = {
+  children: React.ReactNode;
+  asChild?: boolean;
+} & React.HTMLAttributes<HTMLDivElement>;
 
-const TooltipContent = ({ ref, className, sideOffset = 4, ...props }: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & { ref?: React.RefObject<React.ElementRef<typeof TooltipPrimitive.Content> | null> }) => (
-  <TooltipPrimitive.Content
-    ref={ref}
-    sideOffset={sideOffset}
+type TooltipContentProps = {
+  children: React.ReactNode;
+  align?: string;
+} & React.HTMLAttributes<HTMLDivElement>;
+
+const TooltipProvider: React.FC<TooltipProviderProps> = ({ children, delayDuration: _delayDuration }) => (
+  <>{children}</>
+);
+
+const Tooltip: React.FC<TooltipProps> = ({ children }) => <>{children}</>;
+
+const TooltipTrigger: React.FC<TooltipTriggerProps> = ({ children, className, asChild, ...props }) => {
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children as React.ReactElement<any>, {
+      ...props,
+      className: cn((children.props as any).className, className),
+    });
+  }
+
+  return (
+    <div className={cn('inline-block', className)} {...props}>
+      {children}
+    </div>
+  );
+};
+
+const TooltipContent: React.FC<TooltipContentProps> = ({ children, className, align: _align, ...props }) => (
+  <div
     className={cn(
-      'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+      'z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md',
       className,
     )}
     {...props}
-  />
+  >
+    {children}
+  </div>
 );
-TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };
