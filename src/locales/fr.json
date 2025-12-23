@@ -13,7 +13,7 @@
     "company": "Entreprise"
   },
   "Hero": {
-    "follow_twitter": "Suivez @Ixartz sur Twitter",
+    "follow_twitter": "Voir sur GitHub",
     "title": "Le parfait <important>SaaS template</important> pour construire et mettre à l'échelle votre entreprise en toute simplicité.",
     "description": "Un template gratuit et open-source de landing page pour votre entreprise SaaS, construit avec React, TypeScript, Shadcn UI et Tailwind CSS.",
     "primary_button": "Démarrer",

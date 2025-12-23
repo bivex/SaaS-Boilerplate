@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-18T21:10:35
+ * Last Updated: 2025-12-23T16:48:52
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -19,7 +19,7 @@ import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 
-import { DemoBadge } from '@/components/DemoBadge';
+import { LocaleSwitcher } from '@/components/LocaleSwitcher';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AllLocales } from '@/utils/AppConfig';
 
@@ -82,8 +82,9 @@ export default async function RootLayout(props: {
             messages={messages}
           >
             {props.children}
-
-            <DemoBadge />
+            <div className="fixed bottom-4 right-4 z-50">
+              <LocaleSwitcher />
+            </div>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
