@@ -13,31 +13,39 @@
  * Commercial licensing available upon request.
  */
 
-import type {DestinationStream} from 'pino';
 import logtail from '@logtail/pino';
+import type { DestinationStream } from 'pino';
 import pino from 'pino';
 import pretty from 'pino-pretty';
 
 import { Env } from './Env';
 
-let stream: DestinationStream;
+let loggerInstance: pino.Logger | undefined;
 
-if (Env.LOGTAIL_SOURCE_TOKEN) {
-  stream = pino.multistream([
-    await logtail({
-      sourceToken: Env.LOGTAIL_SOURCE_TOKEN,
-      options: {
-        sendLogsToBetterStack: true,
+async function initializeLogger() {
+  let stream: DestinationStream;
+  if (Env.LOGTAIL_SOURCE_TOKEN) {
+    stream = pino.multistream([
+      await logtail({
+        sourceToken: Env.LOGTAIL_SOURCE_TOKEN,
+        options: {
+          sendLogsToBetterStack: true,
+        },
+      }),
+      {
+        stream: pretty(), // Prints logs to the console
       },
-    }),
-    {
-      stream: pretty(), // Prints logs to the console
-    },
-  ]);
-} else {
-  stream = pretty({
-    colorize: true,
-  });
+    ]);
+  } else {
+    stream = pretty({
+      colorize: true,
+    });
+  }
+  loggerInstance = pino({ base: undefined }, stream);
 }
 
-export const logger = pino({ base: undefined }, stream);
+(async () => {
+  await initializeLogger();
+})();
+
+export const logger = loggerInstance!;

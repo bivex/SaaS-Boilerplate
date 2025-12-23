@@ -14,9 +14,9 @@
  */
 
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import createMiddleware from 'next-intl/middleware';
-import { NextResponse } from 'next/server';
 import type { NextFetchEvent, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
 
 import { AllLocales, AppConfig } from './utils/AppConfig';
 
