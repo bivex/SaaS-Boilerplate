@@ -13,9 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import { defineConfig } from 'drizzle-kit';
-
-export default defineConfig({
+export default {
   out: './migrations',
   schema: './src/models/Schema.ts',
   dialect: 'postgresql',
@@ -24,4 +22,4 @@ export default defineConfig({
   },
   verbose: true,
   strict: true,
-});
+};

@@ -103,7 +103,7 @@
     "cross-env": "^10.1.0",
     "cssnano": "^7.1.2",
     "dotenv-cli": "^11.0.0",
-    "drizzle-kit": "^0.31.8",
+    "drizzle-kit": "^0.18.1",
     "eslint": "^9.39.2",
     "eslint-plugin-format": "^1.1.0",
     "eslint-plugin-jest-dom": "^5.5.0",
@@ -136,6 +136,9 @@
   },
   "overrides": {
     "esbuild": "^0.25.0",
+    "external-editor": "^3.1.0",
+    "glob": "^11.0.0",
+    "inquirer": "^9.2.0",
     "tmp": "^0.2.4"
   },
   "config": {
