@@ -17,6 +17,7 @@ import type { Metadata } from 'next';
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
+import { AuthKitProvider } from '@workos-inc/authkit-nextjs/components';
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';
 
 import { ThemeProvider } from '@/components/ThemeProvider';
@@ -71,22 +72,24 @@ export default async function RootLayout(props: {
     <html lang={params.locale} suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
         {/* PRO: Dark mode support for Shadcn UI */}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextIntlClientProvider
-            locale={params.locale}
-            messages={messages}
+        <AuthKitProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
           >
-            {props.children}
-            <div className="fixed bottom-4 right-4 z-50">
-              <LocaleSwitcher />
-            </div>
-          </NextIntlClientProvider>
-        </ThemeProvider>
+            <NextIntlClientProvider
+              locale={params.locale}
+              messages={messages}
+            >
+              {props.children}
+              <div className="fixed bottom-4 right-4 z-50">
+                <LocaleSwitcher />
+              </div>
+            </NextIntlClientProvider>
+          </ThemeProvider>
+        </AuthKitProvider>
       </body>
     </html>
   );
