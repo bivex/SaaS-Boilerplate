@@ -13,9 +13,19 @@
  * Commercial licensing available upon request.
  */
 
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('Authentication Snapshot Tests', () => {
+  beforeEach(() => {
+    // Mock Date to return consistent timestamps for snapshot tests
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2025-12-23T22:42:01.280Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('Error Message Snapshots', () => {
     it('should maintain consistent error message format', () => {
       const errorMessages = {
@@ -96,7 +106,7 @@ describe('Authentication Snapshot Tests', () => {
             "code": "UNAUTHORIZED",
             "message": "Authentication required. Please sign in to continue.",
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T22:02:47.240Z",
+            "timestamp": "2025-12-23T22:42:01.280Z",
           },
           "success": false,
         }
@@ -114,7 +124,7 @@ describe('Authentication Snapshot Tests', () => {
             },
             "message": "Invalid input data",
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T22:02:47.240Z",
+            "timestamp": "2025-12-23T22:42:01.280Z",
           },
           "success": false,
         }
@@ -331,7 +341,7 @@ describe('Authentication Snapshot Tests', () => {
             },
           },
           "success": true,
-          "timestamp": "2025-12-23T22:02:47.243Z",
+          "timestamp": "2025-12-23T22:42:01.282Z",
           "version": "1.0.0",
         }
       `);
@@ -346,7 +356,7 @@ describe('Authentication Snapshot Tests', () => {
             },
           },
           "success": true,
-          "timestamp": "2025-12-23T22:02:47.243Z",
+          "timestamp": "2025-12-23T22:42:01.282Z",
           "version": "1.0.0",
         }
       `);
@@ -358,7 +368,7 @@ describe('Authentication Snapshot Tests', () => {
             "message": "The email or password you entered is incorrect.",
           },
           "success": false,
-          "timestamp": "2025-12-23T22:02:47.243Z",
+          "timestamp": "2025-12-23T22:42:01.282Z",
           "version": "1.0.0",
         }
       `);
@@ -394,7 +404,7 @@ describe('Authentication Snapshot Tests', () => {
         {
           "context": {
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T22:02:47.243Z",
+            "timestamp": "2025-12-23T22:42:01.282Z",
           },
           "result": {
             "data": {
@@ -421,7 +431,7 @@ describe('Authentication Snapshot Tests', () => {
         {
           "context": {
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T22:02:47.243Z",
+            "timestamp": "2025-12-23T22:42:01.282Z",
           },
           "result": {
             "error": {
