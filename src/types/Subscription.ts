@@ -7,15 +7,15 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T19:01:00
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import type { PLAN_ID } from '@/utils/AppConfig';
-
 import type { EnumValues } from './Enum';
+
+import type { PLAN_ID } from '@/utils/AppConfig';
 
 export type PlanId = EnumValues<typeof PLAN_ID>;
 

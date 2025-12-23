@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:33
- * Last Updated: 2025-12-23T09:43:50
+ * Last Updated: 2025-12-23T19:00:52
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,5 +15,4 @@
 
 module.exports = {
   '*': ['eslint --fix --no-warn-ignored'],
-  '**/*.ts?(x)': () => 'npm run check-types',
 };

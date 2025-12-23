@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T19:04:03
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -51,14 +51,14 @@ export const Hero = () => {
           <>
             <a
               className={buttonVariants({ size: 'lg' })}
-              href="https://github.com/ixartz/SaaS-Boilerplate"
+              href="https://github.com/bivex/SaaS-Boilerplate"
             >
               {t('primary_button')}
             </a>
 
             <a
               className={buttonVariants({ variant: 'outline', size: 'lg' })}
-              href="https://github.com/ixartz/SaaS-Boilerplate"
+              href="https://github.com/bivex/SaaS-Boilerplate"
             >
               <Github className="mr-2 size-5" />
               {t('secondary_button')}

@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T12:00:00
- * Last Updated: 2025-12-23T16:46:30
+ * Last Updated: 2025-12-23T19:00:57
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -18,7 +18,10 @@
 import { memo, useCallback, useState } from 'react';
 
 import { Background } from '@/components/Background';
+import { ContactForm } from '@/components/ContactForm';
+import { CSSDebugger } from '@/components/CSSDebugger';
 import { ProfileForm } from '@/components/ExampleForm';
+import { ThemeDemo } from '@/components/ThemeDemo';
 import {
   Accordion,
   AccordionContent,
@@ -217,6 +220,101 @@ const FormSection = memo(({ inputValue, onInputChange }: {
 ));
 FormSection.displayName = 'FormSection';
 
+// Memoized Contact Form Section
+const ContactFormSection = memo(() => (
+  <div className="space-y-4">
+    <h3 className="text-2xl font-bold">Contact Form Component</h3>
+    <div className="max-w-4xl">
+      <ContactForm />
+    </div>
+    <p className="text-sm text-muted-foreground">
+      This contact form demonstrates a complete form implementation with validation,
+      responsive design, and proper accessibility using Shadcn UI components.
+    </p>
+  </div>
+));
+ContactFormSection.displayName = 'ContactFormSection';
+
+// Memoized CSS Debug Section
+const CSSDebugSection = memo(() => {
+  const [showGrid, setShowGrid] = useState(false);
+  const [showOutlines, setShowOutlines] = useState(false);
+  const [showBreakpoints, setShowBreakpoints] = useState(false);
+
+  return (
+    <div className="space-y-4">
+      <h3 className="text-2xl font-bold">CSS Debug Tools</h3>
+      <div className="flex flex-wrap gap-4 p-6 border rounded-lg bg-card">
+        <div className="space-y-3">
+          <h4 className="font-semibold">Debug Controls</h4>
+          <div className="flex flex-col gap-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={showGrid}
+                onChange={e => setShowGrid(e.target.checked)}
+                className="rounded"
+              />
+              <span>Show Grid Overlay</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={showOutlines}
+                onChange={e => setShowOutlines(e.target.checked)}
+                className="rounded"
+              />
+              <span>Show Element Outlines</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={showBreakpoints}
+                onChange={e => setShowBreakpoints(e.target.checked)}
+                className="rounded"
+              />
+              <span>Show Breakpoint Indicator</span>
+            </label>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <h4 className="font-semibold">Console Commands</h4>
+          <div className="text-sm text-muted-foreground space-y-1">
+            <div>
+              <code className="bg-muted px-1 rounded">DebugUtils.logThemeVars()</code>
+              {' '}
+              - Log theme variables
+            </div>
+            <div>
+              <code className="bg-muted px-1 rounded">DebugUtils.toggleGrid()</code>
+              {' '}
+              - Toggle grid
+            </div>
+            <div>
+              <code className="bg-muted px-1 rounded">DebugUtils.toggleOutlines()</code>
+              {' '}
+              - Toggle outlines
+            </div>
+            <div>
+              <code className="bg-muted px-1 rounded">DebugUtils.debugElement('.selector')</code>
+              {' '}
+              - Debug element
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <CSSDebugger
+        showGrid={showGrid}
+        showOutlines={showOutlines}
+        showBreakpoints={showBreakpoints}
+      />
+    </div>
+  );
+});
+CSSDebugSection.displayName = 'CSSDebugSection';
+
 // Memoized Card Components Section
 const CardSection = memo(() => (
   <div className="space-y-4">
@@ -306,6 +404,13 @@ const UIComponentsComponent = () => {
         <div className="mx-auto max-w-4xl space-y-12">
           <ThemeDemoSection />
           <Separator />
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold">Tailwind CSS 4 Theme Demo</h3>
+            <ThemeDemo />
+          </div>
+          <Separator />
+          <CSSDebugSection />
+          <Separator />
           <BadgeSection />
           <Separator />
           <ButtonSection />
@@ -313,6 +418,8 @@ const UIComponentsComponent = () => {
           <TooltipSection />
           <Separator />
           <FormSection inputValue={inputValue} onInputChange={handleInputChange} />
+          <Separator />
+          <ContactFormSection />
           <Separator />
           <CardSection />
           <Separator />

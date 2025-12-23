@@ -7,16 +7,16 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T09:43:51
+ * Last Updated: 2025-12-23T19:01:00
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
 import type * as LabelPrimitive from '@radix-ui/react-label';
+import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
-import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 import { Controller, FormProvider } from 'react-hook-form';
 
 import { Label } from '@/components/ui/label';
