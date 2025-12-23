@@ -30,10 +30,18 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
+// Disable Turbopack for Tailwind v4 compatibility
+const nextConfig = {
+  experimental: {
+    turbo: false,
+  },
+};
+
 /** @type {import('next').NextConfig} */
 export default withSentryConfig(
   bundleAnalyzer(
     withNextIntlConfig({
+      ...nextConfig,
       poweredByHeader: false,
       reactStrictMode: true,
       serverExternalPackages: ['@electric-sql/pglite'],
