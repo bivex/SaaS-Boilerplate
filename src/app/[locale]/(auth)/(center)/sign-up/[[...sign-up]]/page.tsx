@@ -15,17 +15,17 @@
 
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-import { authClient } from '@/libs/auth-client';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { authClient } from '@/libs/auth-client';
 import { getI18nPath } from '@/utils/Helpers';
 
 export default function SignUpPage() {
@@ -61,7 +61,7 @@ export default function SignUpPage() {
       } else {
         router.push('/dashboard');
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -77,7 +77,7 @@ export default function SignUpPage() {
       if (result.error) {
         setError(result.error.message || 'An error occurred');
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
     }
   };
@@ -105,7 +105,7 @@ export default function SignUpPage() {
                 id="name"
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 required
                 disabled={loading}
               />
@@ -116,7 +116,7 @@ export default function SignUpPage() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
                 disabled={loading}
               />
@@ -127,7 +127,7 @@ export default function SignUpPage() {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 required
                 disabled={loading}
               />
@@ -138,7 +138,7 @@ export default function SignUpPage() {
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
                 required
                 disabled={loading}
               />
@@ -177,7 +177,8 @@ export default function SignUpPage() {
           </div>
 
           <div className="text-center text-sm">
-            {t('already_have_account')}{' '}
+            {t('already_have_account')}
+            {' '}
             <Link
               href={getI18nPath('/sign-in', 'en')} // TODO: Get current locale
               className="underline underline-offset-4 hover:text-primary"
