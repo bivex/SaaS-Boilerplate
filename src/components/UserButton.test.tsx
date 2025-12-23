@@ -14,6 +14,7 @@
  */
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSignOut, useUser } from '@/hooks/useAuth';
 import { UserButton } from './UserButton';
@@ -42,6 +43,7 @@ describe('UserButton', () => {
 
   it('should show loading state when user data is loading', () => {
     vi.mocked(useUser).mockReturnValue({ user: null, loading: true });
+    vi.mocked(useSignOut).mockReturnValue({ signOut: vi.fn() });
 
     render(<UserButton />);
 
@@ -83,7 +85,8 @@ describe('UserButton', () => {
     expect(avatar).toBeInTheDocument();
 
     // Click to open dropdown
-    fireEvent.click(avatar);
+    const user = userEvent.setup();
+    await user.click(avatar);
 
     // Check menu items
     await waitFor(() => {
@@ -143,10 +146,15 @@ describe('UserButton', () => {
     render(<UserButton />);
 
     const avatar = screen.getByRole('button');
-    fireEvent.click(avatar);
+    const user = userEvent.setup();
+    await user.click(avatar);
+
+    await waitFor(() => {
+      expect(screen.getByText('profile')).toBeInTheDocument();
+    });
 
     const profileLink = screen.getByText('profile');
-    fireEvent.click(profileLink);
+    await user.click(profileLink);
 
     expect(mockPush).toHaveBeenCalledWith('/dashboard/user-profile');
   });
@@ -164,10 +172,15 @@ describe('UserButton', () => {
     render(<UserButton />);
 
     const avatar = screen.getByRole('button');
-    fireEvent.click(avatar);
+    const user = userEvent.setup();
+    await user.click(avatar);
+
+    await waitFor(() => {
+      expect(screen.getByText('organization')).toBeInTheDocument();
+    });
 
     const orgLink = screen.getByText('organization');
-    fireEvent.click(orgLink);
+    await user.click(orgLink);
 
     expect(mockPush).toHaveBeenCalledWith('/dashboard/organization-profile');
   });
@@ -186,10 +199,15 @@ describe('UserButton', () => {
     render(<UserButton />);
 
     const avatar = screen.getByRole('button');
-    fireEvent.click(avatar);
+    const user = userEvent.setup();
+    await user.click(avatar);
+
+    await waitFor(() => {
+      expect(screen.getByText('sign_out')).toBeInTheDocument();
+    });
 
     const signOutButton = screen.getByText('sign_out');
-    fireEvent.click(signOutButton);
+    await user.click(signOutButton);
 
     expect(mockSignOut).toHaveBeenCalledTimes(1);
   });

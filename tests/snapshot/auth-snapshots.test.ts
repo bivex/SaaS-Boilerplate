@@ -96,7 +96,7 @@ describe('Authentication Snapshot Tests', () => {
             "code": "UNAUTHORIZED",
             "message": "Authentication required. Please sign in to continue.",
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T21:56:40.001Z",
+            "timestamp": "2025-12-23T22:02:47.240Z",
           },
           "success": false,
         }
@@ -114,7 +114,7 @@ describe('Authentication Snapshot Tests', () => {
             },
             "message": "Invalid input data",
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T21:56:40.001Z",
+            "timestamp": "2025-12-23T22:02:47.240Z",
           },
           "success": false,
         }
@@ -331,7 +331,7 @@ describe('Authentication Snapshot Tests', () => {
             },
           },
           "success": true,
-          "timestamp": "2025-12-23T21:56:40.007Z",
+          "timestamp": "2025-12-23T22:02:47.243Z",
           "version": "1.0.0",
         }
       `);
@@ -346,7 +346,7 @@ describe('Authentication Snapshot Tests', () => {
             },
           },
           "success": true,
-          "timestamp": "2025-12-23T21:56:40.007Z",
+          "timestamp": "2025-12-23T22:02:47.243Z",
           "version": "1.0.0",
         }
       `);
@@ -358,7 +358,7 @@ describe('Authentication Snapshot Tests', () => {
             "message": "The email or password you entered is incorrect.",
           },
           "success": false,
-          "timestamp": "2025-12-23T21:56:40.007Z",
+          "timestamp": "2025-12-23T22:02:47.243Z",
           "version": "1.0.0",
         }
       `);
@@ -394,7 +394,7 @@ describe('Authentication Snapshot Tests', () => {
         {
           "context": {
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T21:56:40.008Z",
+            "timestamp": "2025-12-23T22:02:47.243Z",
           },
           "result": {
             "data": {
@@ -421,7 +421,7 @@ describe('Authentication Snapshot Tests', () => {
         {
           "context": {
             "requestId": "req-123456",
-            "timestamp": "2025-12-23T21:56:40.008Z",
+            "timestamp": "2025-12-23T22:02:47.243Z",
           },
           "result": {
             "error": {

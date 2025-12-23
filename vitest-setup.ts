@@ -7,13 +7,14 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T20:45:00
+ * Last Updated: 2025-12-23T22:09:08
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
 import '@testing-library/jest-dom';
+import 'vitest-mock-extended';
 import { vi } from 'vitest';
 import { TextEncoder, TextDecoder } from 'util';
 
@@ -30,6 +31,7 @@ global.TextEncoder = TextEncoder;
 
 // Ensure jsdom globals are available
 if (typeof window !== 'undefined') {
+  // Mock matchMedia
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: vi.fn().mockImplementation(query => ({
@@ -42,5 +44,20 @@ if (typeof window !== 'undefined') {
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
     })),
+  });
+
+  // Mock location
+  delete (window as any).location;
+  (window as any).location = {
+    href: 'http://localhost:3000/',
+    pathname: '/',
+    search: '',
+    hash: '',
+  };
+
+  // Make href writable
+  Object.defineProperty((window as any).location, 'href', {
+    writable: true,
+    value: 'http://localhost:3000/',
   });
 }

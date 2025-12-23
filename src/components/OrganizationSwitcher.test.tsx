@@ -14,6 +14,7 @@
  */
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSession } from '@/hooks/useAuth';
 import { OrganizationSwitcher } from './OrganizationSwitcher';
@@ -59,7 +60,8 @@ describe('OrganizationSwitcher', () => {
 
     expect(createButton).toBeInTheDocument();
 
-    fireEvent.click(createButton);
+    const user = userEvent.setup();
+    await user.click(createButton);
 
     expect(mockPush).toHaveBeenCalledWith('/onboarding/organization-selection');
   });
@@ -126,7 +128,8 @@ describe('OrganizationSwitcher', () => {
     render(<OrganizationSwitcher />);
 
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+    const user = userEvent.setup();
+    await user.click(button);
 
     await waitFor(() => {
       expect(screen.getByText('organizations')).toBeInTheDocument();
@@ -153,15 +156,16 @@ describe('OrganizationSwitcher', () => {
     render(<OrganizationSwitcher />);
 
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+    const user = userEvent.setup();
+    await user.click(button);
 
-    const manageButton = screen.getByText('manage_orgs');
-    fireEvent.click(manageButton);
+    const manageButton = await screen.findByText('manage_orgs');
+    await user.click(manageButton);
 
     expect(mockPush).toHaveBeenCalledWith('/dashboard/organization-profile');
   });
 
-  it('should hide personal option when hidePersonal is true', () => {
+  it('should hide personal option when hidePersonal is true', async () => {
     vi.mocked(useSession).mockReturnValue({
       session: {
         user: { id: '1', organizations: [] },
@@ -173,13 +177,19 @@ describe('OrganizationSwitcher', () => {
     render(<OrganizationSwitcher hidePersonal />);
 
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+    const user = userEvent.setup();
+    await user.click(button);
+
+    // Wait for dropdown to open, then check personal option is not present
+    await waitFor(() => {
+      expect(screen.getByText('organizations')).toBeInTheDocument();
+    });
 
     // Personal option should not be in dropdown
     expect(screen.queryByText('personal')).not.toBeInTheDocument();
   });
 
-  it('should show personal option when hidePersonal is false', () => {
+  it('should show personal option when hidePersonal is false', async () => {
     vi.mocked(useSession).mockReturnValue({
       session: {
         user: { id: '1', organizations: [] },
@@ -191,8 +201,11 @@ describe('OrganizationSwitcher', () => {
     render(<OrganizationSwitcher hidePersonal={false} />);
 
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+    const user = userEvent.setup();
+    await user.click(button);
 
-    expect(screen.getByText('personal')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('personal')).toBeInTheDocument();
+    });
   });
 });

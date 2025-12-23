@@ -13,9 +13,9 @@
  * Commercial licensing available upon request.
  */
 
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
 
 import { ToggleMenuButton } from './ToggleMenuButton';
 
