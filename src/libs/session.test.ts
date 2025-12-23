@@ -13,6 +13,7 @@
  * Commercial licensing available upon request.
  */
 
+import { renderHook, waitFor, act } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock better-auth client
