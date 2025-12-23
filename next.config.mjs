@@ -30,12 +30,8 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
-// Disable Turbopack for Tailwind v4 compatibility
-const nextConfig = {
-  experimental: {
-    turbo: false,
-  },
-};
+// Tailwind v4 compatibility - Turbopack disabled by default if needed
+const nextConfig = {};
 
 /** @type {import('next').NextConfig} */
 export default withSentryConfig(
