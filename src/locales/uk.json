@@ -1,0 +1,166 @@
+{
+  "Index": {
+    "meta_title": "SaaS Template - Ідеальний SaaS шаблон для створення та масштабування вашого бізнесу.",
+    "meta_description": "Безкоштовний та відкритий шаблон цільової сторінки для вашого SaaS бізнесу, побудований з React, TypeScript, Shadcn UI та Tailwind CSS."
+  },
+  "Navbar": {
+    "sign_in": "Увійти",
+    "sign_up": "Реєстрація",
+    "product": "Продукт",
+    "docs": "Документи",
+    "blog": "Блог",
+    "community": "Спільнота",
+    "company": "Компанія"
+  },
+  "Hero": {
+    "follow_twitter": "Переглянути на GitHub",
+    "title": "Ідеальний <important>SaaS шаблон</important> для створення та масштабування вашого бізнесу.",
+    "description": "Безкоштовний та відкритий шаблон цільової сторінки для вашого SaaS бізнесу, побудований з React, TypeScript, Shadcn UI та Tailwind CSS.",
+    "primary_button": "Почати",
+    "secondary_button": "Поставити зірку на GitHub"
+  },
+  "Sponsors": {
+    "title": "Спонсорується"
+  },
+  "Features": {
+    "section_subtitle": "Функції",
+    "section_title": "Розкрийте повний потенціал SaaS шаблону",
+    "section_description": "Безкоштовний та відкритий шаблон цільової сторінки для вашого SaaS бізнесу, побудований з React, TypeScript, Shadcn UI та Tailwind CSS.",
+    "feature1_title": "Node.js",
+    "feature2_title": "React",
+    "feature3_title": "Tailwind CSS",
+    "feature4_title": "TypeScript",
+    "feature5_title": "Shadcn UI",
+    "feature6_title": "ESLint",
+    "feature_description": "Безкоштовний та відкритий шаблон цільової сторінки для вашого SaaS бізнесу, побудований з React, TypeScript, Shadcn UI та Tailwind CSS."
+  },
+  "Pricing": {
+    "section_subtitle": "Функції",
+    "section_title": "Розкрийте повний потенціал SaaS шаблону",
+    "section_description": "Безкоштовний та відкритий шаблон цільової сторінки для вашого SaaS бізнесу, побудований з React, TypeScript, Shadcn UI та Tailwind CSS.",
+    "button_text": "Почати"
+  },
+  "PricingPlan": {
+    "free_plan_name": "Безкоштовний",
+    "premium_plan_name": "Преміум",
+    "enterprise_plan_name": "Корпоративний",
+    "free_plan_description": "Для приватних осіб",
+    "premium_plan_description": "Для малих команд",
+    "enterprise_plan_description": "Для лідерів галузі",
+    "feature_team_member": "{number} учасників",
+    "feature_website": "{number} сайтів",
+    "feature_storage": "{number} ГБ сховища",
+    "feature_transfer": "{number} ТБ трафіку",
+    "feature_email_support": "Підтримка по email",
+    "plan_interval_month": "місяць",
+    "plan_interval_year": "рік",
+    "next_renew_date": "Ваша підписка буде поновлена {date}"
+  },
+  "FAQ": {
+    "question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam enim dui, id consequat turpis ullamcorper ac. Mauris id quam dolor. Nullam eu egestas turpis. Proin risus elit, sollicitudin in mi a, accumsan euismod turpis. In euismod mi sed diam tristique hendrerit."
+  },
+  "CTA": {
+    "title": "Ви готові?",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "button_text": "Поставити зірку на GitHub"
+  },
+  "Footer": {
+    "product": "Продукт",
+    "docs": "Документи",
+    "blog": "Блог",
+    "community": "Спільнота",
+    "company": "Компанія",
+    "terms_of_service": "Умови використання",
+    "privacy_policy": "Політика конфіденційності",
+    "designed_by": "Дизайн від <author></author>."
+  },
+  "ProtectFallback": {
+    "not_enough_permission": "У вас немає дозволів для виконання цієї дії"
+  },
+  "SignIn": {
+    "meta_title": "Увійти",
+    "meta_description": "Легко увійдіть у свій обліковий запис за допомогою нашого зручного процесу входу."
+  },
+  "SignUp": {
+    "meta_title": "Реєстрація",
+    "meta_description": "Легко створіть обліковий запис за допомогою нашого інтуїтивного процесу реєстрації."
+  },
+  "DashboardLayout": {
+    "home": "Головна",
+    "todos": "Завдання",
+    "members": "Учасники",
+    "billing": "Оплата",
+    "settings": "Налаштування"
+  },
+  "Dashboard": {
+    "meta_title": "Панель управління SaaS шаблону",
+    "meta_description": "Безкоштовний та відкритий шаблон цільової сторінки для вашого SaaS бізнесу, побудований з Next.js, TypeScript, Shadcn UI та Tailwind CSS."
+  },
+  "DashboardIndex": {
+    "title_bar": "Панель управління",
+    "title_bar_description": "Ласкаво просимо до вашої панелі управління",
+    "message_state_title": "Почнемо",
+    "message_state_description": "Ви можете налаштувати цю сторінку, відредагувавши файл <code>dashboard/page.tsx</code>",
+    "message_state_button": "Поставити зірку на GitHub",
+    "message_state_alternative": "Хочете більше функцій та останні оновлення Next.js 16? Спробуйте <url></url>."
+  },
+  "UserProfile": {
+    "title_bar": "Профіль користувача",
+    "title_bar_description": "Перегляд та управління профілем користувача"
+  },
+  "OrganizationProfile": {
+    "title_bar": "Управління організацією",
+    "title_bar_description": "Керування вашою організацією"
+  },
+  "Billing": {
+    "title_bar": "Оплата",
+    "title_bar_description": "Управління оплатою та підпискою",
+    "current_section_title": "Поточний план",
+    "current_section_description": "Налаштуйте план оплати для найкращого відповідності вашим вимогам",
+    "manage_subscription_button": "Керувати підпискою"
+  },
+  "BillingOptions": {
+    "current_plan": "Поточний план",
+    "upgrade_plan": "Почати"
+  },
+  "CheckoutConfirmation": {
+    "title_bar": "Підтвердження оплати",
+    "message_state_title": "Оплата успішна",
+    "message_state_description": "Ваш платіж було успішно оброблено. Дякуємо за покупку!",
+    "message_state_button": "Повернутися до оплати"
+  },
+  "DataTable": {
+    "no_results": "Результатів немає."
+  },
+  "Todos": {
+    "title_bar": "Список завдань",
+    "title_bar_description": "Перегляд та управління списком завдань",
+    "add_todo_button": "Нове завдання"
+  },
+  "TodoTableColumns": {
+    "open_menu": "Відкрити меню",
+    "edit": "Редагувати",
+    "delete": "Видалити",
+    "title_header": "Заголовок",
+    "message_header": "Повідомлення",
+    "created_at_header": "Створено"
+  },
+  "AddTodo": {
+    "title_bar": "Додати завдання",
+    "add_todo_section_title": "Створити нове завдання",
+    "add_todo_section_description": "Заповніть форму нижче, щоб створити нове завдання"
+  },
+  "EditTodo": {
+    "title_bar": "Редагувати завдання",
+    "edit_todo_section_title": "Змінити завдання",
+    "edit_todo_section_description": "Заповніть форму нижче, щоб змінити завдання"
+  },
+  "TodoForm": {
+    "title_label": "Заголовок",
+    "title_description": "Введіть описовий заголовок для вашого завдання.",
+    "message_title": "Повідомлення",
+    "message_description": "Введіть детальне повідомлення для вашого завдання.",
+    "submit_button": "Надіслати"
+  }
+}
