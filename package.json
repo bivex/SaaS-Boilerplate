@@ -134,6 +134,10 @@
     "vitest": "^4.0.16",
     "vitest-fail-on-console": "^0.10.1"
   },
+  "overrides": {
+    "esbuild": "^0.25.0",
+    "tmp": "^0.2.4"
+  },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"

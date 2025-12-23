@@ -13,7 +13,8 @@
  * Commercial licensing available upon request.
  */
 
-import { type ClassValue, clsx } from 'clsx';
+import type { ClassValue } from 'clsx';
+import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 import { AppConfig } from './AppConfig';

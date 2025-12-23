@@ -13,8 +13,9 @@
  * Commercial licensing available upon request.
  */
 
+import type {DestinationStream} from 'pino';
 import logtail from '@logtail/pino';
-import pino, { type DestinationStream } from 'pino';
+import pino from 'pino';
 import pretty from 'pino-pretty';
 
 import { Env } from './Env';

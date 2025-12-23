@@ -13,7 +13,8 @@
  * Commercial licensing available upon request.
  */
 
-import { type ForwardedRef, forwardRef } from 'react';
+import type { ForwardedRef } from 'react';
+import { forwardRef } from 'react';
 
 import { Button } from '@/components/ui/button';
 
