@@ -43,6 +43,58 @@ export const UIComponents = () => {
         description="Explore the power of Shadcn UI components with interactive examples"
       >
         <div className="mx-auto max-w-4xl space-y-12">
+          {/* Theme Demonstration */}
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold">Theme Support</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-6 rounded-lg border bg-card">
+                <h4 className="text-lg font-semibold mb-3 text-card-foreground">Light Theme Colors</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-background border"></div>
+                    <span className="text-sm">Background</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-foreground"></div>
+                    <span className="text-sm">Foreground</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-primary"></div>
+                    <span className="text-sm">Primary</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-secondary"></div>
+                    <span className="text-sm">Secondary</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 rounded-lg border bg-card">
+                <h4 className="text-lg font-semibold mb-3 text-card-foreground">Dark Theme Colors</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-slate-900 border border-slate-700"></div>
+                    <span className="text-sm">Dark Background</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-slate-100"></div>
+                    <span className="text-sm">Dark Foreground</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-blue-500"></div>
+                    <span className="text-sm">Dark Primary</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 rounded bg-slate-800"></div>
+                    <span className="text-sm">Dark Secondary</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
           {/* Badge Components */}
           <div className="space-y-4">
             <h3 className="text-2xl font-bold">Badge Components</h3>
@@ -52,6 +104,28 @@ export const UIComponents = () => {
               <Badge variant="destructive">Destructive</Badge>
               <Badge variant="outline">Outline</Badge>
             </div>
+            <p className="text-sm text-muted-foreground">
+              All badges automatically adapt to light and dark themes using CSS custom properties.
+            </p>
+          </div>
+
+          <Separator />
+
+          {/* Button Variants */}
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold">Button Variants</h3>
+            <div className="flex flex-wrap gap-3">
+              <Button>Default</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="outline">Outline</Button>
+              <Button variant="ghost">Ghost</Button>
+              <Button variant="destructive">Destructive</Button>
+            </div>
+            <div className="flex flex-wrap gap-3 mt-2">
+              <Button size="sm">Small</Button>
+              <Button size="default">Default</Button>
+              <Button size="lg">Large</Button>
+            </div>
           </div>
 
           <Separator />
@@ -60,7 +134,7 @@ export const UIComponents = () => {
           <div className="space-y-4">
             <h3 className="text-2xl font-bold">Tooltip Components</h3>
             <TooltipProvider>
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-wrap">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="outline">Hover me</Button>
@@ -89,6 +163,9 @@ export const UIComponents = () => {
                 </Tooltip>
               </div>
             </TooltipProvider>
+            <p className="text-sm text-muted-foreground">
+              Tooltips provide contextual information and adapt to theme colors.
+            </p>
           </div>
 
           <Separator />
@@ -114,6 +191,45 @@ export const UIComponents = () => {
                   type="text"
                   placeholder="Enter your name"
                 />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="message">Message</Label>
+                <Input
+                  id="message"
+                  placeholder="Enter your message"
+                />
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Form inputs automatically style themselves based on the current theme.
+            </p>
+          </div>
+
+          <Separator />
+
+          {/* Card Example */}
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold">Card Components</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-6 rounded-lg border bg-card text-card-foreground">
+                <h4 className="text-lg font-semibold mb-2">Sample Card</h4>
+                <p className="text-sm text-muted-foreground mb-4">
+                  This card automatically adapts to light and dark themes.
+                  The background, text, and border colors change based on your theme preference.
+                </p>
+                <Button size="sm">Learn More</Button>
+              </div>
+
+              <div className="p-6 rounded-lg border bg-card text-card-foreground">
+                <h4 className="text-lg font-semibold mb-2">Theme Aware</h4>
+                <p className="text-sm text-muted-foreground mb-4">
+                  All Shadcn UI components use CSS custom properties that automatically
+                  switch between light and dark values.
+                </p>
+                <div className="flex gap-2">
+                  <Badge variant="secondary">Light</Badge>
+                  <Badge variant="secondary">Dark</Badge>
+                </div>
               </div>
             </div>
           </div>
