@@ -7,15 +7,15 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T10:15:00
- * Last Updated: 2025-12-23T16:16:01
+ * Last Updated: 2025-12-23T17:18:28
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import type { Config } from 'tailwindcss';
+/** @type {import('tailwindcss').Config} */
 
-const config: Config = {
+const config = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
@@ -79,4 +79,4 @@ const config: Config = {
   plugins: [],
 };
 
-export default config;
+module.exports = config;
