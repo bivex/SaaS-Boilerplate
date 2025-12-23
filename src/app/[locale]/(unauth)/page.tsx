@@ -25,6 +25,7 @@ import { Navbar } from '@/templates/Navbar';
 import { Pricing } from '@/templates/Pricing';
 import { Sponsors } from '@/templates/Sponsors';
 import { UIComponents } from '@/templates/UIComponents';
+import { TestimonialsSection } from '@/components/ui/testimonial-v2';
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }) {
   const params = await props.params;
@@ -50,6 +51,7 @@ const IndexPage = async (props: { params: Promise<{ locale: string }> }) => {
       <Hero />
       <Sponsors />
       <Features />
+      <TestimonialsSection />
       <UIComponents />
       <Pricing />
       <FAQ />
