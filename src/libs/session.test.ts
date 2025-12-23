@@ -32,15 +32,10 @@ describe('Session Management', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    vi.useFakeTimers();
     // Reset global state for useAuth hook
     const { __resetGlobalStateForTesting } = await import('@/hooks/useAuth');
     __resetGlobalStateForTesting();
   });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
 
   describe('Session Refresh', () => {
     it('should refresh session when close to expiration', async () => {
@@ -168,72 +163,11 @@ describe('Session Management', () => {
     });
   });
 
-
-    it('should handle invalid token errors', async () => {
-      const { useSession } = await import('@/hooks/useAuth');
-
-      mockAuthClient.getSession.mockRejectedValue(new Error('Invalid token'));
-
-      const { result } = renderHook(() => useSession());
-
-      await act(async () => {
-        vi.advanceTimersByTime(100);
-      });
-
-      expect(result.current.session).toBeNull();
-    });
-
-    it('should handle network errors during session validation', async () => {
-      const { useSession } = await import('@/hooks/useAuth');
-
-      mockAuthClient.getSession.mockRejectedValue(new Error('Network error'));
-
-      const { result } = renderHook(() => useSession());
-
-      await act(async () => {
-        vi.advanceTimersByTime(100);
-      });
-
-      expect(result.current.session).toBeNull();
-      expect(result.current.loading).toBe(false);
-    });
-
-    it('should handle malformed session data', async () => {
-      const { useSession } = await import('@/hooks/useAuth');
-
-      mockAuthClient.getSession.mockResolvedValue({
-        data: {
-          user: null, // Malformed - no user
-          session: { id: 'session-1' },
-        },
-      });
-
-      const { result } = renderHook(() => useSession());
-
-      // Wait for loading to complete
-      await waitFor(() => {
-        expect(result.current.loading).toBe(false);
-      });
-
-      expect(result.current.session).toBeDefined();
-      // The session exists but user is null (malformed)
-      expect(result.current.session).toEqual({
-        user: null,
-        session: { id: 'session-1' },
-      });
-    });
-  });
-
   describe('Session Persistence', () => {
     beforeEach(async () => {
-      vi.useFakeTimers();
       // Reset global state for useAuth hook
       const { __resetGlobalStateForTesting } = await import('@/hooks/useAuth');
       __resetGlobalStateForTesting();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
     });
 
     it('should persist session across component re-mounts', async () => {
@@ -250,9 +184,9 @@ describe('Session Management', () => {
       // First mount - this will fetch and cache the session
       const { result: result1, unmount: unmount1 } = renderHook(() => useSession());
 
-      // Wait for session to load
+      // Wait for session to load and loading to complete
       await waitFor(() => {
-        expect(result1.current.session).toBeDefined();
+        expect(result1.current.loading).toBe(false);
       });
 
       expect(result1.current.session?.user?.id).toBe('user-1');
@@ -265,7 +199,7 @@ describe('Session Management', () => {
 
       // Wait for session to be available (should be immediate from cache)
       await waitFor(() => {
-        expect(result2.current.session).toBeDefined();
+        expect(result2.current.loading).toBe(false);
       });
 
       // Session should still be available from cache
@@ -278,13 +212,11 @@ describe('Session Management', () => {
       let callCount = 0;
       mockAuthClient.getSession.mockImplementation(() => {
         callCount++;
-        return new Promise(resolve => {
-          setTimeout(() => resolve({
-            data: {
-              user: { id: 'user-1', email: 'test@example.com' },
-              session: { id: 'session-1' },
-            },
-          }), 10);
+        return Promise.resolve({
+          data: {
+            user: { id: 'user-1', email: 'test@example.com' },
+            session: { id: 'session-1' },
+          },
         });
       });
 
@@ -294,8 +226,8 @@ describe('Session Management', () => {
 
       // Wait for both sessions to load
       await waitFor(() => {
-        expect(result1.current.session).toBeDefined();
-        expect(result2.current.session).toBeDefined();
+        expect(result1.current.loading).toBe(false);
+        expect(result2.current.loading).toBe(false);
       });
 
       // Both should have session data
@@ -309,14 +241,9 @@ describe('Session Management', () => {
 
   describe('Authentication Errors', () => {
     beforeEach(async () => {
-      vi.useFakeTimers();
       // Reset global state for useAuth hook
       const { __resetGlobalStateForTesting } = await import('@/hooks/useAuth');
       __resetGlobalStateForTesting();
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
     });
 
     it('should handle invalid token errors', async () => {
@@ -326,8 +253,9 @@ describe('Session Management', () => {
 
       const { result } = renderHook(() => useSession());
 
-      await act(async () => {
-        vi.advanceTimersByTime(100);
+      // Wait for loading to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
       });
 
       expect(result.current.session).toBeNull();
@@ -340,8 +268,9 @@ describe('Session Management', () => {
 
       const { result } = renderHook(() => useSession());
 
-      await act(async () => {
-        vi.advanceTimersByTime(100);
+      // Wait for loading to complete
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
       });
 
       expect(result.current.session).toBeNull();
@@ -373,5 +302,4 @@ describe('Session Management', () => {
       });
     });
   });
-
-// These helper functions are now imported from @testing-library/react
+});
