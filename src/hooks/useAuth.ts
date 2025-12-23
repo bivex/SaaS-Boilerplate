@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-24T01:00:00
- * Last Updated: 2025-12-24T01:00:00
+ * Last Updated: 2025-12-23T23:39:48
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -186,17 +186,37 @@ export function useUser() {
 export function useSignOut() {
   const signOut = useCallback(async () => {
     try {
+      // Sign out on the server
       await authClient.signOut();
+
+      // Clear the session promise cache to force a fresh fetch
+      sessionPromise = null;
+
       // Clear global session state
       notifySubscribers(null, false);
+
+      // Redirect to home page (full reload to clear all state)
       window.location.href = '/';
     } catch (error) {
       console.error('Error signing out:', error);
-      throw error;
+      // Even if sign-out fails, clear local state and redirect
+      sessionPromise = null;
+      notifySubscribers(null, false);
+      window.location.href = '/';
     }
   }, []);
 
   return { signOut };
+}
+
+// Manually refresh the session state
+export async function refreshSessionState(): Promise<any> {
+  // Clear the session promise cache to force a fresh fetch
+  sessionPromise = null;
+
+  const session = await fetchSession();
+  notifySubscribers(session, false);
+  return session;
 }
 
 // Test utility function to reset global state

@@ -262,7 +262,6 @@ describe('Complete Authentication Flow Integration', () => {
           <div>
             <h2>Sign In</h2>
             <button onClick={() => handleOAuthSignIn('google')}>Sign in with Google</button>
-            <button onClick={() => handleOAuthSignIn('github')}>Sign in with GitHub</button>
           </div>
         );
       };

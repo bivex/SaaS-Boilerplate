@@ -478,23 +478,13 @@ describe('Security Components', () => {
           clientSecret: 'test-google-secret',
           redirectUri: 'http://localhost:3000/api/auth/google/callback',
         },
-        github: {
-          clientId: 'test-github-client-id',
-          clientSecret: 'test-github-secret',
-          redirectUri: 'http://localhost:3000/api/auth/github/callback',
-        },
       });
 
       const googleUrl = oauthManager.generateAuthUrl('google', 'random-state-123');
-      const githubUrl = oauthManager.generateAuthUrl('github', 'random-state-456');
 
       expect(googleUrl).toContain('accounts.google.com');
       expect(googleUrl).toContain('openid+email+profile'); // URLSearchParams encodes spaces as +
       expect(googleUrl).toContain('random-state-123');
-
-      expect(githubUrl).toContain('github.com');
-      expect(githubUrl).toContain('user%3Aemail');
-      expect(githubUrl).toContain('random-state-456');
     });
 
     it('should validate OAuth state parameter', () => {
@@ -516,24 +506,15 @@ describe('Security Components', () => {
             refresh_token: 'google-refresh-token',
             expires_in: 3600,
           },
-          github: {
-            access_token: 'github-access-token',
-            refresh_token: null,
-            expires_in: 3600,
-          },
         };
 
         return tokens[provider] || null;
       };
 
       const googleTokens = await exchangeCodeForToken('google', 'auth-code-123');
-      const githubTokens = await exchangeCodeForToken('github', 'auth-code-456');
 
       expect(googleTokens?.access_token).toBe('google-access-token');
       expect(googleTokens?.refresh_token).toBe('google-refresh-token');
-
-      expect(githubTokens?.access_token).toBe('github-access-token');
-      expect(githubTokens?.refresh_token).toBeNull();
     });
 
     it('should fetch user profile from OAuth provider', async () => {
@@ -545,26 +526,16 @@ describe('Security Components', () => {
             name: 'Google User',
             picture: 'https://example.com/avatar.jpg',
           },
-          github: {
-            id: 'github-user-456',
-            email: 'user@github.com',
-            name: 'GitHub User',
-            avatar_url: 'https://github.com/avatar.jpg',
-          },
         };
 
         return profiles[provider] || null;
       };
 
       const googleProfile = await fetchUserProfile('google', 'access-token');
-      const githubProfile = await fetchUserProfile('github', 'access-token');
 
       expect(googleProfile?.email).toBe('user@gmail.com');
       expect(googleProfile?.name).toBe('Google User');
       expect(googleProfile?.picture).toBe('https://example.com/avatar.jpg');
-
-      expect(githubProfile?.email).toBe('user@github.com');
-      expect(githubProfile?.avatar_url).toBe('https://github.com/avatar.jpg');
     });
 
     it('should handle OAuth errors gracefully', async () => {

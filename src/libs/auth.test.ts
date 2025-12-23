@@ -22,8 +22,6 @@ vi.mock('@/libs/Env', () => ({
     BETTER_AUTH_URL: 'http://localhost:3000',
     GOOGLE_CLIENT_ID: 'test-google-client-id',
     GOOGLE_CLIENT_SECRET: 'test-google-client-secret',
-    GITHUB_CLIENT_ID: 'test-github-client-id',
-    GITHUB_CLIENT_SECRET: 'test-github-client-secret',
   },
 }));
 
@@ -53,7 +51,7 @@ vi.mock('better-auth', () => ({
       secret: 'test-secret-key-for-testing',
       emailAndPassword: {
         enabled: true,
-        requireEmailVerification: true,
+        requireEmailVerification: false,
         sendResetPassword: vi.fn(),
         sendEmailVerification: vi.fn(),
       },
@@ -61,10 +59,6 @@ vi.mock('better-auth', () => ({
         google: {
           clientId: 'test-google-client-id',
           clientSecret: 'test-google-client-secret',
-        },
-        github: {
-          clientId: 'test-github-client-id',
-          clientSecret: 'test-github-client-secret',
         },
       },
       emailTemplates: {
@@ -120,7 +114,6 @@ describe('Better Auth Configuration', () => {
     it('should configure social providers', () => {
       expect(auth.options.socialProviders).toBeDefined();
       expect(auth.options.socialProviders.google).toBeDefined();
-      expect(auth.options.socialProviders.github).toBeDefined();
     });
 
     it('should set base URL from environment', () => {
@@ -138,13 +131,6 @@ describe('Better Auth Configuration', () => {
 
       expect(googleProvider.clientId).toBe('test-google-client-id');
       expect(googleProvider.clientSecret).toBe('test-google-client-secret');
-    });
-
-    it('should configure GitHub provider with correct credentials', () => {
-      const githubProvider = auth.options.socialProviders.github;
-
-      expect(githubProvider.clientId).toBe('test-github-client-id');
-      expect(githubProvider.clientSecret).toBe('test-github-client-secret');
     });
   });
 
@@ -176,8 +162,8 @@ describe('Better Auth Configuration', () => {
   });
 
   describe('Email and Password Configuration', () => {
-    it('should enable email verification', () => {
-      expect(auth.options.emailAndPassword.requireEmailVerification).toBe(true);
+    it('should disable email verification', () => {
+      expect(auth.options.emailAndPassword.requireEmailVerification).toBe(false);
     });
 
     it('should have password reset functionality', () => {

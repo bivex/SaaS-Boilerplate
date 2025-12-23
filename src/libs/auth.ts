@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:20:00
- * Last Updated: 2025-12-23T22:34:54
+ * Last Updated: 2025-12-23T23:34:47
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -16,6 +16,7 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { organization } from 'better-auth/plugins';
+import { google } from 'better-auth/social-providers';
 import { db } from './DB';
 import { Env } from './Env';
 
@@ -93,30 +94,30 @@ function configureSocialProviders() {
   const providers: any = {};
 
   // Google OAuth
-  if (Env.GOOGLE_CLIENT_ID && Env.GOOGLE_CLIENT_SECRET) {
-    providers.google = {
-      clientId: Env.GOOGLE_CLIENT_ID,
-      clientSecret: Env.GOOGLE_CLIENT_SECRET,
-      // Additional Google-specific options
-      scope: ['openid', 'email', 'profile'],
+  console.log('🔍 DEBUG - GOOGLE_CLIENT_ID:', Env.GOOGLE_CLIENT_ID ? 'SET' : 'NOT SET');
+  console.log('🔍 DEBUG - GOOGLE_CLIENT_ID length:', Env.GOOGLE_CLIENT_ID?.length || 0);
+  console.log('🔍 DEBUG - GOOGLE_CLIENT_ID value:', Env.GOOGLE_CLIENT_ID?.substring(0, 20) + '...');
+  console.log('🔍 DEBUG - GOOGLE_CLIENT_SECRET:', Env.GOOGLE_CLIENT_SECRET ? 'SET' : 'NOT SET');
+  console.log('🔍 DEBUG - GOOGLE_CLIENT_SECRET length:', Env.GOOGLE_CLIENT_SECRET?.length || 0);
+  console.log('🔍 DEBUG - GOOGLE_CLIENT_SECRET value:', Env.GOOGLE_CLIENT_SECRET?.substring(0, 10) + '...');
+
+  // Try using process.env directly instead of Env object
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+  if (clientId && clientSecret) {
+    const googleConfig = {
+      clientId,
+      clientSecret,
+      redirectURI: `${Env.BETTER_AUTH_URL}/api/auth/callback/google`,
     };
-    console.log('✅ Google OAuth: CONFIGURED');
+    console.log('🔍 DEBUG - Passing to google():', JSON.stringify(googleConfig, null, 2));
+    providers.google = google(googleConfig);
+    console.log('✅ Google OAuth: CONFIGURED with redirectURI:', googleConfig.redirectURI);
   } else {
     console.log('⚠️  Google OAuth: NOT CONFIGURED (missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET)');
   }
 
-  // GitHub OAuth
-  if (Env.GITHUB_CLIENT_ID && Env.GITHUB_CLIENT_SECRET) {
-    providers.github = {
-      clientId: Env.GITHUB_CLIENT_ID,
-      clientSecret: Env.GITHUB_CLIENT_SECRET,
-      // Additional GitHub-specific options
-      scope: ['user:email', 'read:user'],
-    };
-    console.log('✅ GitHub OAuth: CONFIGURED');
-  } else {
-    console.log('⚠️  GitHub OAuth: NOT CONFIGURED (missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET)');
-  }
 
   return providers;
 }
@@ -143,6 +144,8 @@ function configurePlugins() {
 // Validate environment before creating auth instance
 validateEnvironment();
 
+console.log('🔧 Creating Better Auth instance...');
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'sqlite',
@@ -151,7 +154,7 @@ export const auth = betterAuth({
   // Enhanced email and password configuration
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true, // Enable email verification
+    requireEmailVerification: false, // Email verification disabled
     sendResetPassword: async ({ user, url }) => {
       // Custom password reset email sending logic
       // In production, integrate with your email service (Resend, SendGrid, etc.)
@@ -161,14 +164,14 @@ export const auth = betterAuth({
       // You can integrate with your email service here
     },
     // Custom email verification
-    sendEmailVerification: async ({ user, url }) => {
+    sendEmailVerification: async ({ user, url }: { user: any; url: string }) => {
       console.log(`📧 Email verification would be sent to ${user.email}: ${url}`);
 
       // Integrate with your email service
     },
   },
 
-  // Enhanced social providers
+  // Enhanced social providers - conditionally configured based on environment variables
   socialProviders: configureSocialProviders(),
 
   // Email templates
@@ -221,11 +224,13 @@ export const auth = betterAuth({
   },
 });
 
+console.log('✅ Better Auth instance created successfully');
+
 // Export configuration for testing and debugging
 export const authConfig = {
   baseURL: Env.BETTER_AUTH_URL,
   secret: Env.BETTER_AUTH_SECRET,
-  emailVerificationEnabled: true,
+  emailVerificationEnabled: false,
   socialProvidersConfigured: Object.keys(configureSocialProviders()).length,
   pluginsConfigured: configurePlugins().length,
 };
