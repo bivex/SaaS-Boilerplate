@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:15:00
- * Last Updated: 2025-12-23T22:28:35
+ * Last Updated: 2025-12-24T00:45:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -125,9 +125,7 @@ describe('Authentication Regression Tests', () => {
         });
 
         it('should maintain error handling compatibility', () => {
-            const {initTRPC, TRPCError} = require('@trpc/server');
-
-            const t = initTRPC.create();
+            const {TRPCError} = require('@trpc/server');
 
             // Error classes should remain stable
             const error = new TRPCError({
@@ -148,36 +146,6 @@ describe('Authentication Regression Tests', () => {
 
     describe('Database Schema Compatibility', () => {
         it('should handle schema migrations gracefully', () => {
-            // Simulate schema versions
-            const schemaVersions = {
-                v1: {
-                    user: {
-                        id: 'string',
-                        email: 'string',
-                        password: 'string',
-                    },
-                },
-                v2: {
-                    user: {
-                        id: 'string',
-                        email: 'string',
-                        password: 'string',
-                        createdAt: 'date',
-                        updatedAt: 'date',
-                    },
-                },
-                v3: {
-                    user: {
-                        id: 'string',
-                        email: 'string',
-                        passwordHash: 'string', // Renamed field
-                        createdAt: 'date',
-                        updatedAt: 'date',
-                        lastLoginAt: 'date',
-                    },
-                },
-            };
-
             // Migration function should handle version differences
             const migrateData = (data: any, fromVersion: string, toVersion: string) => {
                 const migrations: any = {
@@ -434,17 +402,17 @@ describe('Authentication Regression Tests', () => {
         it('should handle jsonwebtoken library changes', () => {
             // Simulate jwt library API changes
             const oldJWT = {
-                sign: (payload: any, secret: string) => `old_${payload.userId}_${secret}`,
-                verify: (token: string, secret: string) => {
+                sign: (payload: any, _secret: string) => `old_${payload.userId}_${_secret}`,
+                verify: (token: string, _secret: string) => {
                     const parts = token.split('_');
                     return parts[1]; // userId
                 },
             };
 
             const newJWT = {
-                sign: (payload: any, secret: string, options?: any) =>
-                    `new_${payload.userId}_${secret}_${options?.expiresIn || '1h'}`,
-                verify: (token: string, secret: string) => {
+                sign: (payload: any, _secret: string, options?: any) =>
+                    `new_${payload.userId}_${_secret}_${options?.expiresIn || '1h'}`,
+                verify: (token: string, _secret: string) => {
                     const parts = token.split('_');
                     if (parts[0] === 'new') {
                         return parts[1]; // userId
@@ -498,14 +466,13 @@ describe('Authentication Regression Tests', () => {
                 },
             ];
 
-            const detectBreakingChanges = (currentVersion: string, targetVersion: string) => {
+            const detectBreakingChanges = (currentVersion: string, _targetVersion: string) => {
                 const current = currentVersion.split('.').map(Number);
-                const target = targetVersion.split('.').map(Number);
 
                 const breakingVersions = breakingChanges.filter((change) => {
                     const changeVer = change.version.split('.').map(Number);
-                    return changeVer[0] > current[0]
-                        || (changeVer[0] === current[0] && changeVer[1] > current[1]);
+                    return (changeVer[0] ?? 0) > (current[0] ?? 0)
+                        || ((changeVer[0] ?? 0) === (current[0] ?? 0) && (changeVer[1] ?? 0) > (current[1] ?? 0));
                 });
 
                 return breakingVersions;
@@ -514,10 +481,10 @@ describe('Authentication Regression Tests', () => {
             const changes = detectBreakingChanges('1.5.0', '2.0.0');
 
             expect(changes).toHaveLength(2);
-            expect(changes[0].version).toBe('2.0.0');
-            expect(changes[0].changes).toContain('Removed deprecated auth methods');
-            expect(changes[1].version).toBe('2.1.0');
-            expect(changes[1].changes).toContain('JWT algorithm changed to RS256');
+            expect(changes[0]!.version).toBe('2.0.0');
+            expect(changes[0]!.changes).toContain('Removed deprecated auth methods');
+            expect(changes[1]!.version).toBe('2.1.0');
+            expect(changes[1]!.changes).toContain('JWT algorithm changed to RS256');
         });
 
         it('should provide migration assistance for breaking changes', () => {

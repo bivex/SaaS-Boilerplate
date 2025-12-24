@@ -409,9 +409,10 @@ describe('Authentication Flow Integration', () => {
                 data: {id: 'user-1', email: 'test@example.com'},
                 isLoading: false,
                 error: null,
+                trpc: { path: 'auth.getProfile' },
             }));
 
-            vi.mocked(trpc.auth.getProfile.useQuery).mockImplementation(mockUseQuery);
+            vi.mocked(trpc.auth.getProfile.useQuery).mockImplementation(mockUseQuery as any);
 
             const ProtectedComponent = () => {
                 const {data: profile, isLoading} = trpc.auth.getProfile.useQuery();
@@ -437,9 +438,10 @@ describe('Authentication Flow Integration', () => {
                 data: null,
                 isLoading: false,
                 error: {message: 'UNAUTHORIZED'},
+                trpc: { path: 'auth.getProfile' },
             }));
 
-            vi.mocked(trpc.auth.getProfile.useQuery).mockImplementation(mockUseQuery);
+            vi.mocked(trpc.auth.getProfile.useQuery).mockImplementation(mockUseQuery as any);
 
             const ProtectedComponent = () => {
                 const {error} = trpc.auth.getProfile.useQuery();
@@ -474,10 +476,11 @@ describe('Authentication Flow Integration', () => {
                 return {
                     data: {id: 'user-1', email: 'test@example.com'},
                     isLoading: false,
+                    trpc: { path: 'user.getProfile' },
                 };
             });
 
-            vi.mocked(trpc.user.getProfile.useQuery).mockImplementation(mockUseQuery);
+            vi.mocked(trpc.user.getProfile.useQuery).mockImplementation(mockUseQuery as any);
 
             const UserProfileComponent = () => {
                 const {data: profile} = trpc.user.getProfile.useQuery();
@@ -506,8 +509,8 @@ describe('Authentication Flow Integration', () => {
 
                 React.useEffect(() => {
                     mockAuthClient.getSession()
-                        .then(result => setSession(result.data))
-                        .catch(err => setError(err.message));
+                        .then((result: any) => setSession(result.data))
+                        .catch((err: any) => setError(err.message));
                 }, []);
 
                 if (error) {
@@ -533,8 +536,8 @@ describe('Authentication Flow Integration', () => {
 
                 React.useEffect(() => {
                     mockAuthClient.getSession()
-                        .then(result => setSession(result.data))
-                        .catch(err => setError(err.message));
+                        .then((result: any) => setSession(result.data))
+                        .catch((err: any) => setError(err.message));
                 }, []);
 
                 if (error) {
