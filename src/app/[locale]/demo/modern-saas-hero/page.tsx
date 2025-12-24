@@ -21,7 +21,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { ModernSaaSHero } from '@/templates/ModernSaaSHero';
 
-export default async function ModernSaaSHeroDemoPage(props: { params: Promise<{ locale: string }> }) {
+export default async function ModernSaaSHeroDemoPage(props: Readonly<{ params: Promise<{ locale: string }> }>) {
   const params = await props.params;
   setRequestLocale(params.locale);
 

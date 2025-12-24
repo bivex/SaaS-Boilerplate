@@ -22,8 +22,8 @@ import { useTranslations } from 'next-intl';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 type DataTableProps<TData, TValue> = {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  readonly columns: ColumnDef<TData, TValue>[];
+  readonly data: TData[];
 };
 
 export function DataTable<TData, TValue>({

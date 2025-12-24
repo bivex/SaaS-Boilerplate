@@ -54,7 +54,7 @@ const UserProfilePage = () => {
             <Label htmlFor="name">{t('name')}</Label>
             <Input
               id="name"
-              value={user.name || ''}
+              value={user.name ?? ''}
               disabled
             />
           </div>

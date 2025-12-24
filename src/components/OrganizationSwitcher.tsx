@@ -33,7 +33,7 @@ import { useSession } from '@/hooks/useAuth';
 import { getI18nPath } from '@/utils/Helpers';
 
 type OrganizationSwitcherProps = {
-  hidePersonal?: boolean;
+  readonly hidePersonal?: boolean;
 };
 
 export function OrganizationSwitcher({ hidePersonal = true }: OrganizationSwitcherProps) {
@@ -49,7 +49,7 @@ export function OrganizationSwitcher({ hidePersonal = true }: OrganizationSwitch
     );
   }
 
-  const organizations = session?.user?.organizations || [];
+  const organizations = session?.user?.organizations ?? [];
   const activeOrg = session?.organization;
 
   if (!activeOrg && organizations.length === 0) {
@@ -74,7 +74,7 @@ export function OrganizationSwitcher({ hidePersonal = true }: OrganizationSwitch
         >
           <Building2 className="mr-2 h-4 w-4" />
           <span className="truncate">
-            {activeOrg?.name || t('personal')}
+            {activeOrg?.name ?? t('personal')}
           </span>
           {activeOrg && (
             <Badge variant="secondary" className="ml-2">

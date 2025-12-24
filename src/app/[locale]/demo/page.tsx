@@ -21,7 +21,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { TestimonialsSection } from '@/components/ui/testimonial-v2';
 
-export default async function DemoPage(props: { params: Promise<{ locale: string }> }) {
+export default async function DemoPage(props: Readonly<{ params: Promise<{ locale: string }> }>) {
   const params = await props.params;
   setRequestLocale(params.locale);
 

@@ -19,10 +19,10 @@ import * as Sentry from '@sentry/nextjs';
 import NextError from 'next/error';
 import { useEffect, useState } from 'react';
 
-export default function GlobalError(props: {
+export default function GlobalError(props: Readonly<{
   error: Error & { digest?: string };
   params: Promise<{ locale: string }>;
-}) {
+}>) {
   const [params, setParams] = useState<{ locale: string } | null>(null);
 
   useEffect(() => {

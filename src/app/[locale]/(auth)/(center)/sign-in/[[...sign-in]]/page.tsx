@@ -15,7 +15,7 @@
 
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -31,6 +31,7 @@ import { getI18nPath } from '@/utils/Helpers';
 
 export default function SignInPage() {
   const t = useTranslations('SignIn');
+  const locale = useLocale();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,7 +50,7 @@ export default function SignInPage() {
       });
 
       if (result.error) {
-        setError(result.error.message || 'An error occurred');
+        setError(result.error.message ?? 'An error occurred');
       } else {
         // After successful sign-in, refresh the session state
         console.warn('Sign-in successful, refreshing session...');
@@ -73,7 +74,7 @@ export default function SignInPage() {
       });
 
       if (result.error) {
-        setError(result.error.message || 'An error occurred');
+        setError(result.error.message ?? 'An error occurred');
       }
       // Better Auth handles the redirect automatically for social sign-in
     } catch {
@@ -149,7 +150,7 @@ export default function SignInPage() {
             {t('dont_have_account')}
             {' '}
             <Link
-              href={getI18nPath('/sign-up', 'en')} // TODO: Get current locale
+              href={getI18nPath('/sign-up', locale)}
               className="underline underline-offset-4 hover:text-primary"
             >
               {t('sign_up')}

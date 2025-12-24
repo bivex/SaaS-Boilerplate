@@ -18,9 +18,9 @@
 import { useEffect, useState } from 'react';
 
 type CSSDebuggerProps = {
-  showGrid?: boolean;
-  showOutlines?: boolean;
-  showBreakpoints?: boolean;
+  readonly showGrid?: boolean;
+  readonly showOutlines?: boolean;
+  readonly showBreakpoints?: boolean;
 };
 
 export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakpoints = false }: CSSDebuggerProps) {

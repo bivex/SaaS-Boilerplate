@@ -1,0 +1,50 @@
+{
+  "total": 3,
+  "issues": [
+    {
+      "key": "TEST-1",
+      "rule": "javascript:S1068",
+      "severity": "MAJOR",
+      "type": "CODE_SMELL",
+      "component": "saas-boilerplate:src/app/page.tsx",
+      "line": 15,
+      "message": "Unused variable 'tempVar'",
+      "effort": "5min",
+      "quickFixAvailable": true,
+      "impacts": [
+        { "softwareQuality": "MAINTAINABILITY", "severity": "MEDIUM" }
+      ],
+      "tags": ["unused"]
+    },
+    {
+      "key": "TEST-2",
+      "rule": "javascript:S1192",
+      "severity": "CRITICAL",
+      "type": "BUG",
+      "component": "saas-boilerplate:src/components/Button.tsx",
+      "line": 25,
+      "message": "Duplicate string literal 'button'",
+      "effort": "10min",
+      "quickFixAvailable": false,
+      "impacts": [
+        { "softwareQuality": "RELIABILITY", "severity": "HIGH" }
+      ],
+      "tags": ["duplicate"]
+    },
+    {
+      "key": "TEST-3",
+      "rule": "typescript:S101",
+      "severity": "MINOR",
+      "type": "CODE_SMELL",
+      "component": "saas-boilerplate:src/utils/helpers.ts",
+      "line": 5,
+      "message": "Class name should be in PascalCase",
+      "effort": "2min",
+      "quickFixAvailable": true,
+      "impacts": [
+        { "softwareQuality": "MAINTAINABILITY", "severity": "LOW" }
+      ],
+      "tags": ["convention"]
+    }
+  ]
+}

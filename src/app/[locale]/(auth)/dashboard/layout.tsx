@@ -32,7 +32,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
   };
 }
 
-export default function DashboardLayout(props: { children: React.ReactNode }) {
+export default function DashboardLayout(props: Readonly<{ children: React.ReactNode }>) {
   const t = useTranslations('DashboardLayout');
 
   return (

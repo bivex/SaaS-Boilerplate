@@ -17,7 +17,7 @@
 
 import type { ComponentProps, ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { FacebookIcon, FrameIcon, InstagramIcon, LinkedinIcon, YoutubeIcon } from 'lucide-react';
+import { FacebookIcon, FrameIcon, Instagram, LinkedinIcon, Youtube } from 'lucide-react';
 import * as React from 'react';
 
 type FooterLink = {
@@ -63,8 +63,8 @@ const footerLinks: FooterSection[] = [
     label: 'Social Links',
     links: [
       { title: 'Facebook', href: '#', icon: FacebookIcon },
-      { title: 'Instagram', href: '#', icon: InstagramIcon },
-      { title: 'Youtube', href: '#', icon: YoutubeIcon },
+      { title: 'Instagram', href: '#', icon: Instagram },
+      { title: 'Youtube', href: '#', icon: Youtube },
       { title: 'LinkedIn', href: '#', icon: LinkedinIcon },
     ],
   },
@@ -118,9 +118,9 @@ export function Footer() {
 }
 
 type ViewAnimationProps = {
-  delay?: number;
-  className?: ComponentProps<typeof motion.div>['className'];
-  children: ReactNode;
+  readonly delay?: number;
+  readonly className?: ComponentProps<typeof motion.div>['className'];
+  readonly children: ReactNode;
 };
 
 function AnimatedContainer({ className, delay = 0.1, children }: ViewAnimationProps) {

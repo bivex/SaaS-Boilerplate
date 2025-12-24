@@ -21,9 +21,9 @@ import { buttonVariants } from '@/components/ui/buttonVariants';
 import { CenteredHero } from '@/features/landing/CenteredHero';
 import { Section } from '@/features/landing/Section';
 
-const HighlightedText = ({ children }: { children: React.ReactNode }) => (
+const HighlightedText = (chunks: React.ReactNode) => (
   <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-    {children}
+    {chunks}
   </span>
 );
 

@@ -60,14 +60,14 @@ export function UserButton() {
     ?.split(' ')
     .map((n: string) => n[0])
     .join('')
-    .toUpperCase() || user.email?.[0].toUpperCase() || 'U';
+    .toUpperCase() ?? user.email?.[0].toUpperCase() ?? 'U';
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user.image || ''} alt={user.name || ''} />
+            <AvatarImage src={user.image ?? ''} alt={user.name ?? ''} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>

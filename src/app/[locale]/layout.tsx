@@ -53,10 +53,10 @@ export function generateStaticParams() {
   return AllLocales.map(locale => ({ locale }));
 }
 
-export default async function RootLayout(props: {
+export default async function RootLayout(props: Readonly<{
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
-}) {
+}>) {
   const params = await props.params;
   setRequestLocale(params.locale);
 

@@ -384,7 +384,7 @@ export class OAuthManager {
     const params = new URLSearchParams({
       client_id: providerConfig.clientId,
       redirect_uri: providerConfig.redirectUri,
-      scope: scopes[provider] || 'openid email',
+      scope: scopes[provider] ?? 'openid email',
       state,
       response_type: 'code',
     });
@@ -510,7 +510,7 @@ export class OAuthManager {
       temporarily_unavailable: 'OAuth service temporarily unavailable',
     };
 
-    return errorMappings[error] || 'Unknown OAuth error occurred';
+    return errorMappings[error] ?? 'Unknown OAuth error occurred';
   }
 }
 
@@ -518,7 +518,7 @@ export class OAuthManager {
 // Handle cases where environment variables might not be available (e.g., tests)
 const getEnvVar = (key: string, defaultValue?: string) => {
   try {
-    return (Env as Record<string, string | undefined>)[key] || defaultValue;
+    return (Env as Record<string, string | undefined>)[key] ?? defaultValue;
   } catch {
     return defaultValue;
   }

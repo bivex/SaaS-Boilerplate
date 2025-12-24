@@ -17,7 +17,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { auth } from '@/libs/auth';
 
-export default async function CenteredLayout(props: { children: React.ReactNode }) {
+export default async function CenteredLayout(props: Readonly<{ children: React.ReactNode }>) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

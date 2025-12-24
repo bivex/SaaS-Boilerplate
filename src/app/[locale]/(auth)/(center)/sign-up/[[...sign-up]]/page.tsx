@@ -15,7 +15,7 @@
 
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -32,6 +32,7 @@ import { getI18nPath } from '@/utils/Helpers';
 
 export default function SignUpPage() {
   const t = useTranslations('SignUp');
+  const locale = useLocale();
   const router = useRouter();
   const signUpMutation = trpc.auth.signUp.useMutation();
   const [name, setName] = useState('');
@@ -94,7 +95,7 @@ export default function SignUpPage() {
       });
 
       if (result.error) {
-        setError(result.error.message || 'An error occurred');
+        setError(result.error.message ?? 'An error occurred');
       }
     } catch {
       setError('An unexpected error occurred');
@@ -191,7 +192,7 @@ export default function SignUpPage() {
             {t('already_have_account')}
             {' '}
             <Link
-              href={getI18nPath('/sign-in', 'en')} // TODO: Get current locale
+              href={getI18nPath('/sign-in', locale)}
               className="underline underline-offset-4 hover:text-primary"
             >
               {t('sign_in')}

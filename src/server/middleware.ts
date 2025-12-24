@@ -61,7 +61,7 @@ export function requireScope(requiredScopes: string | string[]) {
       throw new TRPCError({ code: 'UNAUTHORIZED' });
     }
 
-    const userScopes = ctx.session.user.scopes || [];
+    const userScopes = ctx.session.user.scopes ?? [];
     const scopes = Array.isArray(requiredScopes) ? requiredScopes : [requiredScopes];
 
     const hasRequiredScopes = scopes.every((scope) => {
@@ -129,7 +129,7 @@ export function rateLimit<T extends AuthContext = AuthContext>(
   } = {},
 ) {
   const {
-    identifier = (ctx: T) => ctx.session?.user?.id || 'anonymous',
+    identifier = (ctx: T) => ctx.session?.user?.id ?? 'anonymous',
   } = options;
 
   return async ({ ctx, next}: { ctx: T; next: any }) => {

@@ -21,7 +21,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { ModernSaaSWireframe2025 } from '@/templates/ModernSaaSWireframe2025';
 
-export default async function ModernSaaSWireframe2025DemoPage(props: { params: Promise<{ locale: string }> }) {
+export default async function ModernSaaSWireframe2025DemoPage(props: Readonly<{ params: Promise<{ locale: string }> }>) {
   const params = await props.params;
   setRequestLocale(params.locale);
 

@@ -51,15 +51,27 @@ Alert.displayName = 'Alert';
 const AlertTitle = React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement> & { children: React.ReactNode }
->(({ className, children, ...props }, ref) => (
-  <h5
-    ref={ref}
-    className={cn('mb-1 font-medium leading-none tracking-tight', className)}
-    {...props}
-  >
-    {children}
-  </h5>
-));
+>(({ className, children, ...props }, ref) => {
+  // Don't render heading if children is empty, null, undefined, or only whitespace
+  // This ensures headings always have accessible content for screen readers
+  const hasContent = React.Children.toArray(children).some(child =>
+    typeof child === 'string' ? child.trim() !== '' : Boolean(child),
+  );
+
+  if (!hasContent) {
+    return null;
+  }
+
+  return (
+    <h5
+      ref={ref}
+      className={cn('mb-1 font-medium leading-none tracking-tight', className)}
+      {...props}
+    >
+      {children}
+    </h5>
+  );
+});
 AlertTitle.displayName = 'AlertTitle';
 
 const AlertDescription = React.forwardRef<

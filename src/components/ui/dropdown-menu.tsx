@@ -41,7 +41,7 @@ const DropdownMenuSubTrigger = ({
   ...props
 }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
   inset?: boolean;
-} & { ref?: React.RefObject<React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger> | null> }) => (
+} & { ref?: React.RefObject<React.ComponentRef<typeof DropdownMenuPrimitive.SubTrigger> | null> }) => (
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
@@ -106,7 +106,7 @@ const DropdownMenuItem = ({
   ...props
 }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
   inset?: boolean;
-} & { ref?: React.RefObject<React.ElementRef<typeof DropdownMenuPrimitive.Item> | null> }) => (
+} & { ref?: React.RefObject<React.ComponentRef<typeof DropdownMenuPrimitive.Item> | null> }) => (
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
@@ -181,7 +181,7 @@ const DropdownMenuLabel = ({
   ...props
 }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
   inset?: boolean;
-} & { ref?: React.RefObject<React.ElementRef<typeof DropdownMenuPrimitive.Label> | null> }) => (
+} & { ref?: React.RefObject<React.ComponentRef<typeof DropdownMenuPrimitive.Label> | null> }) => (
   <DropdownMenuPrimitive.Label
     ref={ref}
     className={cn(

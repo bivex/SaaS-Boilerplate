@@ -95,13 +95,11 @@ function Header1() {
                 <NavigationMenuItem key={item.title}>
                   {item.href
                     ? (
-                        <>
-                          <NavigationMenuLink asChild>
-                            <Link href={item.href}>
-                              <Button variant="ghost">{item.title}</Button>
-                            </Link>
-                          </NavigationMenuLink>
-                        </>
+                        <NavigationMenuLink asChild>
+                          <Link href={item.href}>
+                            <Button variant="ghost">{item.title}</Button>
+                          </Link>
+                        </NavigationMenuLink>
                       )
                     : (
                         <>

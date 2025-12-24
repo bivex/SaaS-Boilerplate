@@ -45,7 +45,7 @@ function validateEnvironment(): void {
   }
 
   // Validate secret length
-  if ((Env.BETTER_AUTH_SECRET || '').length < 32) {
+  if ((Env.BETTER_AUTH_SECRET ?? '').length < 32) {
     console.warn('⚠️  BETTER_AUTH_SECRET should be at least 32 characters long for security');
   }
 

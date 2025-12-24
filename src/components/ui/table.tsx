@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-24T01:24:06
+ * Last Updated: 2025-12-24T02:04:09
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -21,16 +21,39 @@ import { cn } from '@/utils/Helpers';
  * Table component for displaying tabular data.
  * This is a UI component library primitive - always use with TableHeader/TableHead
  * for proper accessibility when displaying data. Tables must have headers for screen readers.
+ * For layout tables (non-data tables), set layout={true} to suppress accessibility warnings.
  * See DataTable component for example usage.
+ *
+ * @example
+ * <Table>
+ *   <TableHeader>
+ *     <TableRow>
+ *       <TableHead>Column 1</TableHead>
+ *       <TableHead>Column 2</TableHead>
+ *     </TableRow>
+ *   </TableHeader>
+ *   <TableBody>
+ *     <TableRow>
+ *       <TableCell>Data 1</TableCell>
+ *       <TableCell>Data 2</TableCell>
+ *     </TableRow>
+ *   </TableBody>
+ * </Table>
  */
-const Table = ({ ref, className, ...props}: React.HTMLAttributes<HTMLTableElement> & {
+const Table = ({
+  ref,
+  className,
+  layout = false,
+  ...props
+}: React.HTMLAttributes<HTMLTableElement> & {
   ref?: React.RefObject<HTMLTableElement | null>;
+  layout?: boolean;
 }) => (
   <div className="relative w-full overflow-auto">
     {/* This is a generic table component. Headers should be provided via TableHeader when used. */}
     <table
       ref={ref}
-      role="table"
+      role={layout ? 'presentation' : 'table'}
       className={cn('w-full caption-bottom text-sm', className)}
       {...props}
     />

@@ -24,7 +24,7 @@ function HeroDemo() {
   );
 }
 
-export default async function AnimatedHeroDemoPage(props: { params: Promise<{ locale: string }> }) {
+export default async function AnimatedHeroDemoPage(props: Readonly<{ params: Promise<{ locale: string }> }>) {
   const params = await props.params;
   setRequestLocale(params.locale);
 
