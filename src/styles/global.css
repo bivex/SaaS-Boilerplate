@@ -117,7 +117,7 @@ html.light {
   --color-destructive-foreground: hsl(210 40% 98%) !important;
 
   --color-muted: hsl(210 40% 96.1%) !important;
-  --color-muted-foreground: hsl(215.4 16.3% 46.9%) !important;
+  --color-muted-foreground: hsl(215.4 16.3% 35%) !important;
 
   --color-accent: hsl(210 40% 96.1%) !important;
   --color-accent-foreground: hsl(222.2 47.4% 11.2%) !important;
@@ -170,7 +170,7 @@ html.ocean {
   --color-secondary: hsl(200 50% 85%) !important;
   --color-secondary-foreground: hsl(200 100% 20%) !important;
   --color-muted: hsl(200 40% 90%) !important;
-  --color-muted-foreground: hsl(200 20% 50%) !important;
+  --color-muted-foreground: hsl(200 20% 35%) !important;
   --color-border: hsl(200 30% 80%) !important;
   --color-input: hsl(200 30% 80%) !important;
   --color-ring: hsl(200 100% 40%) !important;
@@ -193,7 +193,7 @@ html.sunset {
   --color-secondary: hsl(20 50% 90%) !important;
   --color-secondary-foreground: hsl(20 100% 20%) !important;
   --color-muted: hsl(20 40% 95%) !important;
-  --color-muted-foreground: hsl(20 20% 50%) !important;
+  --color-muted-foreground: hsl(20 20% 35%) !important;
   --color-border: hsl(20 30% 85%) !important;
   --color-input: hsl(20 30% 85%) !important;
   --color-ring: hsl(20 100% 50%) !important;
@@ -216,7 +216,7 @@ html.forest {
   --color-secondary: hsl(120 30% 88%) !important;
   --color-secondary-foreground: hsl(120 100% 15%) !important;
   --color-muted: hsl(120 20% 92%) !important;
-  --color-muted-foreground: hsl(120 10% 45%) !important;
+  --color-muted-foreground: hsl(120 10% 35%) !important;
   --color-border: hsl(120 20% 82%) !important;
   --color-input: hsl(120 20% 82%) !important;
   --color-ring: hsl(142 76% 36%) !important;
@@ -239,7 +239,7 @@ html.midnight {
   --color-secondary: hsl(217 33% 17%) !important;
   --color-secondary-foreground: hsl(210 40% 98%) !important;
   --color-muted: hsl(217 19% 12%) !important;
-  --color-muted-foreground: hsl(215 20% 65%) !important;
+  --color-muted-foreground: hsl(215 20% 75%) !important;
   --color-border: hsl(217 19% 12%) !important;
   --color-input: hsl(217 19% 12%) !important;
   --color-ring: hsl(217 91% 60%) !important;
@@ -262,7 +262,7 @@ html.lavender {
   --color-secondary: hsl(270 30% 88%) !important;
   --color-secondary-foreground: hsl(270 100% 15%) !important;
   --color-muted: hsl(270 20% 92%) !important;
-  --color-muted-foreground: hsl(270 10% 45%) !important;
+  --color-muted-foreground: hsl(270 10% 35%) !important;
   --color-border: hsl(270 20% 82%) !important;
   --color-input: hsl(270 20% 82%) !important;
   --color-ring: hsl(262 83% 58%) !important;
@@ -285,7 +285,7 @@ html.amber {
   --color-secondary: hsl(48 30% 88%) !important;
   --color-secondary-foreground: hsl(48 100% 15%) !important;
   --color-muted: hsl(48 20% 92%) !important;
-  --color-muted-foreground: hsl(48 10% 45%) !important;
+  --color-muted-foreground: hsl(48 10% 35%) !important;
   --color-border: hsl(48 20% 82%) !important;
   --color-input: hsl(48 20% 82%) !important;
   --color-ring: hsl(45 93% 47%) !important;

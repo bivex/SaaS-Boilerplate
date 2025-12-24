@@ -39,7 +39,7 @@ export function UserButton() {
 
   if (loading) {
     return (
-      <Button variant="ghost" size="icon" disabled>
+      <Button variant="ghost" size="icon" disabled aria-label={t('loading')}>
         <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
       </Button>
     );
@@ -65,7 +65,7 @@ export function UserButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full" aria-label={t('user_menu')}>
           <Avatar className="h-8 w-8">
             <AvatarImage src={user.image ?? ''} alt={user.name ?? ''} />
             <AvatarFallback>{initials}</AvatarFallback>

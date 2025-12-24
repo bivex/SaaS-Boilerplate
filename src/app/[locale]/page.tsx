@@ -83,9 +83,9 @@ const IndexPage = async (props: { params: Promise<{ locale: string }> }) => {
       <Sponsors />
       <Features />
       <TestimonialsSection />
-      <UIComponents />
       <Pricing />
       <FAQ />
+      <UIComponents />
       <CTA />
       <Footer />
     </>

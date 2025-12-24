@@ -141,7 +141,9 @@
     "sign_in": "Увійти",
     "profile": "Профіль",
     "organization": "Організація",
-    "sign_out": "Вийти"
+    "sign_out": "Вийти",
+    "user_menu": "Меню користувача",
+    "loading": "Завантаження меню користувача"
   },
   "OrganizationSwitcher": {
     "create_org": "Створити організацію",
@@ -198,5 +200,9 @@
     "message_title": "Повідомлення",
     "message_description": "Введіть детальне повідомлення для вашого завдання.",
     "submit_button": "Надіслати"
+  },
+  "Contact": {
+    "meta_title": "Зв'яжіться з нами",
+    "meta_description": "Зв'яжіться з нами. Ми будемо раді почути від вас."
   }
 }

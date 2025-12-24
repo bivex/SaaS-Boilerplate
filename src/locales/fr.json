@@ -141,7 +141,9 @@
     "sign_in": "Se connecter",
     "profile": "Profil",
     "organization": "Organisation",
-    "sign_out": "Se déconnecter"
+    "sign_out": "Se déconnecter",
+    "user_menu": "Menu utilisateur",
+    "loading": "Chargement du menu utilisateur"
   },
   "OrganizationSwitcher": {
     "create_org": "Créer une organisation",
@@ -198,5 +200,9 @@
     "message_title": "Message",
     "message_description": "Entrez un message détaillé pour votre todo.",
     "submit_button": "Envoyer"
+  },
+  "Contact": {
+    "meta_title": "Contactez-nous",
+    "meta_description": "Contactez-nous. Nous aimerions avoir de vos nouvelles."
   }
 }

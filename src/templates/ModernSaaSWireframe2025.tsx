@@ -135,14 +135,14 @@ const HeroSection = React.memo(() => {
           </h1>
 
           {/* Subtitle - Mechanism Explanation */}
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+          <p className="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">
             Automate routine tasks with our AI assistant.
             Focus on what really matters for your business.
           </p>
 
           {/* Social Proof */}
           <div className="mb-10">
-            <p className="text-sm text-gray-500 mb-4">Trusted by 5000+ companies</p>
+            <p className="text-sm text-gray-600 mb-4">Trusted by 5000+ companies</p>
             <div className="flex items-center justify-center gap-8 opacity-70">
               <div className="text-sm font-medium">Company A</div>
               <div className="text-sm font-medium">Company B</div>
@@ -184,7 +184,7 @@ const HeroSection = React.memo(() => {
                     <Play size={32} className="text-white ml-1" />
                   </div>
                   <p className="text-gray-600 font-medium">60-90 second product demonstration</p>
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-gray-600 mt-2">
                     Up to 86% conversion with video
                     demonstration
                   </p>

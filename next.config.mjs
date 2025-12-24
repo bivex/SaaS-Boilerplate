@@ -43,9 +43,12 @@ const nextConfig = {
     ],
   },
 
-  // JavaScript optimization
-
   // Reduce polyfills for modern browsers
+
+  // Enable compression
+  compress: true,
+
+  // Optimize loading
   experimental: {
     // Skip transpilation of modern features for better browsers
     browsersListForSwc: true,
@@ -53,12 +56,27 @@ const nextConfig = {
     webpackBuildWorker: true,
     // Reduce bundle size by not polyfilling modern features
     esmExternals: 'loose',
-    // Enable more aggressive tree shaking
-    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react', 'framer-motion'],
+    // Optimize CSS
+    optimizeCss: true,
+    // Defer non-critical scripts and optimize imports
+    optimizePackageImports: [
+      '@radix-ui/react-icons',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-navigation-menu',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-select',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-tooltip',
+      'lucide-react',
+      'framer-motion',
+      'next-intl',
+      'react-hook-form',
+      'zod',
+      'recharts',
+      'superjson',
+    ],
   },
-
-  // Enable compression
-  compress: true,
 
   // Optimize chunks
   webpack: (config, { isServer }) => {
@@ -67,19 +85,59 @@ const nextConfig = {
       config.optimization.splitChunks.chunks = 'all';
       config.optimization.splitChunks.cacheGroups = {
         ...config.optimization.splitChunks.cacheGroups,
+        // Framework chunk - highest priority
+        framework: {
+          test: /[\\/]node_modules[\\/](next|@next|react|react-dom)[\\/]/,
+          name: 'framework',
+          chunks: 'all',
+          priority: 40,
+          enforce: true,
+        },
+        // UI library chunk
+        ui: {
+          test: /[\\/]node_modules[\\/](@radix-ui|@tanstack|framer-motion|lucide-react)[\\/]/,
+          name: 'ui',
+          chunks: 'all',
+          priority: 30,
+          enforce: true,
+        },
+        // Authentication chunk
+        auth: {
+          test: /[\\/]node_modules[\\/](better-auth|@upstash)[\\/]/,
+          name: 'auth',
+          chunks: 'all',
+          priority: 25,
+        },
+        // Other vendor libraries
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
+          name: 'vendor',
           chunks: 'all',
           priority: 10,
         },
-        // Separate large libraries
-        next: {
-          test: /[\\/]node_modules[\\/]next[\\/]/,
-          name: 'next',
-          chunks: 'all',
-          priority: 20,
-        },
+      };
+    }
+
+    // Additional optimizations
+    if (!isServer) {
+      // Enable more aggressive optimizations
+      config.optimization = {
+        ...config.optimization,
+        moduleIds: 'deterministic',
+        chunkIds: 'deterministic',
+        mangleExports: 'deterministic',
+        minimize: true,
+      };
+
+      // Reduce bundle size by removing development code
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'react/jsx-dev-runtime': 'react/jsx-runtime',
+      };
+
+      // Optimize performance
+      config.performance = {
+        hints: false, // Disable performance hints in development
       };
     }
 

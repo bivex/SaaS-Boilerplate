@@ -14,9 +14,9 @@
  */
 
 import type { Metadata } from 'next';
-
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
+import * as React from 'react';
 import { LocaleSwitcher, SessionRefresher } from '@/components/LocaleSwitcher';
 
 import { ThemeProvider } from '@/components/ThemeProvider';
@@ -75,6 +75,17 @@ export default async function RootLayout(props: Readonly<{
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+        {/* Preload critical resources to eliminate render blocking */}
+        <link rel="preload" href="/favicon.ico" as="image" />
+        <link rel="preload" href="/apple-touch-icon.png" as="image" />
+
+        {/* Preload critical fonts */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          as="style"
+        />
       </head>
       <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
         {/* PRO: Dark mode support for Shadcn UI */}
