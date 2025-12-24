@@ -24,18 +24,18 @@ const SESSION_CONFIG = {
 };
 
 // Global session state to prevent duplicate requests
-let globalSession: any = null;
+let globalSession: { session: any; user: any } | null = null;
 let globalLoading = true;
-let sessionPromise: Promise<any> | null = null;
-const sessionSubscribers = new Set<(session: any, loading: boolean) => void>();
+let sessionPromise: Promise<{ session: any; user: any } | null> | null = null;
+const sessionSubscribers = new Set<(session: { session: any; user: any } | null, loading: boolean) => void>();
 
-function notifySubscribers(session: any, loading: boolean) {
+function notifySubscribers(session: AuthSessionResponse['data'], loading: boolean) {
   globalSession = session;
   globalLoading = loading;
   sessionSubscribers.forEach(callback => callback(session, loading));
 }
 
-function subscribeToSession(callback: (session: any, loading: boolean) => void) {
+function subscribeToSession(callback: (session: { session: any; user: any } | null, loading: boolean) => void) {
   sessionSubscribers.add(callback);
   // Send current state immediately
   callback(globalSession, globalLoading);
@@ -45,7 +45,7 @@ function subscribeToSession(callback: (session: any, loading: boolean) => void) 
   };
 }
 
-async function fetchSession(): Promise<any> {
+async function fetchSession(): Promise<{ session: any; user: any } | null> {
   if (sessionPromise) {
     return sessionPromise;
   }
@@ -72,7 +72,7 @@ async function fetchSession(): Promise<any> {
   return sessionPromise;
 }
 
-async function refreshSession(): Promise<any> {
+async function refreshSession(): Promise<{ session: any; user: any } | null> {
   try {
     // Get a fresh session from the server
     const result = await authClient.getSession();
@@ -92,7 +92,7 @@ async function refreshSession(): Promise<any> {
   }
 }
 
-function shouldRefreshSession(session: any): boolean {
+function shouldRefreshSession(session: { session: any; user: any } | null): boolean {
   if (!session?.session?.expiresAt) {
     return false;
   }
@@ -105,18 +105,18 @@ function shouldRefreshSession(session: any): boolean {
 }
 
 export function useSession() {
-  const [session, setSession] = useState<any>(globalSession);
+  const [session, setSession] = useState<{ session: any; user: any } | null>(globalSession);
   const [loading, setLoading] = useState(globalLoading);
   const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
   const checkTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const updateSession = useCallback((newSession: any, newLoading: boolean) => {
+  const updateSession = useCallback((newSession: { session: any; user: any } | null, newLoading: boolean) => {
     setSession(newSession);
     setLoading(newLoading);
   }, []);
 
   // Schedule session refresh
-  const scheduleRefresh = useCallback((sessionData: any) => {
+  const scheduleRefresh = useCallback((sessionData: { session: any; user: any } | null) => {
     if (!sessionData?.session?.expiresAt) {
       return;
     }
@@ -231,7 +231,7 @@ export function useSignOut() {
 }
 
 // Manually refresh the session state
-export async function refreshSessionState(): Promise<any> {
+export async function refreshSessionState(): Promise<{ session: any; user: any } | null> {
   // Clear the session promise cache to force a fresh fetch
   sessionPromise = null;
 

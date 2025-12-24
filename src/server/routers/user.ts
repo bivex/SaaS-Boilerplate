@@ -20,6 +20,11 @@ import { user } from '@/models/Schema';
 import { createTRPCRouter, protectedProcedure } from '@/server/trpc';
 
 export const userRouter = createTRPCRouter({
+  // Get user profile (same as auth.getProfile but in user namespace)
+  getProfile: protectedProcedure.query(({ ctx }) => {
+    return ctx.session?.user;
+  }),
+
   // Get user by ID
   getById: protectedProcedure
     .query(async ({ ctx }) => {

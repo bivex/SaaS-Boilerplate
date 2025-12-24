@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:20:00
- * Last Updated: 2025-12-24T00:08:45
+ * Last Updated: 2025-12-24T00:40:19
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -114,7 +114,13 @@ export const auth = betterAuth({
 
   // Security check: prevent account creation if email already exists
   // This prevents automatic account linking without user consent
-  onBeforeCreateAccount: async ({ user: newUser}: { user: { email: string } }) => {
+  onBeforeCreateAccount: async ({ user: newUser, account }: { user: { email: string }; account?: any }) => {
+    console.warn('🚫 onBeforeCreateAccount called:', {
+      email: newUser.email,
+      providerId: account?.providerId,
+      hasAccount: !!account,
+    });
+
     // Check if user with this email already exists
     const existingUser = await db
       .select()
@@ -122,14 +128,25 @@ export const auth = betterAuth({
       .where(eq(user.email, newUser.email))
       .limit(1);
 
-    if (existingUser.length > 0) {
+    if (existingUser.length > 0 && existingUser[0]) {
+      console.warn('👤 User exists, checking Google linking:', existingUser[0].googleLinked);
+
+      // If trying to create account via Google OAuth but user exists without Google linking
+      if (account?.providerId === 'google' && !existingUser[0].googleLinked) {
+        console.warn('❌ Blocking Google OAuth for unlinked account');
+        throw new Error(
+          `An account with email ${newUser.email} already exists but is not linked to Google. `
+          + `Please sign in with your email and password first, then link your Google account in settings.`,
+        );
+      }
+
       // Email already exists - block automatic account creation
       throw new Error(
-        `An account with email ${newUser.email} already exists. `
-        + `To link your Google account, please sign in to your existing account and configure the integration in settings.`,
+        `An account with email ${newUser.email} already exists. `,
       );
     }
 
+    console.warn('✅ Allowing account creation');
     return true; // Allow account creation if email is unique
   },
 
@@ -151,8 +168,17 @@ export const auth = betterAuth({
   socialProviders: socialProvidersConfig,
 
   // Custom social provider sign-in logic
-  onBeforeSignIn: async ({ user: signInUser, account}: { user: any; account: any }) => {
+  onBeforeSignIn: async ({ user: signInUser, account }: { user: any; account: any }) => {
+    console.warn('🔐 onBeforeSignIn called:', {
+      email: signInUser.email,
+      providerId: account?.providerId,
+      hasAccount: !!account,
+    });
+
+    // Only check Google linking for Google OAuth sign-ins
     if (account?.providerId === 'google') {
+      console.warn('🔍 Checking Google OAuth for:', signInUser.email);
+
       // Check if user exists and has Google linked
       const existingUser = await db
         .select()
@@ -160,16 +186,29 @@ export const auth = betterAuth({
         .where(eq(user.email, signInUser.email))
         .limit(1);
 
-      if (existingUser.length > 0) {
-        // User exists - check if Google is linked
-        const userData = existingUser[0];
-        if (userData && !userData.googleLinked) {
-          throw new Error(
-            'Google authentication is not enabled for this account. '
-            + 'Please sign in with your email and password first, then link your Google account in settings.',
-          );
-        }
+      console.warn('👤 Existing user check:', {
+        email: signInUser.email,
+        userExists: existingUser.length > 0,
+        googleLinked: existingUser.length > 0 ? existingUser[0]?.googleLinked : null,
+      });
+
+      // If user doesn't exist, allow creation through Google OAuth
+      if (existingUser.length === 0) {
+        console.warn('✅ Allowing new user creation via Google OAuth');
+        return true;
       }
+
+      // User exists - check if Google is linked
+      const userData = existingUser[0];
+      if (userData && !userData.googleLinked) {
+        console.warn('❌ Blocking Google OAuth for unlinked account:', signInUser.email);
+        throw new Error(
+          'Google authentication is not enabled for this account. '
+          + 'Please sign in with your email and password first, then link your Google account in settings.',
+        );
+      }
+
+      console.warn('✅ Allowing Google OAuth for linked account:', signInUser.email);
     }
 
     return true;
@@ -177,12 +216,20 @@ export const auth = betterAuth({
 
   // Handle post-account creation for social providers
   onAfterCreateAccount: async ({ user: newUser, account}: { user: any; account: any }) => {
+    console.warn('🎯 onAfterCreateAccount called:', {
+      email: newUser.email,
+      providerId: account?.providerId,
+      hasAccount: !!account,
+    });
+
     if (account?.providerId === 'google') {
+      console.warn('🔗 Setting google_linked = true for:', newUser.email);
       // Link Google account for new users
       await db
         .update(user)
         .set({ googleLinked: true })
         .where(eq(user.id, newUser.id));
+      console.warn('✅ Google linked set successfully');
     }
   },
 

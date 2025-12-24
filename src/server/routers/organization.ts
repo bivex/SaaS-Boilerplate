@@ -36,12 +36,18 @@ export const organizationRouter = createTRPCRouter({
       name: z.string().min(1),
       description: z.string().optional(),
     }))
-    .mutation(async ({ _input }) => {
+    .mutation(async ({ input: _input }) => {
       const result = await db
         .insert(organizationSchema)
         .values({
+          id: crypto.randomUUID(),
           // Note: Current schema doesn't have name/description fields
           // This would need to be updated based on your business logic
+          stripeCustomerId: null,
+          stripeSubscriptionId: null,
+          stripeSubscriptionPriceId: null,
+          stripeSubscriptionStatus: null,
+          stripeSubscriptionCurrentPeriodEnd: null,
           updatedAt: new Date(),
           createdAt: new Date(),
         })

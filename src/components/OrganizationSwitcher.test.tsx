@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T23:30:00
- * Last Updated: 2025-12-23T22:28:34
+ * Last Updated: 2025-12-24T00:36:58
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -139,7 +139,7 @@ describe('OrganizationSwitcher', () => {
 
         // Check that active org shows badge in dropdown
         const dropdownItems = screen.getAllByText('Test Org 1');
-        const activeOrgInDropdown = dropdownItems[1].closest('div'); // Second one is in dropdown
+        const activeOrgInDropdown = dropdownItems[1]!.closest('div'); // Second one is in dropdown
 
         expect(activeOrgInDropdown).toHaveTextContent('admin');
     });

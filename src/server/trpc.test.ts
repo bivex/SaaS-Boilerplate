@@ -51,6 +51,15 @@ describe('tRPC Context Creation', () => {
             const context = await createTRPCContext({
                 req: mockReq,
                 resHeaders: new Headers(),
+                info: {
+                    accept: 'application/jsonl',
+                    type: 'query',
+                    isBatchCall: false,
+                    calls: [],
+                    connectionParams: null,
+                    signal: new AbortController().signal,
+                    url: new URL('http://localhost:3000'),
+                },
             });
 
             expect(context).toEqual({
@@ -77,6 +86,15 @@ describe('tRPC Context Creation', () => {
             const context = await createTRPCContext({
                 req: mockReq,
                 resHeaders: new Headers(),
+                info: {
+                    accept: 'application/jsonl',
+                    type: 'query',
+                    isBatchCall: false,
+                    calls: [],
+                    connectionParams: null,
+                    signal: new AbortController().signal,
+                    url: new URL('http://localhost:3000'),
+                },
             });
 
             expect(context).toEqual({
@@ -101,6 +119,15 @@ describe('tRPC Context Creation', () => {
             const context = await createTRPCContext({
                 req: mockReq,
                 resHeaders: new Headers(),
+                info: {
+                    accept: 'application/jsonl',
+                    type: 'query',
+                    isBatchCall: false,
+                    calls: [],
+                    connectionParams: null,
+                    signal: new AbortController().signal,
+                    url: new URL('http://localhost:3000'),
+                },
             });
 
             expect(context).toEqual({

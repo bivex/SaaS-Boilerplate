@@ -153,7 +153,7 @@ describe('Authorization Middleware', () => {
 
     describe('Resource Ownership Checks', () => {
         it('should allow access to owned resources', async () => {
-            const middleware = requireOwnership((ctx, input) => {
+            const middleware = requireOwnership((ctx, _input) => {
                 // Simulate database check for resource ownership
                 const resourceOwnerId = 'user-1'; // Would come from DB
                 return ctx.session?.user?.id === resourceOwnerId;
@@ -174,7 +174,7 @@ describe('Authorization Middleware', () => {
         });
 
         it('should deny access to non-owned resources', async () => {
-            const middleware = requireOwnership((ctx, input) => {
+            const middleware = requireOwnership((ctx, _input) => {
                 const resourceOwnerId = 'user-2'; // Different owner
                 return ctx.session?.user?.id === resourceOwnerId;
             });
@@ -289,14 +289,9 @@ describe('Authorization Middleware', () => {
                 return next();
             };
 
-            const failingMiddleware = async ({next}: any) => {
+            const failingMiddleware = async ({next: _next}: any) => {
                 executionOrder.push('middleware2');
                 throw new TRPCError({code: 'FORBIDDEN'});
-            };
-
-            const middleware3 = async ({next}: any) => {
-                executionOrder.push('middleware3'); // Should not execute
-                return next();
             };
 
             const mockContext = {

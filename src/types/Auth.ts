@@ -64,3 +64,41 @@ export type Session = {
   user: User;
   organization?: Organization;
 };
+
+// Better Auth Client Response Types
+export type AuthSessionResponse = {
+  data: {
+    session: Session;
+    user: User;
+  } | null;
+  error?: any;
+};
+
+export type AuthSignInResponse = {
+  data: {
+    session: Session;
+    user: User;
+  } | null;
+  error?: any;
+};
+
+export type AuthSignUpResponse = {
+  data: {
+    session?: Session;
+    user: User;
+  } | null;
+  error?: any;
+};
+
+export type AuthSignOutResponse = {
+  data: {
+    redirect: boolean;
+    url: string;
+  } | {
+    redirect: boolean;
+    token: string;
+    url: undefined;
+    user: User;
+  };
+  error?: any;
+};

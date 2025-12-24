@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T23:15:00
- * Last Updated: 2025-12-23T23:34:49
+ * Last Updated: 2025-12-24T00:40:37
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -125,10 +125,12 @@ describe('useAuth hooks', () => {
         it('should call signOut and redirect on success', async () => {
             (authClient.signOut as any).mockResolvedValue({success: true});
 
-            // Mock window.location
-            const originalLocation = window.location;
-            delete (window as any).location;
-            window.location = {href: ''} as any;
+            // Mock window.location.href
+            const originalHref = window.location.href;
+            Object.defineProperty(window.location, 'href', {
+                writable: true,
+                value: '',
+            });
 
             const {result} = renderHook(() => useSignOut());
 
@@ -139,8 +141,11 @@ describe('useAuth hooks', () => {
             expect(authClient.signOut).toHaveBeenCalledTimes(1);
             expect(window.location.href).toBe('/');
 
-            // Restore window.location
-            window.location = originalLocation;
+            // Restore window.location.href
+            Object.defineProperty(window.location, 'href', {
+                writable: true,
+                value: originalHref,
+            });
         });
 
         it('should handle signOut errors gracefully', async () => {

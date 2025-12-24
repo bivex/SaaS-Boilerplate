@@ -15,13 +15,13 @@
 
 import { createTRPCRouter } from '@/server/trpc';
 import { authRouter } from './auth';
-// import { organizationRouter } from './organization';
-// import { userRouter } from './user';
+import { organizationRouter } from './organization';
+import { userRouter } from './user';
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
-  // user: userRouter,
-  // organization: organizationRouter,
+  user: userRouter,
+  organization: organizationRouter,
 });
 
 export type AppRouter = typeof appRouter;

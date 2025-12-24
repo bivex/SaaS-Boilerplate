@@ -20,7 +20,13 @@ import 'vitest-mock-extended';
 
 // Set up environment variables for testing
 process.env.BILLING_PLAN_ENV = 'test';
-process.env.NODE_ENV = 'test';
+if (process.env.NODE_ENV !== 'test') {
+  try {
+    (process.env as any).NODE_ENV = 'test';
+  } catch {
+    // NODE_ENV might be read-only in some environments
+  }
+}
 process.env.BETTER_AUTH_SECRET = 'test-secret-key-for-testing';
 process.env.BETTER_AUTH_URL = 'http://localhost:3000';
 process.env.DATABASE_URL = './sqlite.db';

@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:15:00
- * Last Updated: 2025-12-23T22:28:33
+ * Last Updated: 2025-12-24T00:43:52
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -285,6 +285,7 @@ describe('Complete Authentication Flow Integration', () => {
                 data: {id: 'user-1', email: 'test@example.com', name: 'Test User'},
                 isLoading: false,
                 error: null,
+                trpc: { path: 'user.getProfile' },
             }));
 
             const mockOrgQuery = vi.fn(() => ({
@@ -293,10 +294,11 @@ describe('Complete Authentication Flow Integration', () => {
                 ],
                 isLoading: false,
                 error: null,
+                trpc: { path: 'organization.getAll' },
             }));
 
-            vi.mocked(trpc.user.getProfile.useQuery).mockImplementation(mockUserQuery);
-            vi.mocked(trpc.organization.getAll.useQuery).mockImplementation(mockOrgQuery);
+            vi.mocked(trpc.user.getProfile.useQuery).mockImplementation(mockUserQuery as any);
+            vi.mocked(trpc.organization.getAll.useQuery).mockImplementation(mockOrgQuery as any);
 
             const ProtectedDashboard = () => {
                 const {data: profile, isLoading: profileLoading} = trpc.user.getProfile.useQuery();
@@ -344,9 +346,10 @@ describe('Complete Authentication Flow Integration', () => {
                 data: null,
                 isLoading: false,
                 error: {message: 'UNAUTHORIZED'},
+                trpc: {path: 'user.getProfile'},
             }));
 
-            vi.mocked(trpc.user.getProfile.useQuery).mockImplementation(mockUseQuery);
+            vi.mocked(trpc.user.getProfile.useQuery).mockImplementation(mockUseQuery as any);
 
             const ProtectedComponent = () => {
                 const {error} = trpc.user.getProfile.useQuery();
@@ -388,6 +391,7 @@ describe('Complete Authentication Flow Integration', () => {
                 },
                 isPending: false,
                 error: null,
+                trpc: {path: 'user.updateProfile'},
             }));
 
             const mockCreateMutation = vi.fn(() => ({
@@ -406,10 +410,11 @@ describe('Complete Authentication Flow Integration', () => {
                 },
                 isPending: false,
                 error: null,
+                trpc: {path: 'user.updateProfile'},
             }));
 
-            vi.mocked(trpc.user.updateProfile.useMutation).mockImplementation(mockUpdateMutation);
-            vi.mocked(trpc.organization.create.useMutation).mockImplementation(mockCreateMutation);
+            vi.mocked(trpc.user.updateProfile.useMutation).mockImplementation(mockUpdateMutation as any);
+            vi.mocked(trpc.organization.create.useMutation).mockImplementation(mockCreateMutation as any);
 
             const ContextAwareComponent = () => {
                 const updateProfile = trpc.user.updateProfile.useMutation();
@@ -504,7 +509,7 @@ describe('Complete Authentication Flow Integration', () => {
 
                 React.useEffect(() => {
                     mockAuthClient.getSession()
-                        .catch(err => setError(err.message));
+                        .catch((err: any) => setError(err.message));
                 }, []);
 
                 return <div data-testid="token-error">{error}</div>;
@@ -692,7 +697,7 @@ describe('Complete Authentication Flow Integration', () => {
                         await secureAuthClient.getSession(req);
                         setSecurityEvents(prev => [...prev, {type: 'success', req}]);
                     } catch (error) {
-                        setSecurityEvents(prev => [...prev, {type: 'blocked', error: error.message, req}]);
+                        setSecurityEvents(prev => [...prev, {type: 'blocked', error: error instanceof Error ? error.message : String(error), req}]);
                     }
                 };
 
