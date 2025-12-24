@@ -20,7 +20,7 @@
   --color-destructive-foreground: hsl(210 40% 98%);
 
   --color-muted: hsl(210 40% 96.1%);
-  --color-muted-foreground: hsl(215.4 16.3% 46.9%);
+  --color-muted-foreground: hsl(215.4 16.3% 40%);
 
   --color-accent: hsl(210 40% 96.1%);
   --color-accent-foreground: hsl(222.2 47.4% 11.2%);
@@ -82,7 +82,7 @@
     --color-destructive-foreground: hsl(210 40% 98%);
 
     --color-muted: hsl(217.2 32.6% 17.5%);
-    --color-muted-foreground: hsl(215 20.2% 65.1%);
+    --color-muted-foreground: hsl(215 20.2% 70%);
 
     --color-accent: hsl(217.2 32.6% 17.5%);
     --color-accent-foreground: hsl(210 40% 98%);

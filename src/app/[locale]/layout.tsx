@@ -70,6 +70,17 @@ export default async function RootLayout(props: Readonly<{
   // which dynamically adds a `style` attribute to the body tag.
   return (
     <html lang={params.locale} suppressHydrationWarning>
+      <head>
+        {/* Preconnect to external domains for better performance */}
+        <link rel="preconnect" href="https://clerk.com" />
+        <link rel="preconnect" href="https://l.crowdin.com" />
+        <link rel="preconnect" href="https://sentry.io" />
+        <link rel="preconnect" href="https://launch.arcjet.com" />
+        <link rel="preconnect" href="https://nextjs-boilerplate.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+      </head>
       <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
         {/* PRO: Dark mode support for Shadcn UI */}
         <ThemeProvider

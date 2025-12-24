@@ -44,18 +44,17 @@ const nextConfig = {
   },
 
   // JavaScript optimization
-  swcMinify: true, // Use SWC for faster minification
 
   // Reduce polyfills for modern browsers
   experimental: {
     // Skip transpilation of modern features for better browsers
     browsersListForSwc: true,
-    // Enable faster CSS processing
-    optimizeCss: true,
     // Faster builds with improved memory usage
     webpackBuildWorker: true,
     // Reduce bundle size by not polyfilling modern features
     esmExternals: 'loose',
+    // Enable more aggressive tree shaking
+    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react', 'framer-motion'],
   },
 
   // Enable compression

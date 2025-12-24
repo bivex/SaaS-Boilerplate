@@ -26,9 +26,10 @@ const Logos = {
       <img
         src="/assets/images/clerk-logo-dark.png"
         alt="Clerk logo"
-        width="120"
-        height="40"
-        className="h-[40px] w-auto object-contain dark:invert"
+        width="110"
+        height="32"
+        className="h-8 w-auto object-contain dark:invert"
+        loading="lazy"
       />
     </a>
   ),
@@ -42,9 +43,10 @@ const Logos = {
       <img
         src="/assets/images/crowdin-dark.png"
         alt="Crowdin logo"
-        width="120"
-        height="40"
-        className="h-[40px] w-auto object-contain dark:invert"
+        width="128"
+        height="26"
+        className="h-8 w-auto object-contain dark:invert"
+        loading="lazy"
       />
     </a>
   ),
@@ -58,9 +60,10 @@ const Logos = {
       <img
         src="/assets/images/sentry-dark.png"
         alt="Sentry logo"
-        width="120"
-        height="40"
-        className="h-[40px] w-auto object-contain dark:invert"
+        width="100"
+        height="30"
+        className="h-8 w-auto object-contain dark:invert"
+        loading="lazy"
       />
     </a>
   ),
@@ -77,6 +80,7 @@ const Logos = {
         width="120"
         height="40"
         className="h-[40px] w-auto object-contain dark:invert"
+        loading="lazy"
       />
     </a>
   ),
@@ -90,9 +94,10 @@ const Logos = {
       <img
         src="/assets/images/nextjs-boilerplate-saas.png"
         alt="Nextjs SaaS Boilerplate"
-        width="120"
-        height="40"
-        className="h-[40px] w-auto object-contain"
+        width="150"
+        height="35"
+        className="h-8 w-auto object-contain"
+        loading="lazy"
       />
     </a>
   ),
@@ -112,7 +117,7 @@ export const SponsorLogos = () => {
       {sponsorLogos.map(({ component: Logo, key }) => (
         <div
           key={key}
-          className="relative h-[60px] w-fit mx-[3rem] flex items-center justify-start"
+          className="relative h-12 w-fit mx-8 flex items-center justify-start"
         >
           <Logo />
         </div>
