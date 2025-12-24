@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T20:53:17
- * Last Updated: 2025-12-24T07:28:21
+ * Last Updated: 2025-12-24T15:50:29
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -24,7 +24,7 @@ const jiti = createJiti(fileURLToPath(import.meta.url));
 
 jiti('./src/libs/Env');
 
-const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts');
+const withNextIntl = createNextIntlPlugin('./src/app/i18n.ts');
 
 // Full Rspack config with Next.js 16 optimizations
 let config = {
@@ -213,6 +213,9 @@ if (process.argv.some(arg => arg.includes('build'))) {
       mainFields: ['module', 'main'],
       // Enable module resolution for better tree shaking
       conditionNames: ['import', 'require', 'node'],
+      // Optimize module resolution
+      symlinks: false, // Improve build performance
+      cacheWithContext: false, // Better caching for monorepos
     },
 
     // Source maps for debugging and Lighthouse performance insights
