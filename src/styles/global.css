@@ -117,7 +117,7 @@ html.light {
   --color-destructive-foreground: hsl(210 40% 98%) !important;
 
   --color-muted: hsl(210 40% 96.1%) !important;
-  --color-muted-foreground: hsl(215.4 16.3% 35%) !important;
+  --color-muted-foreground: hsl(215.4 16.3% 25%) !important;
 
   --color-accent: hsl(210 40% 96.1%) !important;
   --color-accent-foreground: hsl(222.2 47.4% 11.2%) !important;

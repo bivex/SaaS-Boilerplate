@@ -73,6 +73,7 @@ export function FloatingHeader() {
               variant="outline"
               onClick={() => setOpen(!open)}
               className="lg:hidden"
+              aria-label="Toggle navigation menu"
             >
               <MenuIcon className="size-4" />
             </Button>
