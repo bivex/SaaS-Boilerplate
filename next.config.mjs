@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T20:53:17
- * Last Updated: 2025-12-24T16:59:14
+ * Last Updated: 2025-12-24T17:35:26
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -16,6 +16,7 @@
 import { fileURLToPath } from 'node:url';
 
 import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
+import { rspack } from '@rspack/core';
 import createJiti from 'jiti';
 import createNextIntlPlugin from 'next-intl/plugin';
 import withRspack from 'next-rspack';
@@ -192,7 +193,31 @@ if (process.argv.some(arg => arg.includes('build'))) {
 
       // Ultra-aggressive JavaScript minification for maximum compression
       minimize: true,
-      minimizer: [], // Use Rspack's enhanced built-in minimizers
+      minimizer: [
+        // ByteDance recommended minifiers for optimal performance
+        new rspack.SwcJsMinimizerRspackPlugin({
+          minify: true,
+          mangle: {
+            safari10: true,
+          },
+          ecma: 5,
+          compress: {
+            passes: 3, // Increased from default 2 for better compression
+            drop_console: true,
+            drop_debugger: true,
+            pure_funcs: ['console.log', 'console.info', 'console.debug'],
+            unsafe: true,
+            unsafe_comps: true,
+            unsafe_math: true,
+            unsafe_proto: true,
+            unsafe_regexp: true,
+          },
+          format: {
+            comments: false,
+          },
+        }),
+        new rspack.LightningCssMinimizerRspackPlugin(),
+      ],
 
       // Additional minification options
       terserOptions: {
