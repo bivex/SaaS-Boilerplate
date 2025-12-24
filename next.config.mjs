@@ -190,10 +190,35 @@ export default bundleAnalyzer(
     serverExternalPackages: ['@electric-sql/pglite'],
     // Performance optimizations
     experimental: {
-      // Enable faster CSS processing
+    // Enable faster CSS processing
       optimizeCss: true,
       // Faster builds with improved memory usage
       webpackBuildWorker: true,
+      // Optimize script loading for better TTI
+      optimizePackageImports: [
+        '@radix-ui/react-icons',
+        '@radix-ui/react-dialog',
+        '@radix-ui/react-dropdown-menu',
+        '@radix-ui/react-navigation-menu',
+        '@radix-ui/react-popover',
+        '@radix-ui/react-select',
+        '@radix-ui/react-tabs',
+        '@radix-ui/react-tooltip',
+        'lucide-react',
+        'framer-motion',
+        'next-intl',
+        'react-hook-form',
+        'zod',
+        'recharts',
+        'superjson',
+        // Add more packages to optimize
+        'react-day-picker',
+        '@tanstack/react-query',
+        '@tanstack/react-table',
+        'class-variance-authority',
+        'clsx',
+        'tailwind-merge',
+      ],
     },
     // Suppress middleware deprecation warning
     logging: {

@@ -17,7 +17,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import dynamic from 'next/dynamic';
 
-// Critical components - load immediately
+// Critical components - load immediately (above the fold)
 import { Header1 } from '@/components/ui/header';
 import { Hero } from '@/templates/Hero';
 
@@ -66,9 +66,33 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     namespace: 'Index',
   });
 
+  const canonicalUrl = `https://saas-boilerplate.com/${params.locale === 'en' ? '' : params.locale}`;
+
   return {
     title: t('meta_title'),
     description: t('meta_description'),
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        en: 'https://saas-boilerplate.com/',
+        fr: 'https://saas-boilerplate.com/fr',
+        ru: 'https://saas-boilerplate.com/ru',
+        uk: 'https://saas-boilerplate.com/uk',
+      },
+    },
+    openGraph: {
+      title: t('meta_title'),
+      description: t('meta_description'),
+      url: canonicalUrl,
+      siteName: 'SaaS Boilerplate',
+      locale: params.locale,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('meta_title'),
+      description: t('meta_description'),
+    },
   };
 }
 
@@ -77,7 +101,7 @@ const IndexPage = async (props: { params: Promise<{ locale: string }> }) => {
   setRequestLocale(params.locale);
 
   return (
-    <>
+    <main id="main-content">
       <DemoBanner />
       <Header1 />
       <Hero />
@@ -89,7 +113,7 @@ const IndexPage = async (props: { params: Promise<{ locale: string }> }) => {
       <UIComponentsWrapper />
       <CTA />
       <Footer />
-    </>
+    </main>
   );
 };
 
