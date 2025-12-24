@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-24T01:03:42
+ * Last Updated: 2025-12-24T01:24:06
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -17,10 +17,16 @@ import * as React from 'react';
 
 import { cn } from '@/utils/Helpers';
 
+/**
+ * Table component for displaying tabular data.
+ * This is a UI component library primitive - always use with TableHeader/TableHead
+ * for proper accessibility when displaying data. See DataTable component for example usage.
+ */
 const Table = ({ ref, className, ...props}: React.HTMLAttributes<HTMLTableElement> & {
   ref?: React.RefObject<HTMLTableElement | null>;
 }) => (
   <div className="relative w-full overflow-auto">
+    {/* This is a generic table component. Headers should be provided via TableHeader when used. */}
     <table
       ref={ref}
       className={cn('w-full caption-bottom text-sm', className)}

@@ -70,7 +70,7 @@ ${colorConfig
       .map(([key, itemConfig]) => {
         const color
           = itemConfig.theme?.[theme as keyof typeof itemConfig.theme]
-            || itemConfig.color;
+            ?? itemConfig.color;
         return color ? `  --color-${key}: ${color};` : null;
       })
       .join('\n')}
@@ -93,10 +93,12 @@ const ChartContainer = React.forwardRef<
   }
 >(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId();
-  const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`;
+  const chartId = `chart-${id ?? uniqueId.replace(/:/g, '')}`;
+
+  const contextValue = React.useMemo(() => ({ config }), [config]);
 
   return (
-    <ChartContext value={{ config }}>
+    <ChartContext value={contextValue}>
       <div
         data-chart={chartId}
         ref={ref}
@@ -148,11 +150,11 @@ const ChartTooltipContent = React.forwardRef<
       }
 
       const [item] = payload;
-      const key = `${labelKey || item?.dataKey || item?.name || 'value'}`;
+      const key = `${labelKey ?? item?.dataKey ?? item?.name ?? 'value'}`;
       const itemConfig = getPayloadConfigFromPayload(config, item, key);
       const value
         = !labelKey && typeof label === 'string'
-          ? config[label as keyof typeof config]?.label || label
+          ? config[label as keyof typeof config]?.label ?? label
           : itemConfig?.label;
 
       if (labelFormatter) {
@@ -197,9 +199,9 @@ const ChartTooltipContent = React.forwardRef<
           {payload
             .filter((item: any) => item.type !== 'none')
             .map((item: any, index: number) => {
-              const key = `${nameKey || item.name || item.dataKey || 'value'}`;
+              const key = `${nameKey ?? item.name ?? item.dataKey ?? 'value'}`;
               const itemConfig = getPayloadConfigFromPayload(config, item, key);
-              const indicatorColor = color || item.payload.fill || item.color;
+              const indicatorColor = color ?? item.payload.fill ?? item.color;
 
               return (
                 <div
@@ -301,7 +303,7 @@ const ChartLegendContent = React.forwardRef<
         {payload
           .filter((item: any) => item.type !== 'none')
           .map((item: any) => {
-            const key = `${nameKey || item.dataKey || 'value'}`;
+            const key = `${nameKey ?? item.dataKey ?? 'value'}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
             return (
@@ -369,7 +371,7 @@ function getPayloadConfigFromPayload(
 
   return configLabelKey in config
     ? config[configLabelKey]
-    : config[key as keyof typeof config];
+    : config[key];
 }
 
 export {

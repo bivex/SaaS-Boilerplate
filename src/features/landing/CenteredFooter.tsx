@@ -16,6 +16,15 @@
 import { useTranslations } from 'next-intl';
 import React from 'react';
 
+const AuthorLink = () => (
+  <a
+    className="text-blue-500 hover:text-blue-600"
+    href="https://creativedesignsguru.com"
+  >
+    Creative Designs Guru
+  </a>
+);
+
 export const CenteredFooter = (props: {
   logo: React.ReactNode;
   name: string;
@@ -43,14 +52,7 @@ export const CenteredFooter = (props: {
         <div>
           {`© Copyright ${new Date().getFullYear()} ${props.name}. `}
           {t.rich('designed_by', {
-            author: () => (
-              <a
-                className="text-blue-500 hover:text-blue-600"
-                href="https://creativedesignsguru.com"
-              >
-                Creative Designs Guru
-              </a>
-            ),
+            author: AuthorLink,
           })}
           {/*
            * PLEASE READ THIS SECTION

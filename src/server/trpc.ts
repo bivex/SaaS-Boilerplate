@@ -51,7 +51,7 @@ export const t = initTRPC.context<typeof createTRPCContext>().create({
         ...shape.data,
         zodError:
                     error.cause instanceof ZodError
-                      ? (error.cause as ZodError).flatten()
+                      ? error.cause.flatten()
                       : null,
       },
     };

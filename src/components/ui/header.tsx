@@ -192,19 +192,18 @@ function Header1() {
                       : (
                           <p className="text-lg">{item.title}</p>
                         )}
-                    {item.items
-                      && item.items.map(subItem => (
-                        <Link
-                          key={subItem.title}
-                          href={subItem.href}
-                          className="flex justify-between items-center"
-                        >
-                          <span className="text-muted-foreground">
-                            {subItem.title}
-                          </span>
-                          <MoveRight className="w-4 h-4 stroke-1" />
-                        </Link>
-                      ))}
+                    {item.items?.map(subItem => (
+                      <Link
+                        key={subItem.title}
+                        href={subItem.href}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-muted-foreground">
+                          {subItem.title}
+                        </span>
+                        <MoveRight className="w-4 h-4 stroke-1" />
+                      </Link>
+                    ))}
                   </div>
                 </div>
               ))}

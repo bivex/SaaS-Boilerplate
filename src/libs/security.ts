@@ -23,8 +23,8 @@ import { Env } from './Env';
 
 // Initialize Redis for rate limiting
 const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL || '',
-  token: process.env.UPSTASH_REDIS_REST_TOKEN || '',
+  url: process.env.UPSTASH_REDIS_REST_URL ?? '',
+  token: process.env.UPSTASH_REDIS_REST_TOKEN ?? '',
 });
 
 // Rate limiter instance
@@ -109,7 +109,7 @@ export type CookieConfig = {
  * JWT Management Utilities
  */
 export class JWTManager {
-  private config: JWTConfig;
+  private readonly config: JWTConfig;
 
   constructor(config: JWTConfig) {
     this.config = {
@@ -122,12 +122,10 @@ export class JWTManager {
    * Sign a JWT token
    */
   sign(payload: JWTPayload): string {
-    const { secret, expiresIn, algorithm = 'HS256' } = this.config;
-
-    return jwt.sign(payload, secret, {
-      algorithm: algorithm as jwt.Algorithm,
-      expiresIn,
-    } as jwt.SignOptions);
+    return jwt.sign(payload, this.config.secret, {
+      algorithm: this.config.algorithm ?? 'HS256',
+      expiresIn: this.config.expiresIn,
+    } as any);
   }
 
   /**
@@ -163,7 +161,7 @@ export class JWTManager {
  * Password Security Utilities
  */
 export class PasswordManager {
-  private config: PasswordConfig;
+  private readonly config: PasswordConfig;
 
   constructor(config: PasswordConfig = {}) {
     this.config = {
@@ -207,7 +205,7 @@ export class PasswordManager {
  * CSRF Protection Utilities
  */
 export class CSRFManager {
-  private config: CSRFConfig;
+  private readonly config: CSRFConfig;
 
   constructor(config: CSRFConfig) {
     this.config = {
@@ -223,7 +221,7 @@ export class CSRFManager {
     const tokenBytes = crypto.randomBytes(32);
     const token = tokenBytes.toString('hex');
 
-    const expiresAt = new Date(Date.now() + ((this.config.expiresIn || 3600) * 1000));
+    const expiresAt = new Date(Date.now() + ((this.config.expiresIn ?? 3600) * 1000));
 
     return { token, expiresAt };
   }
@@ -255,7 +253,7 @@ export class CSRFManager {
  * Rate Limiting Utilities
  */
 export class RateLimitManager {
-  private config: RateLimitConfig;
+  private readonly config: RateLimitConfig;
 
   constructor(config: RateLimitConfig) {
     this.config = config;
@@ -358,7 +356,7 @@ export class CookieManager {
  * OAuth Provider Integration
  */
 export class OAuthManager {
-  private config: Record<string, OAuthConfig>;
+  private readonly config: Record<string, OAuthConfig>;
 
   constructor(config: Record<string, OAuthConfig>) {
     this.config = config;
@@ -526,12 +524,12 @@ const getEnvVar = (key: string, defaultValue?: string) => {
   }
 };
 
-const secret = getEnvVar('BETTER_AUTH_SECRET') || 'test-secret-key';
-const baseUrl = getEnvVar('BETTER_AUTH_URL') || 'http://localhost:3000';
-const googleClientId = getEnvVar('GOOGLE_CLIENT_ID') || 'test-google-client-id';
-const googleClientSecret = getEnvVar('GOOGLE_CLIENT_SECRET') || 'test-google-secret';
-const githubClientId = getEnvVar('GITHUB_CLIENT_ID') || 'test-github-client-id';
-const githubClientSecret = getEnvVar('GITHUB_CLIENT_SECRET') || 'test-github-secret';
+const secret = getEnvVar('BETTER_AUTH_SECRET') ?? 'test-secret-key';
+const baseUrl = getEnvVar('BETTER_AUTH_URL') ?? 'http://localhost:3000';
+const googleClientId = getEnvVar('GOOGLE_CLIENT_ID') ?? 'test-google-client-id';
+const googleClientSecret = getEnvVar('GOOGLE_CLIENT_SECRET') ?? 'test-google-secret';
+const githubClientId = getEnvVar('GITHUB_CLIENT_ID') ?? 'test-github-client-id';
+const githubClientSecret = getEnvVar('GITHUB_CLIENT_SECRET') ?? 'test-github-secret';
 
 export const jwtManager = new JWTManager({
   secret,

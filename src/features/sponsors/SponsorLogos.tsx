@@ -13,7 +13,6 @@
  * Commercial licensing available upon request.
  */
 
-// import Image from 'next/image'; // Using regular img tags for marquee compatibility
 import { Marquee } from '@/components/ui/marquee';
 
 const Logos = {

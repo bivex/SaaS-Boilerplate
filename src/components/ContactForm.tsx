@@ -29,9 +29,7 @@ const contactFormSchema = z.object({
   name: z.string().min(2, {
     message: 'Имя должно содержать минимум 2 символа.',
   }),
-  email: z.string().email({
-    message: 'Пожалуйста, введите корректный email адрес.',
-  }),
+  email: z.string().email('Пожалуйста, введите корректный email адрес.'),
   subject: z.string().min(5, {
     message: 'Тема должна содержать минимум 5 символов.',
   }),
@@ -136,7 +134,7 @@ export function ContactForm() {
                   <FormControl>
                     <Textarea
                       placeholder="Расскажите подробнее о вашем вопросе или предложении..."
-                      className="min-h-[120px]"
+                      className="min-h-30"
                       {...field}
                     />
                   </FormControl>

@@ -13,10 +13,10 @@
  * Commercial licensing available upon request.
  */
 
+import type { AuthSessionResponse } from '@/types/Auth';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { authClient } from '@/libs/auth-client';
 import { trpc } from '@/trpc/client';
-import type { AuthSessionResponse } from '@/types/Auth';
 
 // Configuration for session management
 const SESSION_CONFIG = {
@@ -202,7 +202,7 @@ export function useSession() {
 
 export function useUser() {
   const { session, loading } = useSession();
-  return { user: session?.user || null, loading };
+  return { user: session?.user ?? null, loading };
 }
 
 export function useSignOut() {

@@ -118,8 +118,8 @@ export class DatabaseSessionStorage implements SessionStorageAdapter {
       userId: dbSession.userId,
       token: dbSession.token || undefined,
       expiresAt: dbSession.expiresAt,
-      ipAddress: dbSession.ipAddress || undefined,
-      userAgent: dbSession.userAgent || undefined,
+      ipAddress: dbSession.ipAddress ?? undefined,
+      userAgent: dbSession.userAgent ?? undefined,
       createdAt: dbSession.createdAt,
       updatedAt: dbSession.updatedAt,
     };
@@ -165,12 +165,12 @@ export class DatabaseSessionStorage implements SessionStorageAdapter {
 
 // Redis session storage adapter
 export class RedisSessionStorage implements SessionStorageAdapter {
-  private redis: Redis;
+  private readonly redis: Redis;
 
   constructor(redisUrl?: string, redisToken?: string) {
     this.redis = new Redis({
-      url: redisUrl || process.env.UPSTASH_REDIS_REST_URL || '',
-      token: redisToken || process.env.UPSTASH_REDIS_REST_TOKEN || '',
+      url: redisUrl ?? process.env.UPSTASH_REDIS_REST_URL ?? '',
+      token: redisToken ?? process.env.UPSTASH_REDIS_REST_TOKEN ?? '',
     });
   }
 
@@ -235,8 +235,8 @@ export class RedisSessionStorage implements SessionStorageAdapter {
 
 // Hybrid storage strategy (Redis + Database)
 export class HybridSessionStorage implements SessionStorageAdapter {
-  private redis: RedisSessionStorage;
-  private database: DatabaseSessionStorage;
+  private readonly redis: RedisSessionStorage;
+  private readonly database: DatabaseSessionStorage;
 
   constructor(redisUrl?: string, redisToken?: string) {
     this.redis = new RedisSessionStorage(redisUrl, redisToken);

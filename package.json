@@ -148,6 +148,7 @@
     "drizzle-kit": "^0.31.8",
     "drizzle-seed": "^0.3.0",
     "eslint": "^9.39.2",
+    "eslint-plugin-format": "^1.1.0",
     "eslint-plugin-no-secrets": "^1.1.2",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.26",

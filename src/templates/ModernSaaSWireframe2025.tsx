@@ -128,8 +128,8 @@ const HeroSection = React.memo(() => {
           {/* Main Headline - Benefit Focused */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
             Cut reporting time by
+            {' '}
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              {' '}
               50%
             </span>
           </h1>
@@ -223,7 +223,8 @@ const TheVillain = React.memo(() => {
           {/* Problem Identification */}
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Are you spending hours on
-            <span className="text-red-600"> routine reports</span>
+            {' '}
+            <span className="text-red-600">routine reports</span>
             ?
           </h2>
 
@@ -292,7 +293,8 @@ const TheGuide = React.memo(() => {
           <div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               We understand how difficult it is to
-              <span className="text-blue-600"> manage a remote team</span>
+              {' '}
+              <span className="text-blue-600">manage a remote team</span>
             </h2>
 
             <p className="text-xl text-gray-700 mb-8 leading-relaxed">
@@ -810,40 +812,40 @@ const Footer = React.memo(() => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Product</h3>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">API</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
+              <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
+              <li><a href="/integrations" className="hover:text-white transition-colors">Integrations</a></li>
+              <li><a href="/api" className="hover:text-white transition-colors">API</a></li>
+              <li><a href="/security" className="hover:text-white transition-colors">Security</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Company</h3>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+              <li><a href="/about" className="hover:text-white transition-colors">About</a></li>
+              <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
+              <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
+              <li><a href="/contact" className="hover:text-white transition-colors">Contact</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Support</h3>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">System Status</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
+              <li><a href="/docs" className="hover:text-white transition-colors">Documentation</a></li>
+              <li><a href="/help" className="hover:text-white transition-colors">Help Center</a></li>
+              <li><a href="/status" className="hover:text-white transition-colors">System Status</a></li>
+              <li><a href="/api-reference" className="hover:text-white transition-colors">API Reference</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">GDPR</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Cookies</a></li>
+              <li><button type="button" className="hover:text-white transition-colors text-left">Privacy Policy</button></li>
+              <li><button type="button" className="hover:text-white transition-colors text-left">Terms of Service</button></li>
+              <li><button type="button" className="hover:text-white transition-colors text-left">GDPR</button></li>
+              <li><button type="button" className="hover:text-white transition-colors text-left">Cookies</button></li>
             </ul>
           </div>
         </div>
@@ -853,7 +855,7 @@ const Footer = React.memo(() => {
             © 2025 SaaSFlow. All rights reserved.
           </p>
           <div className="flex items-center gap-4 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <a href="https://twitter.com/saasflow" className="text-gray-400 hover:text-white transition-colors">
               <span className="sr-only">Twitter</span>
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -861,7 +863,7 @@ const Footer = React.memo(() => {
                 />
               </svg>
             </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <a href="https://github.com/saasflow" className="text-gray-400 hover:text-white transition-colors">
               <span className="sr-only">GitHub</span>
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <path
@@ -871,7 +873,7 @@ const Footer = React.memo(() => {
                 />
               </svg>
             </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">
+            <a href="https://linkedin.com/company/saasflow" className="text-gray-400 hover:text-white transition-colors">
               <span className="sr-only">LinkedIn</span>
               <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                 <path

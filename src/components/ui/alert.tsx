@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:01:01
- * Last Updated: 2025-12-24T01:03:43
+ * Last Updated: 2025-12-24T01:52:49
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -49,8 +49,8 @@ const Alert = React.forwardRef<
 Alert.displayName = 'Alert';
 
 const AlertTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement> & { children: React.ReactNode }
 >(({ className, ...props }, ref) => (
   <h5
     ref={ref}

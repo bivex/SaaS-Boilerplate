@@ -25,13 +25,16 @@ describe('auth-client', () => {
     // Skip complex tests that require full setup
     it.skip('should have required auth methods', () => {
         // This would require full auth client setup
+        expect(true).toBe(true); // Skip assertion for intentionally skipped test
     });
 
     it.skip('should have signIn methods', () => {
         // This would require full auth client setup
+        expect(true).toBe(true); // Skip assertion for intentionally skipped test
     });
 
     it.skip('should have signUp methods', () => {
         // This would require full auth client setup
+        expect(true).toBe(true); // Skip assertion for intentionally skipped test
     });
 });

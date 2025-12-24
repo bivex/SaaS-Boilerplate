@@ -15,6 +15,7 @@
 
 import { useTranslations } from 'next-intl';
 
+import React from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export const ProtectFallback = (props: { trigger: React.ReactNode }) => {

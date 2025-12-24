@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:20:00
- * Last Updated: 2025-12-24T01:03:41
+ * Last Updated: 2025-12-24T01:14:09
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -103,7 +103,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   socialProvidersConfig.google = {
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    redirectURI: `${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/api/auth/callback/google`,
+    redirectURI: `${process.env.BETTER_AUTH_URL ?? 'http://localhost:3000'}/api/auth/callback/google`,
   };
 }
 

@@ -228,16 +228,16 @@ export function withLogging<T extends AuthContext>(label?: string) {
   return (next: (opts: { ctx: T; input?: any; path?: string; type?: string }) => any) =>
     (opts: { ctx: T; input?: any; path?: string; type?: string }) => {
       const start = Date.now();
-      console.warn(`[${label || 'TRPC'}] ${opts.type || 'UNKNOWN'} ${opts.path || 'unknown'} - Start`);
+      console.warn(`[${label ?? 'TRPC'}] ${opts.type ?? 'UNKNOWN'} ${opts.path ?? 'unknown'} - Start`);
 
       try {
         const result = next(opts);
         const duration = Date.now() - start;
-        console.warn(`[${label || 'TRPC'}] ${opts.type || 'UNKNOWN'} ${opts.path || 'unknown'} - Success (${duration}ms)`);
+        console.warn(`[${label ?? 'TRPC'}] ${opts.type ?? 'UNKNOWN'} ${opts.path ?? 'unknown'} - Success (${duration}ms)`);
         return result;
       } catch (error) {
         const duration = Date.now() - start;
-        console.error(`[${label || 'TRPC'}] ${opts.type || 'UNKNOWN'} ${opts.path || 'unknown'} - Error (${duration}ms):`, error);
+        console.error(`[${label ?? 'TRPC'}] ${opts.type ?? 'UNKNOWN'} ${opts.path ?? 'unknown'} - Error (${duration}ms):`, error);
         throw error;
       }
     };

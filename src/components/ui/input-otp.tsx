@@ -38,7 +38,7 @@ const InputOTP = React.forwardRef<
 InputOTP.displayName = 'InputOTP';
 
 const InputOTPGroup = React.forwardRef<
-  React.ElementRef<'div'>,
+  React.ComponentRef<'div'>,
   React.ComponentPropsWithoutRef<'div'>
 >(({ className, ...props }, ref) => (
   <div ref={ref} className={cn('flex items-center', className)} {...props} />
@@ -46,7 +46,7 @@ const InputOTPGroup = React.forwardRef<
 InputOTPGroup.displayName = 'InputOTPGroup';
 
 const InputOTPSlot = React.forwardRef<
-  React.ElementRef<'div'>,
+  React.ComponentRef<'div'>,
     React.ComponentPropsWithoutRef<'div'> & { index: number }
 >(({ index, className, ...props }, ref) => {
   const inputOTPContext = React.use(OTPInputContext);
@@ -75,11 +75,11 @@ const InputOTPSlot = React.forwardRef<
 InputOTPSlot.displayName = 'InputOTPSlot';
 
 const InputOTPSeparator = React.forwardRef<
-  React.ElementRef<'div'>,
+  React.ComponentRef<'div'>,
   React.ComponentPropsWithoutRef<'div'>
->(({ ...props }, ref) => (
-  <div ref={ref} role="separator" {...props}>
-    <Dot />
+>(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn('flex items-center justify-center', className)} {...props}>
+    <Dot className="h-2 w-2" />
   </div>
 ));
 InputOTPSeparator.displayName = 'InputOTPSeparator';

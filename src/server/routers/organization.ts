@@ -87,7 +87,7 @@ export const organizationRouter = createTRPCRouter({
         .insert(todoSchema)
         .values({
           title: input.title,
-          message: input.message || '',
+          message: input.message ?? '',
           ownerId: userId,
           updatedAt: new Date(),
           createdAt: new Date(),

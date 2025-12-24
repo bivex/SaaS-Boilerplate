@@ -7,10 +7,12 @@
 
 # Database
 *.db
-
+.scannerwork/
 # testing
 /coverage
-
+sonarqube-issues-report.md
+sonarqube-report-fixed.sh
+sonarqube-json-parser.py
 # storybook
 storybook-static
 *storybook.log
@@ -51,3 +53,9 @@ local
 
 # vercel
 .vercel
+
+parse_issues.py
+
+sonar-project.properties
+
+sonarqube-issues-full-report.md

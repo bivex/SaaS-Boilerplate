@@ -13,7 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import type { ComponentPropsWithoutRef, ElementRef } from 'react';
+import type { ComponentPropsWithoutRef, ComponentRef } from 'react';
 
 import { Button } from '@/components/ui/button';
 
@@ -24,7 +24,7 @@ import { Button } from '@/components/ui/button';
  * @params props.onClick - Function to run when the button is clicked.
  */
 const ToggleMenuButton = ({ ref, ...props}: ComponentPropsWithoutRef<typeof Button> & {
-  ref?: React.RefObject<ElementRef<typeof Button> | null>;
+  ref?: React.RefObject<ComponentRef<typeof Button> | null>;
 }) => (
   <Button
     className="p-2 focus-visible:ring-offset-0"

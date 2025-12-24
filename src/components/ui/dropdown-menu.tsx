@@ -63,7 +63,7 @@ const DropdownMenuSubContent = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent> & {
-  ref?: React.RefObject<React.ElementRef<typeof DropdownMenuPrimitive.SubContent> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof DropdownMenuPrimitive.SubContent> | null>;
 }) => (
   <DropdownMenuPrimitive.SubContent
     ref={ref}
@@ -83,7 +83,7 @@ const DropdownMenuContent = ({
   sideOffset = 4,
   ...props
 }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> & {
-  ref?: React.RefObject<React.ElementRef<typeof DropdownMenuPrimitive.Content> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof DropdownMenuPrimitive.Content> | null>;
 }) => (
   <DropdownMenuPrimitive.Portal>
     <DropdownMenuPrimitive.Content
@@ -126,7 +126,7 @@ const DropdownMenuCheckboxItem = ({
   checked,
   ...props
 }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem> & {
-  ref?: React.RefObject<React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof DropdownMenuPrimitive.CheckboxItem> | null>;
 }) => (
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
@@ -154,7 +154,7 @@ const DropdownMenuRadioItem = ({
   children,
   ...props
 }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem> & {
-  ref?: React.RefObject<React.ElementRef<typeof DropdownMenuPrimitive.RadioItem> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof DropdownMenuPrimitive.RadioItem> | null>;
 }) => (
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
@@ -199,7 +199,7 @@ const DropdownMenuSeparator = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator> & {
-  ref?: React.RefObject<React.ElementRef<typeof DropdownMenuPrimitive.Separator> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof DropdownMenuPrimitive.Separator> | null>;
 }) => (
   <DropdownMenuPrimitive.Separator
     ref={ref}

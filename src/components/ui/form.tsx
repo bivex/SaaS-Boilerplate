@@ -58,7 +58,7 @@ const FormItem = ({ ref, className, ...props}: React.HTMLAttributes<HTMLDivEleme
 FormItem.displayName = 'FormItem';
 
 const FormLabel = ({ ref, className, ...props}: React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
-  ref?: React.RefObject<React.ElementRef<typeof LabelPrimitive.Root> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof LabelPrimitive.Root> | null>;
 }) => {
   const { error, formItemId } = useFormField();
 
@@ -74,7 +74,7 @@ const FormLabel = ({ ref, className, ...props}: React.ComponentPropsWithoutRef<t
 FormLabel.displayName = 'FormLabel';
 
 const FormControl = ({ ref, ...props}: React.ComponentPropsWithoutRef<typeof Slot> & {
-  ref?: React.RefObject<React.ElementRef<typeof Slot> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof Slot> | null>;
 }) => {
   const { error, formItemId, formDescriptionId, formMessageId }
     = useFormField();

@@ -30,7 +30,7 @@ const TooltipContent = ({
   sideOffset = 4,
   ...props
 }: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & {
-  ref?: React.RefObject<React.ElementRef<typeof TooltipPrimitive.Content> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof TooltipPrimitive.Content> | null>;
 }) => (
   <TooltipPrimitive.Content
     ref={ref}
@@ -45,7 +45,7 @@ const TooltipContent = ({
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 const TooltipArrow = ({ ref, className, ...props}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Arrow> & {
-  ref?: React.RefObject<React.ElementRef<typeof TooltipPrimitive.Arrow> | null>;
+  ref?: React.RefObject<React.ComponentRef<typeof TooltipPrimitive.Arrow> | null>;
 }) => (
   <TooltipPrimitive.Arrow
     ref={ref}

@@ -107,8 +107,8 @@ const DashboardIndexPage = () => {
       description: t('actions.create_project_desc'),
       icon: Plus,
       action: () => {
-        // TODO: Implement project creation modal
-        // For now, this is a placeholder
+        // Placeholder: Project creation feature to be implemented
+        console.warn('Project creation feature coming soon!');
       },
     },
     {
@@ -116,8 +116,8 @@ const DashboardIndexPage = () => {
       description: t('actions.invite_users_desc'),
       icon: Users,
       action: () => {
-        // TODO: Implement user invitation modal
-        // For now, this is a placeholder
+        // Placeholder: User invitation feature to be implemented
+        console.warn('User invitation feature coming soon!');
       },
     },
     {
@@ -125,7 +125,7 @@ const DashboardIndexPage = () => {
       description: t('actions.view_reports_desc'),
       icon: TrendingUp,
       action: () => {
-        // TODO: Navigate to reports page
+        // Placeholder: Reports navigation to be implemented
         console.warn('Reports feature coming soon!');
       },
     },
@@ -134,7 +134,7 @@ const DashboardIndexPage = () => {
       description: t('actions.schedule_meeting_desc'),
       icon: Calendar,
       action: () => {
-        // TODO: Implement meeting scheduler
+        // Placeholder: Meeting scheduler feature to be implemented
         console.warn('Meeting scheduler feature coming soon!');
       },
     },
@@ -151,14 +151,14 @@ const DashboardIndexPage = () => {
       <div className="mb-8">
         <div className="flex items-center gap-4 mb-6">
           <Avatar className="h-16 w-16">
-            <AvatarImage src={user?.image || undefined} alt={user?.name || 'User'} />
+            <AvatarImage src={user?.image ?? undefined} alt={user?.name ?? 'User'} />
             <AvatarFallback className="text-lg">
-              {user?.name?.charAt(0)?.toUpperCase() || 'U'}
+              {user?.name?.charAt(0)?.toUpperCase() ?? 'U'}
             </AvatarFallback>
           </Avatar>
           <div>
             <h1 className="text-2xl font-bold">
-              {t('welcome_back', { name: user?.name || 'User' })}
+              {t('welcome_back', { name: user?.name ?? 'User' })}
             </h1>
             <p className="text-muted-foreground">
               {t('welcome_description')}
