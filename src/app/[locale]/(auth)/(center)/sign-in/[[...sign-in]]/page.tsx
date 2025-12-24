@@ -74,10 +74,8 @@ export default function SignInPage() {
 
       if (result.error) {
         setError(result.error.message || 'An error occurred');
-      } else if (result.url) {
-        // For social sign-in, Better Auth returns a URL to redirect to OAuth provider
-        window.location.href = result.url;
       }
+      // Better Auth handles the redirect automatically for social sign-in
     } catch {
       setError('An unexpected error occurred');
     }

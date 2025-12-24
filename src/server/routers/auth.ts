@@ -16,6 +16,9 @@
 import { z } from 'zod';
 import { auth } from '@/libs/auth';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/trpc';
+import { db } from '@/libs/DB';
+import { user } from '@/models/Schema';
+import { eq } from 'drizzle-orm';
 
 export const authRouter = createTRPCRouter({
   // Get current session
@@ -37,7 +40,7 @@ export const authRouter = createTRPCRouter({
           request: ctx.req,
           headers: ctx.req.headers,
           url: ctx.req.url,
-          method: ctx.req.method,
+          method: 'POST' as const,
         };
 
         const result = await auth.api.signUpEmail({
@@ -70,7 +73,7 @@ export const authRouter = createTRPCRouter({
           request: ctx.req,
           headers: ctx.req.headers,
           url: ctx.req.url,
-          method: ctx.req.method,
+          method: 'POST' as const,
         };
 
         const result = await auth.api.signInEmail({
@@ -97,10 +100,10 @@ export const authRouter = createTRPCRouter({
         request: ctx.req,
         headers: ctx.req.headers,
         url: ctx.req.url,
-        method: ctx.req.method,
+        method: 'POST' as const,
       };
 
-      const result = await auth.api.signOut(context);
+      await auth.api.signOut(context);
 
       // Return only serializable data
       return { success: true, message: 'Signed out successfully' };
@@ -113,5 +116,66 @@ export const authRouter = createTRPCRouter({
   // Get user profile (protected)
   getProfile: protectedProcedure.query(({ ctx }) => {
     return ctx.session?.user;
+  }),
+
+  // Link Google account
+  linkGoogleAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    try {
+      const userId = ctx.session?.user?.id;
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
+
+      await db
+        .update(user)
+        .set({ googleLinked: true })
+        .where(eq(user.id, userId));
+
+      return { success: true, message: 'Google account linked successfully' };
+    } catch (error) {
+      console.error('Link Google account error:', error);
+      throw new Error(error instanceof Error ? error.message : 'Failed to link Google account');
+    }
+  }),
+
+  // Unlink Google account
+  unlinkGoogleAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    try {
+      const userId = ctx.session?.user?.id;
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
+
+      await db
+        .update(user)
+        .set({ googleLinked: false })
+        .where(eq(user.id, userId));
+
+      return { success: true, message: 'Google account unlinked successfully' };
+    } catch (error) {
+      console.error('Unlink Google account error:', error);
+      throw new Error(error instanceof Error ? error.message : 'Failed to unlink Google account');
+    }
+  }),
+
+  // Check if Google account is linked
+  isGoogleLinked: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const userId = ctx.session?.user?.id;
+      if (!userId) {
+        return { linked: false };
+      }
+
+      const userData = await db
+        .select({ googleLinked: user.googleLinked })
+        .from(user)
+        .where(eq(user.id, userId))
+        .limit(1);
+
+      return { linked: userData[0]?.googleLinked || false };
+    } catch (error) {
+      console.error('Check Google linked error:', error);
+      return { linked: false };
+    }
   }),
 });

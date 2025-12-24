@@ -15,6 +15,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { authClient } from '@/libs/auth-client';
+import { trpc } from '@/trpc/client';
 
 // Configuration for session management
 const SESSION_CONFIG = {
@@ -73,8 +74,16 @@ async function fetchSession(): Promise<any> {
 
 async function refreshSession(): Promise<any> {
   try {
-    const result = await authClient.refreshSession();
-    return result.data;
+    // Get a fresh session from the server
+    const result = await authClient.getSession();
+    const session = result.data;
+
+    // Check if session is expired
+    if (session?.session?.expiresAt && new Date(session.session.expiresAt) < new Date()) {
+      return null; // Expired session
+    }
+
+    return session;
   } catch (error) {
     console.error('Error refreshing session:', error);
     // On refresh failure, clear session
@@ -96,8 +105,8 @@ function shouldRefreshSession(session: any): boolean {
 export function useSession() {
   const [session, setSession] = useState<any>(globalSession);
   const [loading, setLoading] = useState(globalLoading);
-  const refreshTimerRef = useRef<NodeJS.Timeout>();
-  const checkTimerRef = useRef<NodeJS.Timeout>();
+  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const checkTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const updateSession = useCallback((newSession: any, newLoading: boolean) => {
     setSession(newSession);
@@ -225,4 +234,44 @@ export function __resetGlobalStateForTesting() {
   globalLoading = true;
   sessionPromise = null;
   sessionSubscribers.clear();
+}
+
+// Google account linking hooks
+export function useGoogleLinking() {
+  const { data: linkStatus, refetch: refetchLinkStatus } = trpc.auth.isGoogleLinked.useQuery();
+  const linkMutation = trpc.auth.linkGoogleAccount.useMutation();
+  const unlinkMutation = trpc.auth.unlinkGoogleAccount.useMutation();
+
+  const isLinked = linkStatus?.linked ?? null;
+  const loading = linkMutation.isPending || unlinkMutation.isPending;
+
+  const linkGoogleAccount = useCallback(async () => {
+    try {
+      await linkMutation.mutateAsync();
+      refetchLinkStatus();
+      return { success: true };
+    } catch (error) {
+      console.error('Error linking Google account:', error);
+      return { success: false, error: error instanceof Error ? error.message : 'Failed to link Google account' };
+    }
+  }, [linkMutation, refetchLinkStatus]);
+
+  const unlinkGoogleAccount = useCallback(async () => {
+    try {
+      await unlinkMutation.mutateAsync();
+      refetchLinkStatus();
+      return { success: true };
+    } catch (error) {
+      console.error('Error unlinking Google account:', error);
+      return { success: false, error: error instanceof Error ? error.message : 'Failed to unlink Google account' };
+    }
+  }, [unlinkMutation, refetchLinkStatus]);
+
+  return {
+    isLinked,
+    loading,
+    linkGoogleAccount,
+    unlinkGoogleAccount,
+    refetchLinkStatus,
+  };
 }

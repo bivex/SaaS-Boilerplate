@@ -141,6 +141,7 @@ export const auth = betterAuth({
     return true; // Allow account creation if email is unique
   },
 
+
   // Enhanced email and password configuration
   emailAndPassword: {
     enabled: true,
@@ -157,6 +158,42 @@ export const auth = betterAuth({
 
   // Enhanced social providers - conditionally configured based on environment variables
   socialProviders: socialProvidersConfig,
+
+  // Custom social provider sign-in logic
+  onBeforeSignIn: async ({ user: signInUser, account }: { user: any, account: any }) => {
+    if (account?.providerId === 'google') {
+      // Check if user exists and has Google linked
+      const existingUser = await db
+        .select()
+        .from(user)
+        .where(eq(user.email, signInUser.email))
+        .limit(1);
+
+      if (existingUser.length > 0) {
+        // User exists - check if Google is linked
+        const userData = existingUser[0];
+        if (userData && !userData.googleLinked) {
+          throw new Error(
+            'Google authentication is not enabled for this account. ' +
+            'Please sign in with your email and password first, then link your Google account in settings.'
+          );
+        }
+      }
+    }
+
+    return true;
+  },
+
+  // Handle post-account creation for social providers
+  onAfterCreateAccount: async ({ user: newUser, account }: { user: any, account: any }) => {
+    if (account?.providerId === 'google') {
+      // Link Google account for new users
+      await db
+        .update(user)
+        .set({ googleLinked: true })
+        .where(eq(user.id, newUser.id));
+    }
+  },
 
   // Redirect configuration for auth flows
   redirectTo: {

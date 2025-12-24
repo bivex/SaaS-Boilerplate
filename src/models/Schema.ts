@@ -45,6 +45,7 @@ export const user = sqliteTable('user', {
   banned: integer('banned', { mode: 'boolean' }),
   banReason: text('ban_reason'),
   banExpires: integer('ban_expires', { mode: 'timestamp' }),
+  googleLinked: integer('google_linked', { mode: 'boolean' }).notNull().default(false),
 });
 
 export const session = sqliteTable('session', {
