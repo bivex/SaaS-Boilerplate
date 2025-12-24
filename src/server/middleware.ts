@@ -197,10 +197,10 @@ export function checkOwnershipWithAdminOverride(resourceUserId: string) {
  * Middleware chaining utilities
  */
 export function chain<T extends AuthContext>(
-  ...middlewares: Array<(builder: MiddlewareBuilder<T, T>) => MiddlewareBuilder<T, T>>
+  ...middlewares: Array<(next: (opts: { ctx: T; input?: any }) => any) => (opts: { ctx: T; input?: any }) => any>
 ) {
-  return (builder: MiddlewareBuilder<T, T>) => {
-    return middlewares.reduce((current, middleware) => middleware(current), builder);
+  return (next: (opts: { ctx: T; input?: any }) => any) => {
+    return middlewares.reduce((current, middleware) => middleware(current), next);
   };
 }
 
@@ -209,58 +209,57 @@ export function chain<T extends AuthContext>(
  */
 export function conditional<T extends AuthContext>(
   condition: (ctx: T) => boolean,
-  middleware: (builder: MiddlewareBuilder<T, T>) => MiddlewareBuilder<T, T>,
+  middleware: (next: (opts: { ctx: T; input?: any }) => any) => (opts: { ctx: T; input?: any }) => any,
 ) {
-  return (builder: MiddlewareBuilder<T, T>) =>
-    builder.use(({ ctx, next }) => {
-      if (condition(ctx)) {
+  return (next: (opts: { ctx: T; input?: any }) => any) =>
+    (opts: { ctx: T; input?: any }) => {
+      if (condition(opts.ctx)) {
         // Apply the middleware
-        return middleware(builder).use(() => next());
+        return middleware(next)(opts);
       }
-      return next();
-    });
+      return next(opts);
+    };
 }
 
 /**
  * Logging middleware for debugging
  */
 export function withLogging<T extends AuthContext>(label?: string) {
-  return (middleware: MiddlewareBuilder<T, T>) =>
-    middleware.use(({ _ctx, next, path, type }) => {
+  return (next: (opts: { ctx: T; input?: any; path?: string; type?: string }) => any) =>
+    (opts: { ctx: T; input?: any; path?: string; type?: string }) => {
       const start = Date.now();
-      console.warn(`[${label || 'TRPC'}] ${type} ${path} - Start`);
+      console.warn(`[${label || 'TRPC'}] ${opts.type || 'UNKNOWN'} ${opts.path || 'unknown'} - Start`);
 
-      return next()
-        .then((result) => {
-          const duration = Date.now() - start;
-          console.warn(`[${label || 'TRPC'}] ${type} ${path} - Success (${duration}ms)`);
-          return result;
-        })
-        .catch((error) => {
-          const duration = Date.now() - start;
-          console.error(`[${label || 'TRPC'}] ${type} ${path} - Error (${duration}ms):`, error);
-          throw error;
-        });
-    });
+      try {
+        const result = next(opts);
+        const duration = Date.now() - start;
+        console.warn(`[${label || 'TRPC'}] ${opts.type || 'UNKNOWN'} ${opts.path || 'unknown'} - Success (${duration}ms)`);
+        return result;
+      } catch (error) {
+        const duration = Date.now() - start;
+        console.error(`[${label || 'TRPC'}] ${opts.type || 'UNKNOWN'} ${opts.path || 'unknown'} - Error (${duration}ms):`, error);
+        throw error;
+      }
+    };
 }
 
 /**
  * Input validation middleware with additional security checks
  */
 export function withSecurityValidation<T extends AuthContext>() {
-  return (middleware: MiddlewareBuilder<T, T>) =>
-    middleware.use(({ input, next }) => {
+  return (next: (opts: { ctx: T; input?: any }) => any) =>
+    (opts: { ctx: T; input?: any }) => {
       // Basic input sanitization
-      if (input && typeof input === 'object') {
+      if (opts.input && typeof opts.input === 'object') {
         // Remove any potential injection attempts
-        const sanitizedInput = JSON.parse(JSON.stringify(input));
+        const sanitizedInput = JSON.parse(JSON.stringify(opts.input));
 
         // Additional security checks can be added here
         // For example: check for suspicious patterns, validate data types, etc.
 
-        return next({ input: sanitizedInput });
+        return next({ ...opts, input: sanitizedInput });
       }
 
-      return next();
-    });
+      return next(opts);
+    };
 }

@@ -122,12 +122,12 @@ export class JWTManager {
    * Sign a JWT token
    */
   sign(payload: JWTPayload): string {
-    const { secret, expiresIn, algorithm } = this.config;
+    const { secret, expiresIn, algorithm = 'HS256' } = this.config;
 
     return jwt.sign(payload, secret, {
-      algorithm,
+      algorithm: algorithm as jwt.Algorithm,
       expiresIn,
-    });
+    } as jwt.SignOptions);
   }
 
   /**
@@ -223,7 +223,7 @@ export class CSRFManager {
     const tokenBytes = crypto.randomBytes(32);
     const token = tokenBytes.toString('hex');
 
-    const expiresAt = new Date(Date.now() + (this.config.expiresIn * 1000));
+    const expiresAt = new Date(Date.now() + ((this.config.expiresIn || 3600) * 1000));
 
     return { token, expiresAt };
   }
@@ -289,7 +289,7 @@ export class CookieManager {
    * Get secure cookie options based on environment
    */
   getSecureOptions(environment: string = 'development'): CookieConfig {
-    const baseOptions: CookieConfig = {
+    const baseOptions: Omit<CookieConfig, 'secure'> = {
       httpOnly: true,
       sameSite: 'strict',
       maxAge: 60 * 60 * 24 * 7, // 7 days
@@ -373,12 +373,12 @@ export class OAuthManager {
       throw new Error(`OAuth provider '${provider}' not configured`);
     }
 
-    const baseUrls = {
+    const baseUrls: Record<string, string> = {
       google: 'https://accounts.google.com/oauth/authorize',
       github: 'https://github.com/login/oauth/authorize',
     };
 
-    const scopes = {
+    const scopes: Record<string, string> = {
       google: 'openid email profile',
       github: 'user:email',
     };
@@ -410,7 +410,7 @@ export class OAuthManager {
       throw new Error(`OAuth provider '${provider}' not configured`);
     }
 
-    const tokenUrls = {
+    const tokenUrls: Record<string, string> = {
       google: 'https://oauth2.googleapis.com/token',
       github: 'https://github.com/login/oauth/access_token',
     };
@@ -423,7 +423,12 @@ export class OAuthManager {
       redirect_uri: providerConfig.redirectUri,
     });
 
-    const response = await fetch(tokenUrls[provider], {
+    const tokenUrl = tokenUrls[provider];
+    if (!tokenUrl) {
+      throw new Error(`OAuth provider '${provider}' not supported for token exchange`);
+    }
+
+    const response = await fetch(tokenUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -443,12 +448,12 @@ export class OAuthManager {
    * Fetch user profile from OAuth provider
    */
   async fetchProfile(provider: string, accessToken: string): Promise<OAuthProfile> {
-    const profileUrls = {
+    const profileUrls: Record<string, string> = {
       google: 'https://www.googleapis.com/oauth2/v2/userinfo',
       github: 'https://api.github.com/user',
     };
 
-    const headers = {
+    const headers: Record<string, string> = {
       Authorization: `Bearer ${accessToken}`,
       Accept: 'application/json',
     };
@@ -458,7 +463,12 @@ export class OAuthManager {
       headers['User-Agent'] = 'SaaS-Boilerplate';
     }
 
-    const response = await fetch(profileUrls[provider], {
+    const profileUrl = profileUrls[provider];
+    if (!profileUrl) {
+      throw new Error(`OAuth provider '${provider}' not supported for profile fetch`);
+    }
+
+    const response = await fetch(profileUrl, {
       headers,
     });
 
@@ -510,18 +520,18 @@ export class OAuthManager {
 // Handle cases where environment variables might not be available (e.g., tests)
 const getEnvVar = (key: string, defaultValue?: string) => {
   try {
-    return Env[key] || defaultValue;
+    return (Env as Record<string, string | undefined>)[key] || defaultValue;
   } catch {
     return defaultValue;
   }
 };
 
-const secret = getEnvVar('BETTER_AUTH_SECRET', 'test-secret-key');
-const baseUrl = getEnvVar('BETTER_AUTH_URL', 'http://localhost:3000');
-const googleClientId = getEnvVar('GOOGLE_CLIENT_ID', 'test-google-client-id');
-const googleClientSecret = getEnvVar('GOOGLE_CLIENT_SECRET', 'test-google-secret');
-const githubClientId = getEnvVar('GITHUB_CLIENT_ID', 'test-github-client-id');
-const githubClientSecret = getEnvVar('GITHUB_CLIENT_SECRET', 'test-github-secret');
+const secret = getEnvVar('BETTER_AUTH_SECRET') || 'test-secret-key';
+const baseUrl = getEnvVar('BETTER_AUTH_URL') || 'http://localhost:3000';
+const googleClientId = getEnvVar('GOOGLE_CLIENT_ID') || 'test-google-client-id';
+const googleClientSecret = getEnvVar('GOOGLE_CLIENT_SECRET') || 'test-google-secret';
+const githubClientId = getEnvVar('GITHUB_CLIENT_ID') || 'test-github-client-id';
+const githubClientSecret = getEnvVar('GITHUB_CLIENT_SECRET') || 'test-github-secret';
 
 export const jwtManager = new JWTManager({
   secret,
@@ -543,13 +553,13 @@ export const cookieManager = new CookieManager();
 
 export const oauthManager = new OAuthManager({
   google: {
-    clientId: googleClientId,
-    clientSecret: googleClientSecret,
+    clientId: googleClientId || 'test-google-client-id',
+    clientSecret: googleClientSecret || 'test-google-secret',
     redirectUri: `${baseUrl}/api/auth/google/callback`,
   },
   github: {
-    clientId: githubClientId,
-    clientSecret: githubClientSecret,
+    clientId: githubClientId || 'test-github-client-id',
+    clientSecret: githubClientSecret || 'test-github-secret',
     redirectUri: `${baseUrl}/api/auth/github/callback`,
   },
 });

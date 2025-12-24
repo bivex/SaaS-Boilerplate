@@ -44,10 +44,10 @@ export const userRouter = createTRPCRouter({
 
   // Update user profile
   updateProfile: protectedProcedure
-    .input({
+    .input(z.object({
       name: z.string().min(1).optional(),
       email: z.string().email().optional(),
-    })
+    }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
       if (!userId) {

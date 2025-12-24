@@ -50,18 +50,10 @@ describe('Session Storage Adapters', () => {
         transaction: vi.fn(),
     };
 
-    const mockRedis = {
-        connect: vi.fn(),
-        disconnect: vi.fn(),
-        get: vi.fn(),
-        set: vi.fn(),
-        del: vi.fn(),
-        expire: vi.fn(),
-    };
-
     beforeEach(async () => {
         vi.clearAllMocks();
-        (await import('@/libs/DB')).db = mockDb;
+        const dbModule = await import('@/libs/DB');
+        Object.assign(dbModule.db, mockDb);
     });
 
     afterEach(() => {
@@ -159,7 +151,7 @@ describe('Session Storage Adapters', () => {
             const {RedisSessionStorage} = await import('@/libs/session-storage');
 
             // Redis is initialized in constructor
-            const redisStorage = new RedisSessionStorage();
+            new RedisSessionStorage();
 
             expect(Redis).toHaveBeenCalled();
         });

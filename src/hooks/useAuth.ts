@@ -7,16 +7,16 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-24T01:00:00
- * Last Updated: 2025-12-24T00:49:20
+ * Last Updated: 2025-12-24T00:56:13
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import type { AuthSessionResponse } from '@/types/Auth';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { authClient } from '@/libs/auth-client';
 import { trpc } from '@/trpc/client';
+import type { AuthSessionResponse } from '@/types/Auth';
 
 // Configuration for session management
 const SESSION_CONFIG = {

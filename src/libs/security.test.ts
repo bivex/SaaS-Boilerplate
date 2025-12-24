@@ -292,7 +292,7 @@ describe('Security Components', () => {
             const RATE_LIMIT = 5;
             const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 
-            const checkRateLimit = (userId: string, requests: number[]) => {
+            const checkRateLimit = (_userId: string, requests: number[]) => {
                 const now = Date.now();
                 const windowStart = now - WINDOW_MS;
 
@@ -306,14 +306,13 @@ describe('Security Components', () => {
             expect(checkRateLimit('user-1', userRequests)).toBe(true);
 
             // Add more requests
-            const manyRequests = Array.from({length: RATE_LIMIT}).fill(Date.now());
+            const manyRequests = new Array(RATE_LIMIT).fill(Date.now()) as number[];
 
             expect(checkRateLimit('user-1', manyRequests)).toBe(false);
         });
 
         it('should handle distributed rate limiting', () => {
             // Simulate Redis-based distributed rate limiting
-            const redisKey = 'ratelimit:user-1';
             const currentCount = 3;
             const limit = 10;
 
@@ -328,7 +327,7 @@ describe('Security Components', () => {
         });
 
         it('should apply different limits for different endpoints', () => {
-            const endpointLimits = {
+            const endpointLimits: Record<string, {limit: number; window: number}> = {
                 '/api/auth/login': {limit: 5, window: 15 * 60 * 1000},
                 '/api/auth/signup': {limit: 3, window: 60 * 60 * 1000},
                 '/api/user/profile': {limit: 100, window: 15 * 60 * 1000},
@@ -486,9 +485,9 @@ describe('Security Components', () => {
         });
 
         it('should handle OAuth token exchange', async () => {
-            const exchangeCodeForToken = async (provider: string, code: string) => {
+            const exchangeCodeForToken = async (provider: string, _code: string) => {
                 // Mock token exchange
-                const tokens = {
+                const tokens: Record<string, {access_token: string; refresh_token: string; expires_in: number}> = {
                     google: {
                         access_token: 'google-access-token',
                         refresh_token: 'google-refresh-token',
@@ -506,8 +505,8 @@ describe('Security Components', () => {
         });
 
         it('should fetch user profile from OAuth provider', async () => {
-            const fetchUserProfile = async (provider: string, accessToken: string) => {
-                const profiles = {
+            const fetchUserProfile = async (provider: string, _accessToken: string) => {
+                const profiles: Record<string, {id: string; email: string; name: string; picture: string}> = {
                     google: {
                         id: 'google-user-123',
                         email: 'user@gmail.com',
@@ -528,7 +527,7 @@ describe('Security Components', () => {
 
         it('should handle OAuth errors gracefully', async () => {
             const handleOAuthError = (error: string) => {
-                const errorMappings = {
+                const errorMappings: Record<string, string> = {
                     access_denied: 'User denied access to their account',
                     invalid_request: 'Invalid OAuth request',
                     unauthorized_client: 'Unauthorized OAuth client',

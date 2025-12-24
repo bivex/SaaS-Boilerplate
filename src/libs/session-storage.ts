@@ -55,25 +55,45 @@ export type SessionStorageAdapter = {
 
 // Database session storage adapter
 export class DatabaseSessionStorage implements SessionStorageAdapter {
-  async store(session: SessionData): Promise<void> {
-    await db.insert(session).values({
-      id: session.id,
-      userId: session.userId,
-      token: session.token,
-      expiresAt: session.expiresAt,
-      ipAddress: session.ipAddress,
-      userAgent: session.userAgent,
-      createdAt: session.createdAt,
-      updatedAt: session.updatedAt,
-    }).onConflictDoUpdate({
+  async store(sessionData: SessionData): Promise<void> {
+    const insertData: any = {
+      id: sessionData.id,
+      userId: sessionData.userId,
+      expiresAt: sessionData.expiresAt,
+      createdAt: sessionData.createdAt,
+      updatedAt: sessionData.updatedAt,
+    };
+
+    // Only include optional fields if they have values
+    if (sessionData.token !== undefined) {
+      insertData.token = sessionData.token;
+    }
+    if (sessionData.ipAddress !== undefined) {
+      insertData.ipAddress = sessionData.ipAddress;
+    }
+    if (sessionData.userAgent !== undefined) {
+      insertData.userAgent = sessionData.userAgent;
+    }
+
+    const updateData: any = {
+      expiresAt: sessionData.expiresAt,
+      updatedAt: sessionData.updatedAt,
+    };
+
+    // Only include optional fields in update if they have values
+    if (sessionData.token !== undefined) {
+      updateData.token = sessionData.token;
+    }
+    if (sessionData.ipAddress !== undefined) {
+      updateData.ipAddress = sessionData.ipAddress;
+    }
+    if (sessionData.userAgent !== undefined) {
+      updateData.userAgent = sessionData.userAgent;
+    }
+
+    await db.insert(session).values(insertData).onConflictDoUpdate({
       target: session.id,
-      set: {
-        token: session.token,
-        expiresAt: session.expiresAt,
-        ipAddress: session.ipAddress,
-        userAgent: session.userAgent,
-        updatedAt: session.updatedAt,
-      },
+      set: updateData,
     });
   }
 
@@ -88,16 +108,20 @@ export class DatabaseSessionStorage implements SessionStorageAdapter {
       return null;
     }
 
-    const sessionData = result[0];
+    const dbSession = result[0];
+    if (!dbSession) {
+      return null;
+    }
+
     return {
-      id: sessionData.id,
-      userId: sessionData.userId,
-      token: sessionData.token || undefined,
-      expiresAt: sessionData.expiresAt,
-      ipAddress: sessionData.ipAddress || undefined,
-      userAgent: sessionData.userAgent || undefined,
-      createdAt: sessionData.createdAt,
-      updatedAt: sessionData.updatedAt,
+      id: dbSession.id,
+      userId: dbSession.userId,
+      token: dbSession.token || undefined,
+      expiresAt: dbSession.expiresAt,
+      ipAddress: dbSession.ipAddress || undefined,
+      userAgent: dbSession.userAgent || undefined,
+      createdAt: dbSession.createdAt,
+      updatedAt: dbSession.updatedAt,
     };
   }
 

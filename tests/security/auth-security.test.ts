@@ -45,12 +45,6 @@ vi.mock('@/libs/auth-client', () => ({
 
 // Security test implementations using actual security utilities
 describe('Authentication Security Tests', () => {
-    const mockAuthClient = {
-        signIn: {email: vi.fn()},
-        signUp: {email: vi.fn()},
-        getSession: vi.fn(),
-    };
-
     beforeEach(() => {
         vi.clearAllMocks();
     });
@@ -422,7 +416,7 @@ describe('Authentication Security Tests', () => {
         });
 
         it('should prevent horizontal privilege escalation', () => {
-            const checkResourceOwnership = (userId: string, resourceId: string, resourceOwnerId: string) => {
+            const checkResourceOwnership = (userId: string, _resourceId: string, resourceOwnerId: string) => {
                 // User can only access their own resources
                 return userId === resourceOwnerId;
             };

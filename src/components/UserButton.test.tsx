@@ -13,7 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {beforeEach, describe, expect, it, vi} from 'vitest';
 import {useSignOut, useUser} from '@/hooks/useAuth';
@@ -50,7 +50,7 @@ describe('UserButton', () => {
         expect(screen.getByRole('button')).toBeDisabled();
     });
 
-    it('should show sign in button when no user', () => {
+    it('should show sign in button when no user', async () => {
         (useUser as any).mockReturnValue({user: null, loading: false});
         (useSignOut as any).mockReturnValue({signOut: vi.fn()});
 
@@ -60,7 +60,7 @@ describe('UserButton', () => {
 
         expect(signInButton).toBeInTheDocument();
 
-        fireEvent.click(signInButton);
+        await userEvent.click(signInButton);
 
         expect(mockPush).toHaveBeenCalledWith('/sign-in');
     });
