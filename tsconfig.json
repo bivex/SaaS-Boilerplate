@@ -29,11 +29,13 @@
     "allowJs": true,
     "checkJs": true,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
+    "tsBuildInfoFile": ".next/cache/tsconfig.tsbuildinfo",
     // Load types
     "types": [
       "vitest/globals"
@@ -59,7 +61,12 @@
     "./out/**/*",
     "./node_modules/**/*",
     "**/*.spec.ts",
-    "**/*.e2e.ts"
+    "**/*.e2e.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "./coverage/**/*",
+    "./test-results/**/*",
+    "./.next/**/*"
   ],
   "include": [
     "next-env.d.ts",
