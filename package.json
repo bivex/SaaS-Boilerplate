@@ -119,6 +119,7 @@
     "@playwright/test": "^1.57.0",
     "@rsdoctor/cli": "^1.4.0",
     "@rsdoctor/rspack-plugin": "^1.4.0",
+    "@rspack/core": "^1.7.0-beta.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
