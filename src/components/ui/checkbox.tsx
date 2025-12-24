@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:01:01
- * Last Updated: 2025-12-23T19:01:01
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -22,7 +22,7 @@ import * as React from 'react';
 import { cn } from '@/utils/Helpers';
 
 const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitive.Root>,
+  React.ComponentRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
 >(({ className, ...props }, ref) => (
   <CheckboxPrimitive.Root

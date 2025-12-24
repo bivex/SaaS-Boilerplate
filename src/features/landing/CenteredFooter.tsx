@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,6 +15,15 @@
 
 import { useTranslations } from 'next-intl';
 import React from 'react';
+
+const AuthorLink = () => (
+  <a
+    className="text-blue-500 hover:text-blue-600"
+    href="https://creativedesignsguru.com"
+  >
+    Creative Designs Guru
+  </a>
+);
 
 export const CenteredFooter = (props: {
   logo: React.ReactNode;
@@ -37,18 +46,13 @@ export const CenteredFooter = (props: {
         {props.iconList}
       </ul>
 
-      <div className="mt-6 flex w-full items-center justify-between gap-y-2 border-t pt-3 text-sm text-muted-foreground max-md:flex-col">
+      <div
+        className="mt-6 flex w-full items-center justify-between gap-y-2 border-t pt-3 text-sm text-muted-foreground max-md:flex-col"
+      >
         <div>
           {`© Copyright ${new Date().getFullYear()} ${props.name}. `}
           {t.rich('designed_by', {
-            author: () => (
-              <a
-                className="text-blue-500 hover:text-blue-600"
-                href="https://creativedesignsguru.com"
-              >
-                Creative Designs Guru
-              </a>
-            ),
+            author: AuthorLink,
           })}
           {/*
            * PLEASE READ THIS SECTION

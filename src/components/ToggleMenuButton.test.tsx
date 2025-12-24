@@ -7,28 +7,28 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T22:27:11
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import {describe, expect, it, vi} from 'vitest';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ToggleMenuButton } from './ToggleMenuButton';
+import {ToggleMenuButton} from './ToggleMenuButton';
 
 describe('ToggleMenuButton', () => {
-  describe('onClick props', () => {
-    it('should call the callback when the user click on the button', async () => {
-      const handler = vi.fn();
+    describe('onClick props', () => {
+        it('should call the callback when the user click on the button', async () => {
+            const handler = vi.fn();
 
-      render(<ToggleMenuButton onClick={handler} />);
-      const button = screen.getByRole('button');
-      await userEvent.click(button);
+            render(<ToggleMenuButton onClick={handler}/>);
+            const button = screen.getByRole('button');
+            await userEvent.click(button);
 
-      expect(handler).toHaveBeenCalled();
+            expect(handler).toHaveBeenCalled();
+        });
     });
-  });
 });

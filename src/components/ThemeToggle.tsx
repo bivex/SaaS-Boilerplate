@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T09:45:12
- * Last Updated: 2025-12-23T19:22:03
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -20,12 +20,7 @@ import { useTheme } from 'next-themes';
 import { memo, useMemo } from 'react';
 
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 function ThemeToggleComponent() {
   const { setTheme, theme } = useTheme();

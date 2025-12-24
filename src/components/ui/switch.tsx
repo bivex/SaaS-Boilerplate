@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:01:01
- * Last Updated: 2025-12-23T19:01:01
+ * Last Updated: 2025-12-24T01:03:43
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -21,7 +21,7 @@ import * as React from 'react';
 import { cn } from '@/utils/Helpers';
 
 const Switch = React.forwardRef<
-  React.ElementRef<typeof SwitchPrimitives.Root>,
+  React.ComponentRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
 >(({ className, ...props }, ref) => (
   <SwitchPrimitives.Root

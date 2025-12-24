@@ -15,10 +15,9 @@
 
 import { TRPCError } from '@trpc/server';
 import { rateLimitManager } from '@/libs/security';
-import type { MiddlewareBuilder } from '@trpc/server';
 
 // Extend the context type to include user roles and scopes
-export interface AuthContext {
+export type AuthContext = {
   session: {
     user: {
       id: string;
@@ -29,14 +28,15 @@ export interface AuthContext {
     };
     [key: string]: any;
   } | null;
+
   [key: string]: any;
-}
+};
 
 /**
  * Role-Based Access Control (RBAC) Middleware
  */
 export function requireRole(allowedRoles: string | string[]) {
-  return async ({ ctx, next }: { ctx: AuthContext; next: any }) => {
+  return async ({ ctx, next}: { ctx: AuthContext; next: any }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: 'UNAUTHORIZED' });
     }
@@ -56,15 +56,15 @@ export function requireRole(allowedRoles: string | string[]) {
  * Scope-Based Permissions Middleware
  */
 export function requireScope(requiredScopes: string | string[]) {
-  return async ({ ctx, next }: { ctx: AuthContext; next: any }) => {
+  return async ({ ctx, next}: { ctx: AuthContext; next: any }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: 'UNAUTHORIZED' });
     }
 
-    const userScopes = ctx.session.user.scopes || [];
+    const userScopes = ctx.session.user.scopes ?? [];
     const scopes = Array.isArray(requiredScopes) ? requiredScopes : [requiredScopes];
 
-    const hasRequiredScopes = scopes.every(scope => {
+    const hasRequiredScopes = scopes.every((scope) => {
       // Check for exact match
       if (userScopes.includes(scope)) {
         return true;
@@ -74,18 +74,18 @@ export function requireScope(requiredScopes: string | string[]) {
       if (scope.includes('*')) {
         const scopeParts = scope.split(':');
         const wildcardPattern = scopeParts.map(part =>
-          part === '*' ? '.*' : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+          part === '*' ? '.*' : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
         ).join(':');
 
         return userScopes.some(userScope =>
-          new RegExp(`^${wildcardPattern}$`).test(userScope)
+          new RegExp(`^${wildcardPattern}$`).test(userScope),
         );
       }
 
       // Check if user has wildcard permission for the scope category
       const scopeCategory = scope.split(':')[0];
       return userScopes.some(userScope =>
-        userScope === '*' || userScope === `${scopeCategory}:*`
+        userScope === '*' || userScope === `${scopeCategory}:*`,
       );
     });
 
@@ -101,9 +101,9 @@ export function requireScope(requiredScopes: string | string[]) {
  * Resource Ownership Middleware
  */
 export function requireOwnership<T extends AuthContext = AuthContext>(
-  ownershipChecker: (ctx: T, input: any) => Promise<boolean> | boolean
+  ownershipChecker: (ctx: T, input: any) => Promise<boolean> | boolean,
 ) {
-  return async ({ ctx, input, next }: { ctx: T; input: any; next: any }) => {
+  return async ({ ctx, input, next}: { ctx: T; input: any; next: any }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: 'UNAUTHORIZED' });
     }
@@ -126,15 +126,13 @@ export function rateLimit<T extends AuthContext = AuthContext>(
     windowMs?: number;
     maxRequests?: number;
     identifier?: (ctx: T) => string;
-  } = {}
+  } = {},
 ) {
   const {
-    windowMs = 15 * 60 * 1000, // 15 minutes
-    maxRequests = 100,
-    identifier = (ctx: T) => ctx.session?.user?.id || 'anonymous'
+    identifier = (ctx: T) => ctx.session?.user?.id ?? 'anonymous',
   } = options;
 
-  return async ({ ctx, next }: { ctx: T; next: any }) => {
+  return async ({ ctx, next}: { ctx: T; next: any }) => {
     const userId = identifier(ctx);
     const { allowed, reset } = await rateLimitManager.check(userId);
 
@@ -181,10 +179,14 @@ export function checkUserOwnership(resourceUserId: string) {
 export function checkOwnershipWithAdminOverride(resourceUserId: string) {
   return <T extends AuthContext>(ctx: T) => {
     const user = ctx.session?.user;
-    if (!user) return false;
+    if (!user) {
+      return false;
+    }
 
     // Admin can access everything
-    if (user.role === 'admin') return true;
+    if (user.role === 'admin') {
+      return true;
+    }
 
     // Regular users can only access their own resources
     return user.id === resourceUserId;
@@ -195,10 +197,10 @@ export function checkOwnershipWithAdminOverride(resourceUserId: string) {
  * Middleware chaining utilities
  */
 export function chain<T extends AuthContext>(
-  ...middlewares: Array<(builder: MiddlewareBuilder<T, T>) => MiddlewareBuilder<T, T>>
+  ...middlewares: Array<(next: (opts: { ctx: T; input?: any }) => any) => (opts: { ctx: T; input?: any }) => any>
 ) {
-  return (builder: MiddlewareBuilder<T, T>) => {
-    return middlewares.reduce((current, middleware) => middleware(current), builder);
+  return (next: (opts: { ctx: T; input?: any }) => any) => {
+    return middlewares.reduce((current, middleware) => middleware(current), next);
   };
 }
 
@@ -207,58 +209,57 @@ export function chain<T extends AuthContext>(
  */
 export function conditional<T extends AuthContext>(
   condition: (ctx: T) => boolean,
-  middleware: (builder: MiddlewareBuilder<T, T>) => MiddlewareBuilder<T, T>
+  middleware: (next: (opts: { ctx: T; input?: any }) => any) => (opts: { ctx: T; input?: any }) => any,
 ) {
-  return (builder: MiddlewareBuilder<T, T>) =>
-    builder.use(({ ctx, next }) => {
-      if (condition(ctx)) {
+  return (next: (opts: { ctx: T; input?: any }) => any) =>
+    (opts: { ctx: T; input?: any }) => {
+      if (condition(opts.ctx)) {
         // Apply the middleware
-        return middleware(builder).use(() => next());
+        return middleware(next)(opts);
       }
-      return next();
-    });
+      return next(opts);
+    };
 }
 
 /**
  * Logging middleware for debugging
  */
 export function withLogging<T extends AuthContext>(label?: string) {
-  return (middleware: MiddlewareBuilder<T, T>) =>
-    middleware.use(({ ctx, next, path, type }) => {
+  return (next: (opts: { ctx: T; input?: any; path?: string; type?: string }) => any) =>
+    (opts: { ctx: T; input?: any; path?: string; type?: string }) => {
       const start = Date.now();
-      console.log(`[${label || 'TRPC'}] ${type} ${path} - Start`);
+      console.warn(`[${label ?? 'TRPC'}] ${opts.type ?? 'UNKNOWN'} ${opts.path ?? 'unknown'} - Start`);
 
-      return next()
-        .then((result) => {
-          const duration = Date.now() - start;
-          console.log(`[${label || 'TRPC'}] ${type} ${path} - Success (${duration}ms)`);
-          return result;
-        })
-        .catch((error) => {
-          const duration = Date.now() - start;
-          console.error(`[${label || 'TRPC'}] ${type} ${path} - Error (${duration}ms):`, error);
-          throw error;
-        });
-    });
+      try {
+        const result = next(opts);
+        const duration = Date.now() - start;
+        console.warn(`[${label ?? 'TRPC'}] ${opts.type ?? 'UNKNOWN'} ${opts.path ?? 'unknown'} - Success (${duration}ms)`);
+        return result;
+      } catch (error) {
+        const duration = Date.now() - start;
+        console.error(`[${label ?? 'TRPC'}] ${opts.type ?? 'UNKNOWN'} ${opts.path ?? 'unknown'} - Error (${duration}ms):`, error);
+        throw error;
+      }
+    };
 }
 
 /**
  * Input validation middleware with additional security checks
  */
 export function withSecurityValidation<T extends AuthContext>() {
-  return (middleware: MiddlewareBuilder<T, T>) =>
-    middleware.use(({ input, next }) => {
+  return (next: (opts: { ctx: T; input?: any }) => any) =>
+    (opts: { ctx: T; input?: any }) => {
       // Basic input sanitization
-      if (input && typeof input === 'object') {
+      if (opts.input && typeof opts.input === 'object') {
         // Remove any potential injection attempts
-        const sanitizedInput = JSON.parse(JSON.stringify(input));
+        const sanitizedInput = JSON.parse(JSON.stringify(opts.input));
 
         // Additional security checks can be added here
         // For example: check for suspicious patterns, validate data types, etc.
 
-        return next({ input: sanitizedInput });
+        return next({ ...opts, input: sanitizedInput });
       }
 
-      return next();
-    });
+      return next(opts);
+    };
 }

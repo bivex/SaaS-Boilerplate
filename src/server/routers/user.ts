@@ -20,6 +20,11 @@ import { user } from '@/models/Schema';
 import { createTRPCRouter, protectedProcedure } from '@/server/trpc';
 
 export const userRouter = createTRPCRouter({
+  // Get user profile (same as auth.getProfile but in user namespace)
+  getProfile: protectedProcedure.query(({ ctx }) => {
+    return ctx.session?.user;
+  }),
+
   // Get user by ID
   getById: protectedProcedure
     .query(async ({ ctx }) => {
@@ -39,10 +44,10 @@ export const userRouter = createTRPCRouter({
 
   // Update user profile
   updateProfile: protectedProcedure
-    .input({
+    .input(z.object({
       name: z.string().min(1).optional(),
       email: z.string().email().optional(),
-    })
+    }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
       if (!userId) {

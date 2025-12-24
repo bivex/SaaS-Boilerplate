@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T18:30:00
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -20,7 +20,7 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 
 // Inline Icon Components
-const ArrowRightIcon = ({ className = '', size = 16 }: { className?: string; size?: number }) => (
+const ArrowRightIcon = ({ className = '', size = 16}: { className?: string; size?: number }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={size}
@@ -48,7 +48,9 @@ const Navigation = React.memo(() => {
         <div className="flex items-center justify-between">
           <div className="text-xl font-semibold text-white">Your SaaS</div>
 
-          <div className="hidden md:flex items-center justify-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div
+            className="hidden md:flex items-center justify-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          >
             <a href="#features" className="text-sm text-white/60 hover:text-white transition-colors">
               Features
             </a>
@@ -81,7 +83,9 @@ const Navigation = React.memo(() => {
       </nav>
 
       {mobileMenuOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-md border-t border-gray-800/50 animate-in slide-in-from-top-2 duration-300">
+        <div
+          className="md:hidden bg-black/95 backdrop-blur-md border-t border-gray-800/50 animate-in slide-in-from-top-2 duration-300"
+        >
           <div className="px-6 py-4 flex flex-col gap-4">
             <a
               href="#features"
@@ -162,7 +166,9 @@ const Hero = React.memo(() => {
       `}
       </style>
 
-      <aside className="mb-8 inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2 rounded-full border border-gray-700 bg-gray-800/50 backdrop-blur-sm max-w-full animate-in fade-in duration-700">
+      <aside
+        className="mb-8 inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2 rounded-full border border-gray-700 bg-gray-800/50 backdrop-blur-sm max-w-full animate-in fade-in duration-700"
+      >
         <span className="text-xs text-center whitespace-nowrap text-gray-300">
           🚀 New AI features now available!
         </span>
@@ -193,10 +199,13 @@ const Hero = React.memo(() => {
       </h1>
 
       <p className="text-sm md:text-base text-center max-w-2xl px-6 mb-10 text-gray-400 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-        Boost productivity by 10x with our AI-powered platform. Built for modern teams who demand excellence and innovation.
+        Boost productivity by 10x with our AI-powered platform. Built for modern teams who demand excellence and
+        innovation.
       </p>
 
-      <div className="flex items-center gap-4 relative z-10 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
+      <div
+        className="flex items-center gap-4 relative z-10 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500"
+      >
         <Button
           size="lg"
           className="bg-gradient-to-b from-white via-white/95 to-white/60 text-black hover:scale-105 active:scale-95 transition-all duration-200 rounded-lg flex items-center justify-center gap-2 px-8"
@@ -215,7 +224,9 @@ const Hero = React.memo(() => {
         </Button>
       </div>
 
-      <div className="w-full max-w-6xl relative pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-700">
+      <div
+        className="w-full max-w-6xl relative pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-700"
+      >
         <div
           className="absolute left-1/2 w-[95%] pointer-events-none z-0 opacity-60"
           style={{
@@ -224,11 +235,16 @@ const Hero = React.memo(() => {
           }}
           aria-hidden="true"
         >
-          <div className="w-full h-96 bg-gradient-radial from-blue-500/20 via-purple-500/10 to-transparent rounded-full blur-3xl"></div>
+          <div
+            className="w-full h-96 bg-gradient-radial from-blue-500/20 via-purple-500/10 to-transparent rounded-full blur-3xl"
+          >
+          </div>
         </div>
 
         <div className="relative z-10">
-          <div className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm border border-gray-800/50 rounded-2xl p-4 shadow-2xl">
+          <div
+            className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm border border-gray-800/50 rounded-2xl p-4 shadow-2xl"
+          >
             <img
               src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Modern SaaS dashboard showing analytics, charts, and productivity tools"
@@ -240,7 +256,9 @@ const Hero = React.memo(() => {
       </div>
 
       {/* Trust indicators */}
-      <div className="flex items-center justify-center gap-8 mt-8 opacity-60 animate-in fade-in duration-700 delay-1000">
+      <div
+        className="flex items-center justify-center gap-8 mt-8 opacity-60 animate-in fade-in duration-700 delay-1000"
+      >
         <span className="text-xs text-gray-500 uppercase tracking-wider">Trusted by</span>
         <div className="flex items-center gap-6">
           <div className="text-gray-400 text-sm font-medium">Company A</div>

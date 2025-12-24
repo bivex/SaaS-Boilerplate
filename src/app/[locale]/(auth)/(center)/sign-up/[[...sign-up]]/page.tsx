@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:40:00
- * Last Updated: 2025-12-23T21:54:02
+ * Last Updated: 2025-12-24T01:50:50
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,7 +15,7 @@
 
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -32,6 +32,7 @@ import { getI18nPath } from '@/utils/Helpers';
 
 export default function SignUpPage() {
   const t = useTranslations('SignUp');
+  const locale = useLocale();
   const router = useRouter();
   const signUpMutation = trpc.auth.signUp.useMutation();
   const [name, setName] = useState('');
@@ -62,7 +63,7 @@ export default function SignUpPage() {
 
       // Step 2: Sign in the user to create a session
       // TRPC mutations don't set cookies, so we need to use authClient to create a session
-      console.log('Account created, signing in...');
+      console.warn('Account created, signing in...');
       const signInResult = await authClient.signIn.email({
         email,
         password,
@@ -74,10 +75,10 @@ export default function SignUpPage() {
       }
 
       // Step 3: Refresh the session state to update the UI
-      console.log('Sign-in successful, refreshing session...');
+      console.warn('Sign-in successful, refreshing session...');
       await refreshSessionState();
 
-      console.log('Session refreshed, redirecting to dashboard');
+      console.warn('Session refreshed, redirecting to dashboard');
       router.push('/dashboard');
     } catch (error) {
       console.error('Sign-up error:', error);
@@ -94,7 +95,7 @@ export default function SignUpPage() {
       });
 
       if (result.error) {
-        setError(result.error.message || 'An error occurred');
+        setError(result.error.message ?? 'An error occurred');
       }
     } catch {
       setError('An unexpected error occurred');
@@ -191,7 +192,7 @@ export default function SignUpPage() {
             {t('already_have_account')}
             {' '}
             <Link
-              href={getI18nPath('/sign-in', 'en')} // TODO: Get current locale
+              href={getI18nPath('/sign-in', locale)}
               className="underline underline-offset-4 hover:text-primary"
             >
               {t('sign_in')}

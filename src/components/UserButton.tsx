@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:50:00
- * Last Updated: 2025-12-23T20:23:19
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -60,14 +60,14 @@ export function UserButton() {
     ?.split(' ')
     .map((n: string) => n[0])
     .join('')
-    .toUpperCase() || user.email?.[0].toUpperCase() || 'U';
+    .toUpperCase() ?? user.email?.[0].toUpperCase() ?? 'U';
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user.image || ''} alt={user.name || ''} />
+            <AvatarImage src={user.image ?? ''} alt={user.name ?? ''} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>

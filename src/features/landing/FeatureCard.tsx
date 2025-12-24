@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -19,7 +19,9 @@ export const FeatureCard = (props: {
   children: React.ReactNode;
 }) => (
   <div className="rounded-xl border border-border bg-card p-5">
-    <div className="size-12 rounded-lg bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 p-2 [&_svg]:stroke-white [&_svg]:stroke-2">
+    <div
+      className="size-12 rounded-lg bg-gradient-to-br from-indigo-400 via-purple-400 to-pink-400 p-2 [&_svg]:stroke-white [&_svg]:stroke-2"
+    >
       {props.icon}
     </div>
 

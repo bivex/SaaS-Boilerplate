@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T12:00:00
- * Last Updated: 2025-12-23T19:00:57
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -22,12 +22,7 @@ import { ContactForm } from '@/components/ContactForm';
 import { CSSDebugger } from '@/components/CSSDebugger';
 import { ProfileForm } from '@/components/ExampleForm';
 import { ThemeDemo } from '@/components/ThemeDemo';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -168,7 +163,7 @@ const TooltipSection = memo(() => (
 TooltipSection.displayName = 'TooltipSection';
 
 // Memoized Form Components Section
-const FormSection = memo(({ inputValue, onInputChange }: {
+const FormSection = memo(({ inputValue, onInputChange}: {
   inputValue: string;
   onInputChange: (value: string) => void;
 }) => (
@@ -213,7 +208,8 @@ const FormSection = memo(({ inputValue, onInputChange }: {
         <ProfileForm />
       </div>
       <p className="text-sm text-muted-foreground mt-4">
-        This form demonstrates React Hook Form integration with Zod validation, type safety, and proper accessibility.
+        This form demonstrates React Hook Form integration with Zod validation, type safety, and proper
+        accessibility.
       </p>
     </div>
   </div>
@@ -353,7 +349,8 @@ const AccordionSection = memo(() => (
       <AccordionItem value="item-1">
         <AccordionTrigger>What is Shadcn UI?</AccordionTrigger>
         <AccordionContent>
-          Shadcn UI is a collection of reusable components built on top of Radix UI and styled with Tailwind CSS.
+          Shadcn UI is a collection of reusable components built on top of Radix UI and styled with Tailwind
+          CSS.
           It provides beautiful, accessible components that you can copy and paste into your apps.
         </AccordionContent>
       </AccordionItem>
@@ -362,7 +359,8 @@ const AccordionSection = memo(() => (
         <AccordionTrigger>How do I install Shadcn UI?</AccordionTrigger>
         <AccordionContent>
           You can install Shadcn UI components using the CLI. Run `npx shadcn-ui@latest add [component-name]`
-          to add components to your project. The components will be installed in your `components/ui` directory.
+          to add components to your project. The components will be installed in your `components/ui`
+          directory.
         </AccordionContent>
       </AccordionItem>
 
@@ -370,14 +368,16 @@ const AccordionSection = memo(() => (
         <AccordionTrigger>Can I customize the components?</AccordionTrigger>
         <AccordionContent>
           Yes! All Shadcn UI components are built with Tailwind CSS classes and can be easily customized.
-          You can modify the component styles, add new variants, or extend the existing ones to match your design system.
+          You can modify the component styles, add new variants, or extend the existing ones to match your
+          design system.
         </AccordionContent>
       </AccordionItem>
 
       <AccordionItem value="item-4">
         <AccordionTrigger>Is Shadcn UI free?</AccordionTrigger>
         <AccordionContent>
-          Yes, Shadcn UI is completely free and open source. You can use it in personal and commercial projects
+          Yes, Shadcn UI is completely free and open source. You can use it in personal and commercial
+          projects
           without any licensing fees. The components are designed to be copied and modified as needed.
         </AccordionContent>
       </AccordionItem>

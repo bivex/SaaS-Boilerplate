@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:01:01
- * Last Updated: 2025-12-23T19:01:01
+ * Last Updated: 2025-12-24T01:03:43
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -78,8 +78,6 @@ const BreadcrumbPage = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <span
     ref={ref}
-    role="link"
-    aria-disabled="true"
     aria-current="page"
     className={cn('font-normal text-foreground', className)}
     {...props}
@@ -93,7 +91,6 @@ const BreadcrumbSeparator = ({
   ...props
 }: React.ComponentProps<'li'>) => (
   <li
-    role="presentation"
     aria-hidden="true"
     className={cn('[&>svg]:w-3.5 [&>svg]:h-3.5', className)}
     {...props}
@@ -108,7 +105,6 @@ const BreadcrumbEllipsis = ({
   ...props
 }: React.ComponentProps<'span'>) => (
   <span
-    role="presentation"
     aria-hidden="true"
     className={cn('flex h-9 w-9 items-center justify-center', className)}
     {...props}

@@ -124,10 +124,49 @@
   "DashboardIndex": {
     "title_bar": "Dashboard",
     "title_bar_description": "Welcome to your dashboard",
-    "message_state_title": "Let's get started",
-    "message_state_description": "You can customize this page by editing the file at <code>dashboard/page.tsx</code>",
-    "message_state_button": "Star on GitHub",
-    "message_state_alternative": "Want more features and the latest updates from Next.js 16? Try <url></url>."
+    "welcome_back": "Welcome back, {name}!",
+    "welcome_description": "Here's what's happening with your account today.",
+    "stats": {
+      "total_users": "Total Users",
+      "users_description": "Active users this month",
+      "documents": "Documents",
+      "documents_description": "Files uploaded this week",
+      "revenue": "Revenue",
+      "revenue_description": "Monthly recurring revenue",
+      "projects": "Projects",
+      "projects_description": "Active projects"
+    },
+    "quick_actions": "Quick Actions",
+    "quick_actions_description": "Common tasks to get you started",
+    "actions": {
+      "create_project": "Create Project",
+      "create_project_desc": "Start a new project",
+      "invite_users": "Invite Users",
+      "invite_users_desc": "Add team members",
+      "view_reports": "View Reports",
+      "view_reports_desc": "Check analytics",
+      "schedule_meeting": "Schedule Meeting",
+      "schedule_meeting_desc": "Book a team call"
+    },
+    "recent_activity": "Recent Activity",
+    "recent_activity_description": "Latest updates from your account",
+    "activities": {
+      "user_registered": "New user registered",
+      "user_registered_desc": "john.doe@example.com joined your platform",
+      "project_completed": "Project completed",
+      "project_completed_desc": "Mobile App Development project finished",
+      "payment_received": "Payment received",
+      "payment_received_desc": "$299.00 from Acme Corp",
+      "document_uploaded": "New document uploaded",
+      "document_uploaded_desc": "Contract.pdf added to Legal folder"
+    },
+    "view_all_activity": "View All Activity",
+    "notifications": "Notifications",
+    "notifications_description": "Stay updated with important alerts",
+    "system_maintenance": "System Maintenance",
+    "system_maintenance_desc": "Scheduled maintenance will occur tonight from 2-4 AM EST. Some services may be temporarily unavailable.",
+    "monthly_report": "Monthly Report Ready",
+    "monthly_report_desc": "Your monthly analytics report is now available for download."
   },
   "UserProfile": {
     "title_bar": "User Profile",

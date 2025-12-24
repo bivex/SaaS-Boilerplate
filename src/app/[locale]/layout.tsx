@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:08:19
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -53,10 +53,10 @@ export function generateStaticParams() {
   return AllLocales.map(locale => ({ locale }));
 }
 
-export default async function RootLayout(props: {
+export default async function RootLayout(props: Readonly<{
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
-}) {
+}>) {
   const params = await props.params;
   setRequestLocale(params.locale);
 

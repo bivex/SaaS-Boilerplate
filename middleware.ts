@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T22:27:10
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -30,7 +30,7 @@ const isProtectedRoute = (pathname: string) => {
   return (
     pathname.includes('/dashboard')
     || pathname.includes('/onboarding')
-    // API routes are now allowed through (auth routes handle their own auth)
+  // API routes are now allowed through (auth routes handle their own auth)
   );
 };
 

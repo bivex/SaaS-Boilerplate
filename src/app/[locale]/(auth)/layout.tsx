@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:04:09
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -17,10 +17,10 @@
 
 import { useEffect, useState } from 'react';
 
-export default function AuthLayout(props: {
+export default function AuthLayout(props: Readonly<{
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
-}) {
+}>) {
   const [params, setParams] = useState<{ locale: string } | null>(null);
 
   useEffect(() => {

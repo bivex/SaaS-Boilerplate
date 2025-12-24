@@ -7,13 +7,12 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:31:44
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-// import Image from 'next/image'; // Using regular img tags for marquee compatibility
 import { Marquee } from '@/components/ui/marquee';
 
 const Logos = {
@@ -91,18 +90,18 @@ const Logos = {
 
 export const SponsorLogos = () => {
   const sponsorLogos = [
-    Logos.clerk,
-    Logos.crowdin,
-    Logos.sentry,
-    Logos.arcjet,
-    Logos.nextjsSaaS,
+    { component: Logos.clerk, key: 'clerk' },
+    { component: Logos.crowdin, key: 'crowdin' },
+    { component: Logos.sentry, key: 'sentry' },
+    { component: Logos.arcjet, key: 'arcjet' },
+    { component: Logos.nextjsSaaS, key: 'nextjsSaaS' },
   ];
 
   return (
     <Marquee pauseOnHover={true} speed={25}>
-      {sponsorLogos.map((Logo, index) => (
+      {sponsorLogos.map(({ component: Logo, key }) => (
         <div
-          key={index}
+          key={key}
           className="relative h-[60px] w-fit mx-[3rem] flex items-center justify-start"
         >
           <Logo />

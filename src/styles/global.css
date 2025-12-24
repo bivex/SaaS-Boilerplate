@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 /* Tailwind v4 theme configuration */
+/* stylelint-disable-next-line at-rule-no-unknown */
 @theme {
   /* Define color palette using proper syntax */
   --color-border: hsl(214.3 31.8% 91.4%);

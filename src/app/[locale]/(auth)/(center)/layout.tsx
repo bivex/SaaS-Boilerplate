@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -17,7 +17,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { auth } from '@/libs/auth';
 
-export default async function CenteredLayout(props: { children: React.ReactNode }) {
+export default async function CenteredLayout(props: Readonly<{ children: React.ReactNode }>) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

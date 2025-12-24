@@ -7,13 +7,13 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import type { ComponentPropsWithoutRef, ElementRef } from 'react';
+import type { ComponentPropsWithoutRef, ComponentRef } from 'react';
 
 import { Button } from '@/components/ui/button';
 
@@ -23,7 +23,9 @@ import { Button } from '@/components/ui/button';
  * @params props - Component props.
  * @params props.onClick - Function to run when the button is clicked.
  */
-const ToggleMenuButton = ({ ref, ...props }: ComponentPropsWithoutRef<typeof Button> & { ref?: React.RefObject<ElementRef<typeof Button> | null> }) => (
+const ToggleMenuButton = ({ ref, ...props}: ComponentPropsWithoutRef<typeof Button> & {
+  ref?: React.RefObject<ComponentRef<typeof Button> | null>;
+}) => (
   <Button
     className="p-2 focus-visible:ring-offset-0"
     variant="ghost"

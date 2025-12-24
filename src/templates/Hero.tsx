@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:04:03
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -20,6 +20,12 @@ import { badgeVariants } from '@/components/ui/badgeVariants';
 import { buttonVariants } from '@/components/ui/buttonVariants';
 import { CenteredHero } from '@/features/landing/CenteredHero';
 import { Section } from '@/features/landing/Section';
+
+const HighlightedText = (chunks: React.ReactNode) => (
+  <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+    {chunks}
+  </span>
+);
 
 export const Hero = () => {
   const t = useTranslations('Hero');
@@ -40,11 +46,7 @@ export const Hero = () => {
           </a>
         )}
         title={t.rich('title', {
-          important: chunks => (
-            <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              {chunks}
-            </span>
-          ),
+          important: HighlightedText,
         })}
         description={t('description')}
         buttons={(

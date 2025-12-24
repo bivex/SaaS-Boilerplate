@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:01:01
- * Last Updated: 2025-12-23T22:27:10
+ * Last Updated: 2025-12-24T01:55:11
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -30,7 +30,7 @@ export type ChartConfig = {
   } & (
     | { color?: string; theme?: never }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
-  )
+    )
 };
 
 type ChartContextProps = {
@@ -49,7 +49,7 @@ function useChart() {
   return context;
 }
 
-const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
+const ChartStyle = ({ id, config}: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([, config]) => config.theme || config.color,
   );
@@ -60,6 +60,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 
   return (
     <style
+      // eslint-disable-next-line react-dom/no-dangerously-set-innerhtml
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
           .map(
@@ -69,7 +70,7 @@ ${colorConfig
       .map(([key, itemConfig]) => {
         const color
           = itemConfig.theme?.[theme as keyof typeof itemConfig.theme]
-            || itemConfig.color;
+            ?? itemConfig.color;
         return color ? `  --color-${key}: ${color};` : null;
       })
       .join('\n')}
@@ -87,15 +88,17 @@ const ChartContainer = React.forwardRef<
   React.ComponentProps<'div'> & {
     config: ChartConfig;
     children: React.ComponentProps<
-      typeof RechartsPrimitive.ResponsiveContainer
+        typeof RechartsPrimitive.ResponsiveContainer
     >['children'];
   }
 >(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId();
-  const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`;
+  const chartId = `chart-${id ?? uniqueId.replace(/:/g, '')}`;
+
+  const contextValue = React.useMemo(() => ({ config }), [config]);
 
   return (
-    <ChartContext value={{ config }}>
+    <ChartContext value={contextValue}>
       <div
         data-chart={chartId}
         ref={ref}
@@ -119,14 +122,7 @@ const ChartTooltip = RechartsPrimitive.Tooltip;
 
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<typeof RechartsPrimitive.Tooltip>
-  & React.ComponentProps<'div'> & {
-    hideLabel?: boolean;
-    hideIndicator?: boolean;
-    indicator?: 'line' | 'dot' | 'dashed';
-    nameKey?: string;
-    labelKey?: string;
-  }
+  any
 >(
   (
     {
@@ -154,11 +150,11 @@ const ChartTooltipContent = React.forwardRef<
       }
 
       const [item] = payload;
-      const key = `${labelKey || item?.dataKey || item?.name || 'value'}`;
+      const key = `${labelKey ?? item?.dataKey ?? item?.name ?? 'value'}`;
       const itemConfig = getPayloadConfigFromPayload(config, item, key);
       const value
         = !labelKey && typeof label === 'string'
-          ? config[label as keyof typeof config]?.label || label
+          ? config[label]?.label ?? label
           : itemConfig?.label;
 
       if (labelFormatter) {
@@ -201,11 +197,11 @@ const ChartTooltipContent = React.forwardRef<
         {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
           {payload
-            .filter(item => item.type !== 'none')
-            .map((item, index) => {
-              const key = `${nameKey || item.name || item.dataKey || 'value'}`;
+            .filter((item: any) => item.type !== 'none')
+            .map((item: any, index: number) => {
+              const key = `${nameKey ?? item.name ?? item.dataKey ?? 'value'}`;
               const itemConfig = getPayloadConfigFromPayload(config, item, key);
-              const indicatorColor = color || item.payload.fill || item.color;
+              const indicatorColor = color ?? item.payload.fill ?? item.color;
 
               return (
                 <div
@@ -234,7 +230,7 @@ const ChartTooltipContent = React.forwardRef<
                                         'h-2.5 w-2.5': indicator === 'dot',
                                         'w-1': indicator === 'line',
                                         'w-0 border-[1.5px] border-dashed bg-transparent':
-                                  indicator === 'dashed',
+                                                                            indicator === 'dashed',
                                         'my-0.5': nestLabel && indicator === 'dashed',
                                       },
                                     )}
@@ -260,7 +256,9 @@ const ChartTooltipContent = React.forwardRef<
                               </span>
                             </div>
                             {item.value && (
-                              <span className="font-mono font-medium tabular-nums text-foreground">
+                              <span
+                                className="font-mono font-medium tabular-nums text-foreground"
+                              >
                                 {item.value.toLocaleString()}
                               </span>
                             )}
@@ -281,11 +279,7 @@ const ChartLegend = RechartsPrimitive.Legend;
 
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<'div'>
-  & Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
-    hideIcon?: boolean;
-    nameKey?: string;
-  }
+  any
 >(
   (
     { className, hideIcon = false, payload, verticalAlign = 'bottom', nameKey },
@@ -307,9 +301,9 @@ const ChartLegendContent = React.forwardRef<
         )}
       >
         {payload
-          .filter(item => item.type !== 'none')
-          .map((item) => {
-            const key = `${nameKey || item.dataKey || 'value'}`;
+          .filter((item: any) => item.type !== 'none')
+          .map((item: any) => {
+            const key = `${nameKey ?? item.dataKey ?? 'value'}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
             return (
@@ -377,7 +371,7 @@ function getPayloadConfigFromPayload(
 
   return configLabelKey in config
     ? config[configLabelKey]
-    : config[key as keyof typeof config];
+    : config[key];
 }
 
 export {

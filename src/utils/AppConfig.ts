@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -16,11 +16,10 @@
 import type { LocalePrefix } from 'next-intl/routing';
 
 import type { PricingPlan } from '@/types/Subscription';
-import { BILLING_INTERVAL } from '@/types/Subscription';
+import { BILLING_INTERVAL, PLAN_ID } from '@/types/constants';
 
 const localePrefix = 'as-needed' as LocalePrefix;
 
-// FIXME: Update this configuration file based on your project information
 export const AppConfig = {
   name: 'SaaS Template',
   locales: [
@@ -37,12 +36,6 @@ export const AppConfig = {
 };
 
 export const AllLocales = AppConfig.locales.map(locale => locale.id);
-
-export const PLAN_ID = {
-  FREE: 'free',
-  PREMIUM: 'premium',
-  ENTERPRISE: 'enterprise',
-} as const;
 
 export const PricingPlanList: Record<string, PricingPlan> = {
   [PLAN_ID.FREE]: {
@@ -64,7 +57,6 @@ export const PricingPlanList: Record<string, PricingPlan> = {
     price: 79,
     interval: BILLING_INTERVAL.MONTH,
     testPriceId: 'price_premium_test', // Use for testing
-    // FIXME: Update the price ID, you can create it after running `npm run stripe:setup-price`
     devPriceId: 'price_1PNksvKOp3DEwzQlGOXO7YBK',
     prodPriceId: '',
     features: {
@@ -79,7 +71,6 @@ export const PricingPlanList: Record<string, PricingPlan> = {
     price: 199,
     interval: BILLING_INTERVAL.MONTH,
     testPriceId: 'price_enterprise_test', // Use for testing
-    // FIXME: Update the price ID, you can create it after running `npm run stripe:setup-price`
     devPriceId: 'price_1PNksvKOp3DEwzQli9IvXzgb',
     prodPriceId: 'price_123',
     features: {

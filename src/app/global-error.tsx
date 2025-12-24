@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -19,10 +19,10 @@ import * as Sentry from '@sentry/nextjs';
 import NextError from 'next/error';
 import { useEffect, useState } from 'react';
 
-export default function GlobalError(props: {
+export default function GlobalError(props: Readonly<{
   error: Error & { digest?: string };
   params: Promise<{ locale: string }>;
-}) {
+}>) {
   const [params, setParams] = useState<{ locale: string } | null>(null);
 
   useEffect(() => {

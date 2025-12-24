@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -19,7 +19,7 @@ import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/buttonVariants';
 import { PricingInformation } from '@/features/billing/PricingInformation';
 import { Section } from '@/features/landing/Section';
-import { PLAN_ID } from '@/utils/AppConfig';
+import { PLAN_ID } from '@/types/constants';
 
 export const Pricing = () => {
   const t = useTranslations('Pricing');

@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T17:40:00
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -18,9 +18,9 @@
 import { useEffect, useState } from 'react';
 
 type CSSDebuggerProps = {
-  showGrid?: boolean;
-  showOutlines?: boolean;
-  showBreakpoints?: boolean;
+  readonly showGrid?: boolean;
+  readonly showOutlines?: boolean;
+  readonly showBreakpoints?: boolean;
 };
 
 export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakpoints = false }: CSSDebuggerProps) {
@@ -40,6 +40,7 @@ export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakp
       } else if (width >= 640) {
         breakpoint = 'sm';
       }
+      // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
       setCurrentBreakpoint(breakpoint);
     };
 
@@ -152,7 +153,7 @@ export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakp
 }
 
 // Quick debug utilities
-export const DebugUtils = {
+const DebugUtils = {
   // Add to any element for debugging
   debugElement: (selector: string) => {
     const element = document.querySelector(selector);
@@ -210,3 +211,6 @@ export const DebugUtils = {
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   (window as any).DebugUtils = DebugUtils;
 }
+
+// Export DebugUtils for external use (non-component export)
+export { DebugUtils };

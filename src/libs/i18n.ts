@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -31,7 +31,7 @@ import { AllLocales } from '@/utils/AppConfig';
 // Using internationalization in Server Components
 export default getRequestConfig(async ({ requestLocale }) => {
   // Validate that the incoming `locale` parameter is valid
-  const locale = (await requestLocale) || 'en';
+  const locale = (await requestLocale) ?? 'en';
   if (!AllLocales.includes(locale)) {
     notFound();
   }

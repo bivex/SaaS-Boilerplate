@@ -7,17 +7,13 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T20:22:42
+ * Last Updated: 2025-12-24T01:25:48
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import {
-  integer,
-  sqliteTable,
-  text,
-} from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 // This file defines the structure of your database tables using the Drizzle ORM.
 
@@ -45,6 +41,7 @@ export const user = sqliteTable('user', {
   banned: integer('banned', { mode: 'boolean' }),
   banReason: text('ban_reason'),
   banExpires: integer('ban_expires', { mode: 'timestamp' }),
+  googleLinked: integer('google_linked', { mode: 'boolean' }).notNull().default(false),
 });
 
 export const session = sqliteTable('session', {

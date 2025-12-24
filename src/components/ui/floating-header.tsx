@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2025 Bivex
+ *
+ * Author: Bivex
+ * Available for contact via email: support@b-b.top
+ * For up-to-date contact information:
+ * https://github.com/bivex
+ *
+ * Created: 2025-12-24T01:03:42
+ * Last Updated: 2025-12-24T01:03:42
+ *
+ * Licensed under the MIT License.
+ * Commercial licensing available upon request.
+ */
+
 'use client';
 
 import { Grid2x2PlusIcon, MenuIcon } from 'lucide-react';
@@ -33,7 +48,9 @@ export function FloatingHeader() {
       )}
     >
       <nav className="mx-auto flex items-center justify-between p-1.5">
-        <div className="hover:bg-accent flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 duration-100">
+        <div
+          className="hover:bg-accent flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 duration-100"
+        >
           <Grid2x2PlusIcon className="size-5" />
           <p className="font-mono text-base font-bold">Asme</p>
         </div>

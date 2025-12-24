@@ -7,31 +7,31 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
 import percySnapshot from '@percy/playwright';
-import { expect, test } from '@playwright/test';
+import {expect, test} from '@playwright/test';
 
 test.describe('Visual testing', () => {
-  test.describe('Static pages', () => {
-    test('should take screenshot of the homepage', async ({ page }) => {
-      await page.goto('/');
+    test.describe('Static pages', () => {
+        test('should take screenshot of the homepage', async ({page}) => {
+            await page.goto('/');
 
-      await expect(page.getByText('The perfect SaaS template to build')).toBeVisible();
+            await expect(page.getByText('The perfect SaaS template to build')).toBeVisible();
 
-      await percySnapshot(page, 'Homepage');
+            await percySnapshot(page, 'Homepage');
+        });
+
+        test('should take screenshot of the French homepage', async ({page}) => {
+            await page.goto('/fr');
+
+            await expect(page.getByText('Le parfait SaaS template pour construire')).toBeVisible();
+
+            await percySnapshot(page, 'Homepage - French');
+        });
     });
-
-    test('should take screenshot of the French homepage', async ({ page }) => {
-      await page.goto('/fr');
-
-      await expect(page.getByText('Le parfait SaaS template pour construire')).toBeVisible();
-
-      await percySnapshot(page, 'Homepage - French');
-    });
-  });
 });

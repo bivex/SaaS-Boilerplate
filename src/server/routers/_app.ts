@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:05:00
- * Last Updated: 2025-12-23T22:27:08
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,13 +15,13 @@
 
 import { createTRPCRouter } from '@/server/trpc';
 import { authRouter } from './auth';
-// import { organizationRouter } from './organization';
-// import { userRouter } from './user';
+import { organizationRouter } from './organization';
+import { userRouter } from './user';
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
-  // user: userRouter,
-  // organization: organizationRouter,
+  user: userRouter,
+  organization: organizationRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -7,29 +7,13 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:34
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import type { EnumValues } from './Enum';
-
-import type { PLAN_ID } from '@/utils/AppConfig';
-
-export type PlanId = EnumValues<typeof PLAN_ID>;
-
-export const BILLING_INTERVAL = {
-  MONTH: 'month',
-  YEAR: 'year',
-} as const;
-
-export type BillingInterval = EnumValues<typeof BILLING_INTERVAL>;
-
-export const SUBSCRIPTION_STATUS = {
-  ACTIVE: 'active',
-  PENDING: 'pending',
-} as const;
+import type { BillingInterval, PlanId } from './constants';
 
 // PricingPlan is currently only used for Pricing section of the landing page.
 // If you need a real Stripe subscription payment with checkout page, customer portal, webhook, etc.
@@ -66,5 +50,4 @@ export type PlanDetails
   } | {
     isPaid: false;
     plan: PricingPlan;
-    stripeDetails?: undefined;
   };

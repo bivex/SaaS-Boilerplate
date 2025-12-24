@@ -13,13 +13,13 @@
  * Commercial licensing available upon request.
  */
 
-import { db } from './DB';
-import { session } from '../models/Schema';
-import { eq, lt, and, inArray } from 'drizzle-orm';
 import { Redis } from '@upstash/redis';
+import { eq, lt } from 'drizzle-orm';
+import { session } from '../models/Schema';
+import { db } from './DB';
 
 // Session data structure
-export interface SessionData {
+export type SessionData = {
   id: string;
   userId: string;
   token?: string;
@@ -36,39 +36,64 @@ export interface SessionData {
     permissions?: string[];
     metadata?: Record<string, any>;
   };
-}
+};
 
 // Storage adapter interface
-export interface SessionStorageAdapter {
-  store(session: SessionData): Promise<void>;
-  retrieve(sessionId: string): Promise<SessionData | null>;
-  update(sessionId: string, updates: Partial<SessionData>): Promise<void>;
-  delete(sessionId: string): Promise<void>;
-  cleanup(): Promise<void>;
-  close(): Promise<void>;
-}
+export type SessionStorageAdapter = {
+  store: (session: SessionData) => Promise<void>;
+
+  retrieve: (sessionId: string) => Promise<SessionData | null>;
+
+  update: (sessionId: string, updates: Partial<SessionData>) => Promise<void>;
+
+  delete: (sessionId: string) => Promise<void>;
+
+  cleanup: () => Promise<void>;
+
+  close: () => Promise<void>;
+};
 
 // Database session storage adapter
 export class DatabaseSessionStorage implements SessionStorageAdapter {
-  async store(session: SessionData): Promise<void> {
-    await db.insert(session).values({
-      id: session.id,
-      userId: session.userId,
-      token: session.token,
-      expiresAt: session.expiresAt,
-      ipAddress: session.ipAddress,
-      userAgent: session.userAgent,
-      createdAt: session.createdAt,
-      updatedAt: session.updatedAt,
-    }).onConflictDoUpdate({
+  async store(sessionData: SessionData): Promise<void> {
+    const insertData: any = {
+      id: sessionData.id,
+      userId: sessionData.userId,
+      expiresAt: sessionData.expiresAt,
+      createdAt: sessionData.createdAt,
+      updatedAt: sessionData.updatedAt,
+    };
+
+    // Only include optional fields if they have values
+    if (sessionData.token !== undefined) {
+      insertData.token = sessionData.token;
+    }
+    if (sessionData.ipAddress !== undefined) {
+      insertData.ipAddress = sessionData.ipAddress;
+    }
+    if (sessionData.userAgent !== undefined) {
+      insertData.userAgent = sessionData.userAgent;
+    }
+
+    const updateData: any = {
+      expiresAt: sessionData.expiresAt,
+      updatedAt: sessionData.updatedAt,
+    };
+
+    // Only include optional fields in update if they have values
+    if (sessionData.token !== undefined) {
+      updateData.token = sessionData.token;
+    }
+    if (sessionData.ipAddress !== undefined) {
+      updateData.ipAddress = sessionData.ipAddress;
+    }
+    if (sessionData.userAgent !== undefined) {
+      updateData.userAgent = sessionData.userAgent;
+    }
+
+    await db.insert(session).values(insertData).onConflictDoUpdate({
       target: session.id,
-      set: {
-        token: session.token,
-        expiresAt: session.expiresAt,
-        ipAddress: session.ipAddress,
-        userAgent: session.userAgent,
-        updatedAt: session.updatedAt,
-      },
+      set: updateData,
     });
   }
 
@@ -83,16 +108,20 @@ export class DatabaseSessionStorage implements SessionStorageAdapter {
       return null;
     }
 
-    const sessionData = result[0];
+    const dbSession = result[0];
+    if (!dbSession) {
+      return null;
+    }
+
     return {
-      id: sessionData.id,
-      userId: sessionData.userId,
-      token: sessionData.token || undefined,
-      expiresAt: sessionData.expiresAt,
-      ipAddress: sessionData.ipAddress || undefined,
-      userAgent: sessionData.userAgent || undefined,
-      createdAt: sessionData.createdAt,
-      updatedAt: sessionData.updatedAt,
+      id: dbSession.id,
+      userId: dbSession.userId,
+      token: dbSession.token || undefined,
+      expiresAt: dbSession.expiresAt,
+      ipAddress: dbSession.ipAddress ?? undefined,
+      userAgent: dbSession.userAgent ?? undefined,
+      createdAt: dbSession.createdAt,
+      updatedAt: dbSession.updatedAt,
     };
   }
 
@@ -101,10 +130,18 @@ export class DatabaseSessionStorage implements SessionStorageAdapter {
       updatedAt: new Date(),
     };
 
-    if (updates.token !== undefined) updateData.token = updates.token;
-    if (updates.expiresAt !== undefined) updateData.expiresAt = updates.expiresAt;
-    if (updates.ipAddress !== undefined) updateData.ipAddress = updates.ipAddress;
-    if (updates.userAgent !== undefined) updateData.userAgent = updates.userAgent;
+    if (updates.token !== undefined) {
+      updateData.token = updates.token;
+    }
+    if (updates.expiresAt !== undefined) {
+      updateData.expiresAt = updates.expiresAt;
+    }
+    if (updates.ipAddress !== undefined) {
+      updateData.ipAddress = updates.ipAddress;
+    }
+    if (updates.userAgent !== undefined) {
+      updateData.userAgent = updates.userAgent;
+    }
 
     await db
       .update(session)
@@ -128,12 +165,12 @@ export class DatabaseSessionStorage implements SessionStorageAdapter {
 
 // Redis session storage adapter
 export class RedisSessionStorage implements SessionStorageAdapter {
-  private redis: Redis;
+  private readonly redis: Redis;
 
   constructor(redisUrl?: string, redisToken?: string) {
     this.redis = new Redis({
-      url: redisUrl || process.env.UPSTASH_REDIS_REST_URL || '',
-      token: redisToken || process.env.UPSTASH_REDIS_REST_TOKEN || '',
+      url: redisUrl ?? process.env.UPSTASH_REDIS_REST_URL ?? '',
+      token: redisToken ?? process.env.UPSTASH_REDIS_REST_TOKEN ?? '',
     });
   }
 
@@ -155,9 +192,15 @@ export class RedisSessionStorage implements SessionStorageAdapter {
     try {
       const session = JSON.parse(data);
       // Convert date strings back to Date objects
-      if (session.expiresAt) session.expiresAt = new Date(session.expiresAt);
-      if (session.createdAt) session.createdAt = new Date(session.createdAt);
-      if (session.updatedAt) session.updatedAt = new Date(session.updatedAt);
+      if (session.expiresAt) {
+        session.expiresAt = new Date(session.expiresAt);
+      }
+      if (session.createdAt) {
+        session.createdAt = new Date(session.createdAt);
+      }
+      if (session.updatedAt) {
+        session.updatedAt = new Date(session.updatedAt);
+      }
 
       return session;
     } catch (error) {
@@ -192,8 +235,8 @@ export class RedisSessionStorage implements SessionStorageAdapter {
 
 // Hybrid storage strategy (Redis + Database)
 export class HybridSessionStorage implements SessionStorageAdapter {
-  private redis: RedisSessionStorage;
-  private database: DatabaseSessionStorage;
+  private readonly redis: RedisSessionStorage;
+  private readonly database: DatabaseSessionStorage;
 
   constructor(redisUrl?: string, redisToken?: string) {
     this.redis = new RedisSessionStorage(redisUrl, redisToken);
@@ -335,5 +378,5 @@ export class SessionStorageFactory {
 
 // Default session storage instance
 export const sessionStorage = SessionStorageFactory.create(
-  (process.env.SESSION_STORAGE_TYPE as 'database' | 'redis' | 'hybrid') || 'database'
+  (process.env.SESSION_STORAGE_TYPE as 'database' | 'redis' | 'hybrid') || 'database',
 );

@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T09:47:38
- * Last Updated: 2025-12-23T09:47:38
+ * Last Updated: 2025-12-24T01:50:46
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -33,8 +33,11 @@ export default antfu({
   ignores: [
     'migrations/**/*',
     'next-env.d.ts',
+    '**/*.test.*',
+    '**/*.spec.*',
+    'tests/**/*',
   ],
-}, {
+
   rules: {
     'style/object-curly-spacing': ['error', 'always'], // Ensure consistent spacing within curly braces
     'style/brace-style': ['error', '1tbs'], // Use the default brace style

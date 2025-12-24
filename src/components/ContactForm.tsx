@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T18:00:00
- * Last Updated: 2025-12-23T19:01:00
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -20,22 +20,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -43,9 +29,7 @@ const contactFormSchema = z.object({
   name: z.string().min(2, {
     message: 'Имя должно содержать минимум 2 символа.',
   }),
-  email: z.string().email({
-    message: 'Пожалуйста, введите корректный email адрес.',
-  }),
+  email: z.string().email('Пожалуйста, введите корректный email адрес.'),
   subject: z.string().min(5, {
     message: 'Тема должна содержать минимум 5 символов.',
   }),
@@ -150,7 +134,7 @@ export function ContactForm() {
                   <FormControl>
                     <Textarea
                       placeholder="Расскажите подробнее о вашем вопросе или предложении..."
-                      className="min-h-[120px]"
+                      className="min-h-30"
                       {...field}
                     />
                   </FormControl>

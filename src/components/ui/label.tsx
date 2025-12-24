@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2025 Bivex
+ *
+ * Author: Bivex
+ * Available for contact via email: support@b-b.top
+ * For up-to-date contact information:
+ * https://github.com/bivex
+ *
+ * Created: 2025-12-24T01:03:43
+ * Last Updated: 2025-12-24T01:03:43
+ *
+ * Licensed under the MIT License.
+ * Commercial licensing available upon request.
+ */
+
 'use client';
 
 import type { VariantProps } from 'class-variance-authority';
@@ -12,7 +27,7 @@ const labelVariants = cva(
 );
 
 const Label = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
   & VariantProps<typeof labelVariants>
 >(({ className, ...props }, ref) => (

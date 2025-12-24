@@ -7,14 +7,16 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
 export const StickyBanner = (props: { children: React.ReactNode }) => (
-  <div className="sticky top-0 z-50 bg-primary p-4 text-center text-lg font-semibold text-primary-foreground [&_a:hover]:text-indigo-500 [&_a]:text-fuchsia-500">
+  <div
+    className="sticky top-0 z-50 bg-primary p-4 text-center text-lg font-semibold text-primary-foreground [&_a:hover]:text-indigo-500 [&_a]:text-fuchsia-500"
+  >
     {props.children}
   </div>
 );

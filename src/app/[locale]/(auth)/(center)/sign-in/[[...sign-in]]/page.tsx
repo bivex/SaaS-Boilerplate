@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:35:00
- * Last Updated: 2025-12-23T22:35:00
+ * Last Updated: 2025-12-24T01:50:49
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -15,7 +15,7 @@
 
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -31,6 +31,7 @@ import { getI18nPath } from '@/utils/Helpers';
 
 export default function SignInPage() {
   const t = useTranslations('SignIn');
+  const locale = useLocale();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,13 +50,13 @@ export default function SignInPage() {
       });
 
       if (result.error) {
-        setError(result.error.message || 'An error occurred');
+        setError(result.error.message ?? 'An error occurred');
       } else {
         // After successful sign-in, refresh the session state
-        console.log('Sign-in successful, refreshing session...');
+        console.warn('Sign-in successful, refreshing session...');
         await refreshSessionState();
 
-        console.log('Session refreshed, redirecting to dashboard');
+        console.warn('Session refreshed, redirecting to dashboard');
         router.push('/dashboard');
       }
     } catch {
@@ -73,11 +74,9 @@ export default function SignInPage() {
       });
 
       if (result.error) {
-        setError(result.error.message || 'An error occurred');
-      } else if (result.url) {
-        // For social sign-in, Better Auth returns a URL to redirect to OAuth provider
-        window.location.href = result.url;
+        setError(result.error.message ?? 'An error occurred');
       }
+      // Better Auth handles the redirect automatically for social sign-in
     } catch {
       setError('An unexpected error occurred');
     }
@@ -151,7 +150,7 @@ export default function SignInPage() {
             {t('dont_have_account')}
             {' '}
             <Link
-              href={getI18nPath('/sign-up', 'en')} // TODO: Get current locale
+              href={getI18nPath('/sign-up', locale)}
               className="underline underline-offset-4 hover:text-primary"
             >
               {t('sign_up')}

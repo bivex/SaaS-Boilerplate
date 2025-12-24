@@ -1,6 +1,7 @@
 # Conventional Commits
 
-This project uses [Conventional Commits](https://conventionalcommits.org/) with advanced commitlint configuration for all commit messages.
+This project uses [Conventional Commits](https://conventionalcommits.org/) with advanced commitlint configuration for
+all commit messages.
 
 ## Format
 
@@ -15,6 +16,7 @@ type(scope): description
 ## Types
 
 ### Standard Types
+
 - **build**: Changes that affect the build system or external dependencies 🛠️
 - **chore**: Other changes that don't modify src or test files ♻️
 - **ci**: Changes to our CI configuration files and scripts ⚙️
@@ -28,6 +30,7 @@ type(scope): description
 - **test**: Adding missing tests or correcting existing tests 🚨
 
 ### Custom Types (Project Specific)
+
 - **translation**: Changes related to translations 🌍
 - **security**: Security fixes 🔒
 - **breaking**: Breaking changes ⚠️
@@ -35,29 +38,35 @@ type(scope): description
 ## Rules
 
 ### Type Rules
+
 - Type must be one of the allowed values
 - Type must be in lowercase
 - Maximum length: 12 characters
 
 ### Scope Rules (Optional)
+
 - Scope must be in lowercase
 - Maximum length: 20 characters
 - Format: `component-name`, `file-name`, etc.
 
 ### Subject Rules
+
 - First letter can be upper or lowercase (sentence case)
 - No period at the end
 - Maximum length: 72 characters
 - Cannot be empty
 
 ### Header Rules
+
 - Complete header (type + scope + subject) max 100 characters
 
 ### Body Rules (Optional)
+
 - Must have blank line before body
 - Max line length: 100 characters
 
 ### Footer Rules (Optional)
+
 - Must have blank line before footer
 - Max line length: 100 characters
 
@@ -101,6 +110,7 @@ Invalid commit messages will be rejected with detailed error messages.
 ## Interactive Prompts
 
 When using `git commit` without message, you'll get interactive prompts with:
+
 - Type selection with descriptions and emojis
 - Scope input
 - Subject validation

@@ -7,13 +7,13 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-24T01:50:46
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import type { BillingInterval } from '@/types/Subscription';
+import type { BillingInterval } from '@/types/constants';
 import { useTranslations } from 'next-intl';
 
 import React from 'react';
@@ -26,6 +26,8 @@ export const PricingCard = (props: {
   children: React.ReactNode;
 }) => {
   const t = useTranslations('PricingPlan');
+  const intervalKey = `plan_interval_${props.interval}`;
+  const intervalLabel = `/ ${t(intervalKey)}`;
 
   return (
     <div className="rounded-xl border border-border px-6 py-8 text-center">
@@ -39,7 +41,7 @@ export const PricingCard = (props: {
         </div>
 
         <div className="ml-1 text-muted-foreground">
-          {`/ ${t(`plan_interval_${props.interval}`)}`}
+          {intervalLabel}
         </div>
       </div>
 

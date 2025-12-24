@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:01
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -21,7 +21,9 @@ type SeparatorProps = {
   orientation?: 'horizontal' | 'vertical';
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Separator = ({ ref, className, orientation = 'horizontal', ...props }: SeparatorProps & { ref?: React.RefObject<HTMLDivElement | null> }) => (
+const Separator = ({ ref, className, orientation = 'horizontal', ...props}: SeparatorProps & {
+  ref?: React.RefObject<HTMLDivElement | null>;
+}) => (
   <div
     ref={ref}
     className={cn(

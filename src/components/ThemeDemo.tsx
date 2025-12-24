@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T17:30:00
- * Last Updated: 2025-12-23T19:01:02
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -16,7 +16,7 @@
 'use client';
 
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 export function ThemeDemo() {
@@ -25,11 +25,12 @@ export function ThemeDemo() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
     setMounted(true);
   }, []);
 
   // Custom theme definitions
-  const themes = {
+  const themes = useMemo(() => ({
     light: {
       'background': '0 0% 100%',
       'foreground': '222.2 84% 4.9%',
@@ -198,7 +199,7 @@ export function ThemeDemo() {
       'destructive': '0 84.2% 60.2%',
       'destructive-foreground': '48 100% 98%',
     },
-  };
+  }), []);
 
   // Apply custom theme colors to CSS custom properties and classes
   useEffect(() => {
@@ -221,7 +222,7 @@ export function ThemeDemo() {
         });
       }
     }
-  }, [theme, mounted]);
+  }, [theme, mounted, themes]);
 
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {

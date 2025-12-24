@@ -7,33 +7,33 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:22:50
- * Last Updated: 2025-12-23T22:27:12
+ * Last Updated: 2025-12-24T01:03:44
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { NextIntlClientProvider } from 'next-intl';
+import {describe, expect, it} from 'vitest';
+import {render, screen} from '@testing-library/react';
+import {NextIntlClientProvider} from 'next-intl';
 
 import messages from '@/locales/en.json';
-import { CenteredFooter } from './CenteredFooter';
+import {CenteredFooter} from './CenteredFooter';
 
 describe('CenteredFooter', () => {
-  describe('Render method', () => {
-    it('should have copyright information', () => {
-      render(
-        <NextIntlClientProvider locale="en" messages={messages}>
-          <CenteredFooter logo={null} name="Test Company" iconList={null} legalLinks={null}>
-            Random children
-          </CenteredFooter>
-        </NextIntlClientProvider>,
-      );
+    describe('Render method', () => {
+        it('should have copyright information', () => {
+            render(
+                <NextIntlClientProvider locale="en" messages={messages}>
+                    <CenteredFooter logo={null} name="Test Company" iconList={null} legalLinks={null}>
+                        Random children
+                    </CenteredFooter>
+                </NextIntlClientProvider>,
+            );
 
-      const copyright = screen.getByText(/© Copyright/);
+            const copyright = screen.getByText(/© Copyright/);
 
-      expect(copyright).toBeInTheDocument();
+            expect(copyright).toBeInTheDocument();
+        });
     });
-  });
 });

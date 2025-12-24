@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T21:10:35
- * Last Updated: 2025-12-23T19:01:01
+ * Last Updated: 2025-12-24T01:03:43
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -24,7 +24,14 @@ const Tooltip = TooltipPrimitive.Root;
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
-const TooltipContent = ({ ref, className, sideOffset = 4, ...props }: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & { ref?: React.RefObject<React.ElementRef<typeof TooltipPrimitive.Content> | null> }) => (
+const TooltipContent = ({
+  ref,
+  className,
+  sideOffset = 4,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & {
+  ref?: React.RefObject<React.ComponentRef<typeof TooltipPrimitive.Content> | null>;
+}) => (
   <TooltipPrimitive.Content
     ref={ref}
     sideOffset={sideOffset}
@@ -37,7 +44,9 @@ const TooltipContent = ({ ref, className, sideOffset = 4, ...props }: React.Comp
 );
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-const TooltipArrow = ({ ref, className, ...props }: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Arrow> & { ref?: React.RefObject<React.ElementRef<typeof TooltipPrimitive.Arrow> | null> }) => (
+const TooltipArrow = ({ ref, className, ...props}: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Arrow> & {
+  ref?: React.RefObject<React.ComponentRef<typeof TooltipPrimitive.Arrow> | null>;
+}) => (
   <TooltipPrimitive.Arrow
     ref={ref}
     className={cn('fill-foreground', className)}

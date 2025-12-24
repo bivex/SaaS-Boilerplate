@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:15:55
- * Last Updated: 2025-12-23T20:44:53
+ * Last Updated: 2025-12-24T01:03:42
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -85,7 +85,9 @@ function Header1() {
   const [isOpen, setOpen] = useState(false);
   return (
     <header className="w-full z-[60] fixed top-0 left-0 bg-background border-b border-border shadow-lg">
-      <div className="container relative mx-auto min-h-20 flex gap-4 flex-row lg:grid lg:grid-cols-3 items-center">
+      <div
+        className="container relative mx-auto min-h-20 flex gap-4 flex-row lg:grid lg:grid-cols-3 items-center"
+      >
         <div className="justify-start items-center gap-4 lg:flex hidden flex-row">
           <NavigationMenu className="flex justify-start items-start">
             <NavigationMenuList className="flex justify-start gap-4 flex-row">
@@ -93,13 +95,11 @@ function Header1() {
                 <NavigationMenuItem key={item.title}>
                   {item.href
                     ? (
-                        <>
-                          <NavigationMenuLink asChild>
-                            <Link href={item.href}>
-                              <Button variant="ghost">{item.title}</Button>
-                            </Link>
-                          </NavigationMenuLink>
-                        </>
+                        <NavigationMenuLink asChild>
+                          <Link href={item.href}>
+                            <Button variant="ghost">{item.title}</Button>
+                          </Link>
+                        </NavigationMenuLink>
                       )
                     : (
                         <>
@@ -130,7 +130,9 @@ function Header1() {
                                   >
                                     <Link href={subItem.href}>
                                       <span>{subItem.title}</span>
-                                      <MoveRight className="w-4 h-4 text-muted-foreground" />
+                                      <MoveRight
+                                        className="w-4 h-4 text-muted-foreground"
+                                      />
                                     </Link>
                                   </NavigationMenuLink>
                                 ))}
@@ -169,7 +171,9 @@ function Header1() {
             {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
           {isOpen && (
-            <div className="absolute top-20 border-t flex flex-col w-full right-0 bg-background shadow-lg py-4 container gap-8">
+            <div
+              className="absolute top-20 border-t flex flex-col w-full right-0 bg-background shadow-lg py-4 container gap-8"
+            >
               {navigationItems.map(item => (
                 <div key={item.title}>
                   <div className="flex flex-col gap-2">
@@ -186,19 +190,18 @@ function Header1() {
                       : (
                           <p className="text-lg">{item.title}</p>
                         )}
-                    {item.items
-                      && item.items.map(subItem => (
-                        <Link
-                          key={subItem.title}
-                          href={subItem.href}
-                          className="flex justify-between items-center"
-                        >
-                          <span className="text-muted-foreground">
-                            {subItem.title}
-                          </span>
-                          <MoveRight className="w-4 h-4 stroke-1" />
-                        </Link>
-                      ))}
+                    {item.items?.map(subItem => (
+                      <Link
+                        key={subItem.title}
+                        href={subItem.href}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-muted-foreground">
+                          {subItem.title}
+                        </span>
+                        <MoveRight className="w-4 h-4 stroke-1" />
+                      </Link>
+                    ))}
                   </div>
                 </div>
               ))}
