@@ -118,12 +118,11 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
-    "vitest-mock-extended": "^2.0.0",
     "@anatine/zod-mock": "^3.14.0",
     "@antfu/eslint-config": "^6.7.3",
-    "eslint-plugin-no-secrets": "^1.1.2",
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
+    "@eslint-react/eslint-plugin": "^2.4.0",
     "@faker-js/faker": "^10.1.0",
     "@next/bundle-analyzer": "^16.1.1",
     "@playwright/test": "^1.57.0",
@@ -146,6 +145,9 @@
     "drizzle-kit": "^0.31.8",
     "drizzle-seed": "^0.3.0",
     "eslint": "^9.39.2",
+    "eslint-plugin-no-secrets": "^1.1.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.26",
     "eslint-plugin-security": "^3.0.1",
     "eslint-plugin-tailwindcss": "^3.18.2",
     "husky": "^9.1.7",
@@ -159,7 +161,8 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^6.0.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.16",
+    "vitest-mock-extended": "^2.0.0"
   },
   "overrides": {
     "axios": "^1.7.4",
