@@ -91,18 +91,18 @@ const Logos = {
 
 export const SponsorLogos = () => {
   const sponsorLogos = [
-    Logos.clerk,
-    Logos.crowdin,
-    Logos.sentry,
-    Logos.arcjet,
-    Logos.nextjsSaaS,
+    { component: Logos.clerk, key: 'clerk' },
+    { component: Logos.crowdin, key: 'crowdin' },
+    { component: Logos.sentry, key: 'sentry' },
+    { component: Logos.arcjet, key: 'arcjet' },
+    { component: Logos.nextjsSaaS, key: 'nextjsSaaS' },
   ];
 
   return (
     <Marquee pauseOnHover={true} speed={25}>
-      {sponsorLogos.map((Logo, index) => (
+      {sponsorLogos.map(({ component: Logo, key }) => (
         <div
-          key={index}
+          key={key}
           className="relative h-[60px] w-fit mx-[3rem] flex items-center justify-start"
         >
           <Logo />

@@ -40,6 +40,7 @@ export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakp
       } else if (width >= 640) {
         breakpoint = 'sm';
       }
+      // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
       setCurrentBreakpoint(breakpoint);
     };
 
@@ -152,7 +153,7 @@ export function CSSDebugger({ showGrid = false, showOutlines = false, showBreakp
 }
 
 // Quick debug utilities
-export const DebugUtils = {
+const DebugUtils = {
   // Add to any element for debugging
   debugElement: (selector: string) => {
     const element = document.querySelector(selector);
@@ -210,3 +211,6 @@ export const DebugUtils = {
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   (window as any).DebugUtils = DebugUtils;
 }
+
+// Export DebugUtils for external use (non-component export)
+export { DebugUtils };

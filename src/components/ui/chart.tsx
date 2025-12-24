@@ -30,7 +30,7 @@ export type ChartConfig = {
   } & (
     | { color?: string; theme?: never }
     | { color?: never; theme: Record<keyof typeof THEMES, string> }
-  )
+    )
 };
 
 type ChartContextProps = {
@@ -49,7 +49,7 @@ function useChart() {
   return context;
 }
 
-const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
+const ChartStyle = ({ id, config}: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([, config]) => config.theme || config.color,
   );
@@ -60,6 +60,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 
   return (
     <style
+      // eslint-disable-next-line react-dom/no-dangerously-set-innerhtml
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
           .map(
@@ -87,7 +88,7 @@ const ChartContainer = React.forwardRef<
   React.ComponentProps<'div'> & {
     config: ChartConfig;
     children: React.ComponentProps<
-      typeof RechartsPrimitive.ResponsiveContainer
+        typeof RechartsPrimitive.ResponsiveContainer
     >['children'];
   }
 >(({ id, className, children, config, ...props }, ref) => {
@@ -234,7 +235,7 @@ const ChartTooltipContent = React.forwardRef<
                                         'h-2.5 w-2.5': indicator === 'dot',
                                         'w-1': indicator === 'line',
                                         'w-0 border-[1.5px] border-dashed bg-transparent':
-                                  indicator === 'dashed',
+                                                                            indicator === 'dashed',
                                         'my-0.5': nestLabel && indicator === 'dashed',
                                       },
                                     )}
@@ -260,7 +261,9 @@ const ChartTooltipContent = React.forwardRef<
                               </span>
                             </div>
                             {item.value && (
-                              <span className="font-mono font-medium tabular-nums text-foreground">
+                              <span
+                                className="font-mono font-medium tabular-nums text-foreground"
+                              >
                                 {item.value.toLocaleString()}
                               </span>
                             )}

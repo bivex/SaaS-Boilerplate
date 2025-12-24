@@ -110,10 +110,10 @@ const TestimonialsColumn = (props: {
       >
         {[
           ...Array.from({ length: 2 }).fill(0).map((_, index) => (
-            <React.Fragment key={index}>
-              {props.testimonials.map(({ text, image, name, role }, i) => (
+            <React.Fragment key={index === 0 ? 'visible' : 'hidden'}>
+              {props.testimonials.map(({ text, image, name, role }) => (
                 <motion.li
-                  key={`${index}-${i}`}
+                  key={`${index === 0 ? 'visible' : 'hidden'}-${name}-${text}`}
                   aria-hidden={index === 1 ? 'true' : undefined}
                   tabIndex={index === 1 ? -1 : 0}
                   whileHover={index === 1
@@ -147,10 +147,14 @@ const TestimonialsColumn = (props: {
                         className="h-10 w-10 rounded-full object-cover ring-2 ring-neutral-100 dark:ring-neutral-800 group-hover:ring-primary/30 transition-all duration-300 ease-in-out"
                       />
                       <div className="flex flex-col">
-                        <cite className="font-semibold not-italic tracking-tight leading-5 text-neutral-900 dark:text-white transition-colors duration-300">
+                        <cite
+                          className="font-semibold not-italic tracking-tight leading-5 text-neutral-900 dark:text-white transition-colors duration-300"
+                        >
                           {name}
                         </cite>
-                        <span className="text-sm leading-5 tracking-tight text-neutral-500 dark:text-neutral-500 mt-0.5 transition-colors duration-300">
+                        <span
+                          className="text-sm leading-5 tracking-tight text-neutral-500 dark:text-neutral-500 mt-0.5 transition-colors duration-300"
+                        >
                           {role}
                         </span>
                       </div>
@@ -185,12 +189,17 @@ const TestimonialsSection = () => {
       >
         <div className="flex flex-col items-center justify-center max-w-[540px] mx-auto mb-16">
           <div className="flex justify-center">
-            <div className="border border-neutral-300 dark:border-neutral-700 py-1 px-4 rounded-full text-xs font-semibold tracking-wide uppercase text-neutral-600 dark:text-neutral-400 bg-neutral-100/50 dark:bg-neutral-800/50 transition-colors">
+            <div
+              className="border border-neutral-300 dark:border-neutral-700 py-1 px-4 rounded-full text-xs font-semibold tracking-wide uppercase text-neutral-600 dark:text-neutral-400 bg-neutral-100/50 dark:bg-neutral-800/50 transition-colors"
+            >
               Testimonials
             </div>
           </div>
 
-          <h2 id="testimonials-heading" className="text-4xl md:text-5xl font-extrabold tracking-tight mt-6 text-center text-neutral-900 dark:text-white transition-colors">
+          <h2
+            id="testimonials-heading"
+            className="text-4xl md:text-5xl font-extrabold tracking-tight mt-6 text-center text-neutral-900 dark:text-white transition-colors"
+          >
             What our users say
           </h2>
           <p className="text-center mt-5 text-neutral-500 dark:text-neutral-400 text-lg leading-relaxed max-w-sm transition-colors">
