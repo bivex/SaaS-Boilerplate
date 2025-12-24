@@ -21,7 +21,7 @@ import { cn } from '@/utils/Helpers';
  * Table component for displaying tabular data.
  * This is a UI component library primitive - always use with TableHeader/TableHead
  * for proper accessibility when displaying data. Tables must have headers for screen readers.
- * For layout tables (non-data tables), set layout={true} to suppress accessibility warnings.
+ * For layout tables (non-data tables), set layout={true}. The table will not have explicit ARIA roles.
  * See DataTable component for example usage.
  *
  * @example
@@ -43,7 +43,7 @@ import { cn } from '@/utils/Helpers';
 const Table = ({
   ref,
   className,
-  layout = false,
+  layout: _layout = false,
   ...props
 }: React.HTMLAttributes<HTMLTableElement> & {
   ref?: React.RefObject<HTMLTableElement | null>;
@@ -53,7 +53,6 @@ const Table = ({
     {/* This is a generic table component. Headers should be provided via TableHeader when used. */}
     <table
       ref={ref}
-      role={layout ? 'presentation' : 'table'}
       className={cn('w-full caption-bottom text-sm', className)}
       {...props}
     />

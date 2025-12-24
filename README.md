@@ -181,6 +181,47 @@ Developer experience first, extremely flexible code structure and only keep what
 - 🌈 Include a FREE minimalist theme
 - 💯 Maximize lighthouse score
 
+| Feature | Status |
+|---------|--------|
+| ⚡ [Next.js](https://nextjs.org) with App Router support | ✅ True |
+| 🔥 Type checking [TypeScript](https://www.typescriptlang.org) | ✅ True |
+| 💎 Integrate with [Tailwind CSS](https://tailwindcss.com) and Shadcn UI | ✅ True |
+| ✅ Strict Mode for TypeScript and [React](https://react.dev) | ✅ True |
+| 🔒 Authentication with [Better Auth](https://better-auth.com): Sign up, Sign in, Sign out, Forgot password, Reset password, and more. | ✅ True |
+| 👤 Passwordless Authentication with Magic Links, Social Auth (Google), User Impersonation | ✅ True |
+| 👥 Multi-tenancy & team support: create, switch, update organization and invite team members | ✅ True |
+| 📝 Role-based access control and permissions | ✅ True |
+| 📦 Type-safe ORM with DrizzleORM, compatible with PostgreSQL, SQLite, and MySQL | ✅ True |
+| 💽 Offline and local development database with PGlite | ✅ True |
+| ☁️ Remote and production database with [Prisma Postgres](https://www.prisma.io/?via=saasboilerplate) | ✅ True |
+| 🌐 Multi-language (i18n) with [next-intl](https://next-intl-docs.vercel.app/) and [Crowdin](https://l.crowdin.com/next-js) | ✅ True |
+| ♻️ Type-safe environment variables with T3 Env | ✅ True |
+| ⌨️ Form with [React Hook Form](https://react-hook-form.com) | ✅ True |
+| 🔴 Validation library with [Zod](https://zod.dev) | ✅ True |
+| 📏 Linter with [ESLint](https://eslint.org) (Antfu configuration with React, TypeScript, and Tailwind CSS) | ✅ True |
+| 🦊 Husky for Git Hooks | ✅ True |
+| 🚫 Lint-staged for running linters on Git staged files | ✅ True |
+| 🚓 Lint git commit with Commitlint | ✅ True |
+| 📓 Write standard compliant commit messages with Commitizen | ✅ True |
+| 🦺 Unit Testing with [Vitest](https://vitest.dev) and React Testing Library | ✅ True |
+| 🧪 Integration and E2E Testing with [Playwright](https://playwright.dev) | ✅ True |
+| 👷 Run tests on pull requests with GitHub Actions | ✅ True |
+| 🚨 Error Monitoring with [Sentry](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo) | ✅ True |
+| ☂️ Code coverage with [Codecov](https://about.codecov.io/codecov-free-trial/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo) | ✅ True |
+| 📝 Logging with [Pino.js](https://getpino.io) and Log Management with [Better Stack](https://betterstack.com/?utm_source=github&utm_medium=sponsorship&utm_campaign=next-js-boilerplate) | ✅ True |
+| 🖥️ Monitoring as Code with [Checkly](https://www.checklyhq.com/?utm_source=github&utm_medium=sponsorship&utm_campaign=next-js-boilerplate) | ✅ True |
+| 🎁 Automatic changelog generation with Semantic Release | ✅ True |
+| 🔍 Visual testing with Percy (Optional) | ✅ True |
+| 💡 Absolute Imports using `@` prefix | ✅ True |
+| 🗂 VSCode configuration: Debug, Settings, Tasks and Extensions | ✅ True |
+| 🤖 SEO metadata, JSON-LD and Open Graph tags | ✅ True |
+| 🗺️ Sitemap.xml and robots.txt | ✅ True |
+| ⌘ Database exploration with Drizzle Studio and CLI migration tool with Drizzle Kit | ✅ True |
+| ⚙️ [Bundler Analyzer](https://www.npmjs.com/package/@next/bundle-analyzer) | ✅ True |
+| 🌈 Include a FREE minimalist theme | ✅ True |
+| 🌙 Dark mode support with multiple themes | ✅ True |
+| 💯 Maximize lighthouse score | ✅ True |
+
 Built-in features from Next.js:
 
 - ☕ Minify HTML & CSS
