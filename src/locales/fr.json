@@ -151,6 +151,50 @@
     "organizations": "Organisations",
     "manage_orgs": "Gérer les organisations"
   },
+  "OrganizationSelection": {
+    "title": "Bienvenue dans votre espace de travail",
+    "subtitle": "Choisissez comment vous souhaitez commencer",
+    "create_org": {
+      "title": "Créer une nouvelle organisation",
+      "description": "Configurez un nouvel espace de travail pour votre équipe ou projet",
+      "button": "Créer une organisation"
+    },
+    "join_org": {
+      "title": "Rejoindre une organisation existante",
+      "description": "Connectez-vous avec une équipe qui vous a déjà invité",
+      "button": "Rejoindre une organisation"
+    },
+    "create_form": {
+      "title": "Créer votre organisation",
+      "description": "Donnez un nom à votre organisation et commencez à construire votre espace de travail",
+      "name_label": "Nom de l'organisation",
+      "name_placeholder": "Entrez le nom de l'organisation",
+      "description_label": "Description (Optionnel)",
+      "description_placeholder": "Brève description de votre organisation",
+      "create_button": "Créer une organisation",
+      "cancel_button": "Annuler"
+    },
+    "join_form": {
+      "title": "Rejoindre une organisation",
+      "description": "Entrez le code d'invitation ou le lien que vous avez reçu",
+      "code_label": "Code d'invitation",
+      "code_placeholder": "Entrez le code d'invitation",
+      "join_button": "Rejoindre une organisation",
+      "cancel_button": "Annuler"
+    },
+    "success": {
+      "org_created": "Organisation créée avec succès !",
+      "org_joined": "Organisation rejointe avec succès !"
+    },
+    "errors": {
+      "name_required": "Le nom de l'organisation est requis",
+      "name_too_short": "Le nom de l'organisation doit contenir au moins 2 caractères",
+      "code_required": "Le code d'invitation est requis",
+      "invalid_code": "Code d'invitation invalide",
+      "create_failed": "Échec de la création de l'organisation",
+      "join_failed": "Échec de l'adhésion à l'organisation"
+    }
+  },
   "Billing": {
     "title_bar": "Facturation",
     "title_bar_description": "Gérer votre facturation et votre abonnement",

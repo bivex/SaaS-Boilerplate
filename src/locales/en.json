@@ -190,6 +190,50 @@
     "organizations": "Organizations",
     "manage_orgs": "Manage Organizations"
   },
+  "OrganizationSelection": {
+    "title": "Welcome to Your Workspace",
+    "subtitle": "Choose how you'd like to get started",
+    "create_org": {
+      "title": "Create a new organization",
+      "description": "Set up a new workspace for your team or project",
+      "button": "Create Organization"
+    },
+    "join_org": {
+      "title": "Join an existing organization",
+      "description": "Connect with a team that has already invited you",
+      "button": "Join Organization"
+    },
+    "create_form": {
+      "title": "Create Your Organization",
+      "description": "Give your organization a name and start building your workspace",
+      "name_label": "Organization Name",
+      "name_placeholder": "Enter organization name",
+      "description_label": "Description (Optional)",
+      "description_placeholder": "Brief description of your organization",
+      "create_button": "Create Organization",
+      "cancel_button": "Cancel"
+    },
+    "join_form": {
+      "title": "Join Organization",
+      "description": "Enter the invitation code or link you received",
+      "code_label": "Invitation Code",
+      "code_placeholder": "Enter invitation code",
+      "join_button": "Join Organization",
+      "cancel_button": "Cancel"
+    },
+    "success": {
+      "org_created": "Organization created successfully!",
+      "org_joined": "Successfully joined organization!"
+    },
+    "errors": {
+      "name_required": "Organization name is required",
+      "name_too_short": "Organization name must be at least 2 characters",
+      "code_required": "Invitation code is required",
+      "invalid_code": "Invalid invitation code",
+      "create_failed": "Failed to create organization",
+      "join_failed": "Failed to join organization"
+    }
+  },
   "Billing": {
     "title_bar": "Billing",
     "title_bar_description": "Manage your billing and subscription",
