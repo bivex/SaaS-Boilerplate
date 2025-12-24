@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T20:53:17
- * Last Updated: 2025-12-24T07:21:08
+ * Last Updated: 2025-12-24T07:26:23
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -80,7 +80,7 @@ config = withNextIntl(config);
 
 // Use Rspack only for builds, webpack for dev/start
 if (process.argv.some(arg => arg.includes('build'))) {
-  config = withRspack(config, {
+  const rspackConfig = {
     // Ultra-aggressive performance limits for maximum optimization
     performance: {
       hints: false, // Disable hints since we're optimizing aggressively
@@ -243,29 +243,40 @@ if (process.argv.some(arg => arg.includes('build'))) {
       entrypoints: false,
     },
 
-  });
+  };
+
+  config = withRspack(config, rspackConfig);
 }
 
-// Configure Rsdoctor for Next.js according to documentation
-config.webpack = (config, { isServer }) => {
-  if (process.env.RSDOCTOR) {
-    config.plugins.push(
-      new RsdoctorRspackPlugin({
-        disableClientServer: true,
-        ...(isServer && {
-          output: {
-            reportDir: './.next/server',
-          },
-        }),
-      }),
-    );
-  }
-  return config;
-};
-
 // Apply plugins conditionally
-const finalConfig = process.argv.some(arg => arg.includes('build'))
-  ? withNextIntl(withRspack(config)) // For builds, use both next-intl and Rspack
-  : withNextIntl(config); // For dev/start, use only next-intl
+const finalConfig = (() => {
+  if (process.argv.some(arg => arg.includes('build'))) {
+    // For builds, use both next-intl and Rspack
+    const configWithPlugins = withNextIntl(withRspack(config));
+
+    // Add Rsdoctor for builds when RSDOCTOR env is set
+    if (process.env.RSDOCTOR) {
+      // Rsdoctor is applied through webpack config for Next.js + Rspack
+      configWithPlugins.webpack = (config, { isServer }) => {
+        if (!isServer) { // Only for client-side builds
+          config.plugins.push(
+            new RsdoctorRspackPlugin({
+              disableClientServer: true,
+              output: {
+                reportDir: '.next/.rsdoctor',
+                reportHtml: 'report.html',
+              },
+            }),
+          );
+        }
+        return config;
+      };
+    }
+    return configWithPlugins;
+  } else {
+    // For dev/start, use only next-intl
+    return withNextIntl(config);
+  }
+})();
 
 export default finalConfig;
