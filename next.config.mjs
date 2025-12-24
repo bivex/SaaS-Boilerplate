@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T20:53:17
- * Last Updated: 2025-12-24T07:26:23
+ * Last Updated: 2025-12-24T07:28:21
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -258,13 +258,18 @@ const finalConfig = (() => {
     if (process.env.RSDOCTOR) {
       // Rsdoctor is applied through webpack config for Next.js + Rspack
       configWithPlugins.webpack = (config, { isServer }) => {
-        if (!isServer) { // Only for client-side builds
+        if (!isServer) { // Client-side builds
+          config.plugins.push(
+            new RsdoctorRspackPlugin({
+              disableClientServer: true,
+            }),
+          );
+        } else { // Server-side builds
           config.plugins.push(
             new RsdoctorRspackPlugin({
               disableClientServer: true,
               output: {
-                reportDir: '.next/.rsdoctor',
-                reportHtml: 'report.html',
+                reportDir: './.next/server',
               },
             }),
           );
