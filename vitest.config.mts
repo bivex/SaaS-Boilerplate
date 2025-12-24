@@ -28,9 +28,15 @@ export default defineConfig({
   test: {
     globals: true, // This is needed by @testing-library to be cleaned up after each test
     include: ['src/**/*.test.{js,jsx,ts,tsx}', 'tests/**/*.test.{js,jsx,ts,tsx}'],
+    // Performance optimizations
+    pool: 'threads',
+    // File watching optimizations
+    watch: true,
     coverage: {
       include: ['src/**/*'],
       exclude: ['src/**/*.stories.{js,jsx,ts,tsx}', '**/*.d.ts'],
+      // Performance optimization for coverage
+      reporter: process.env.CI ? ['text', 'lcov'] : ['text'],
     },
     environment: 'jsdom',
     setupFiles: ['./vitest-setup.ts'],

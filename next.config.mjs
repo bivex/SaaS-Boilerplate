@@ -31,9 +31,6 @@ const bundleAnalyzer = withBundleAnalyzer({
 
 // Performance optimizations
 const nextConfig = {
-  // Enable SWC minifier for faster builds
-  swcMinify: true,
-
   // Optimize images
   images: {
     remotePatterns: [
@@ -45,30 +42,49 @@ const nextConfig = {
       },
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/en',
-        permanent: false,
-      },
-      {
-        source: '/sign-up',
-        destination: '/en/sign-up',
-        permanent: false,
-      },
-      {
-        source: '/sign-in',
-        destination: '/en/sign-in',
-        permanent: false,
-      },
-      {
-        source: '/dashboard',
-        destination: '/en/dashboard',
-        permanent: false,
-      },
-      // Add more common routes as needed
-    ];
+
+  // JavaScript optimization
+  swcMinify: true, // Use SWC for faster minification
+
+  // Reduce polyfills for modern browsers
+  experimental: {
+    // Skip transpilation of modern features for better browsers
+    browsersListForSwc: true,
+    // Enable faster CSS processing
+    optimizeCss: true,
+    // Faster builds with improved memory usage
+    webpackBuildWorker: true,
+    // Reduce bundle size by not polyfilling modern features
+    esmExternals: 'loose',
+  },
+
+  // Enable compression
+  compress: true,
+
+  // Optimize chunks
+  webpack: (config, { isServer }) => {
+    // Optimize bundle splitting
+    if (!isServer) {
+      config.optimization.splitChunks.chunks = 'all';
+      config.optimization.splitChunks.cacheGroups = {
+        ...config.optimization.splitChunks.cacheGroups,
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+          priority: 10,
+        },
+        // Separate large libraries
+        next: {
+          test: /[\\/]node_modules[\\/]next[\\/]/,
+          name: 'next',
+          chunks: 'all',
+          priority: 20,
+        },
+      };
+    }
+
+    return config;
   },
 };
 

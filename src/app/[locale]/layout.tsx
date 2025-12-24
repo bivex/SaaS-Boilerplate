@@ -84,7 +84,9 @@ export default async function RootLayout(props: Readonly<{
               messages={messages}
             >
               <SessionRefresher />
-              {props.children}
+              <main>
+                {props.children}
+              </main>
               <div className="fixed bottom-4 right-4 z-50">
                 <LocaleSwitcher />
               </div>

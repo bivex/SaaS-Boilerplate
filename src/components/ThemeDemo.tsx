@@ -39,7 +39,7 @@ export function ThemeDemo() {
       'secondary': '210 40% 96.1%',
       'secondary-foreground': '222.2 47.4% 11.2%',
       'muted': '210 40% 96.1%',
-      'muted-foreground': '215.4 16.3% 46.9%',
+      'muted-foreground': '215.4 16.3% 30%',
       'accent': '210 40% 96.1%',
       'accent-foreground': '222.2 47.4% 11.2%',
       'card': '0 0% 100%',
@@ -60,7 +60,7 @@ export function ThemeDemo() {
       'secondary': '217.2 32.6% 17.5%',
       'secondary-foreground': '210 40% 98%',
       'muted': '217.2 32.6% 17.5%',
-      'muted-foreground': '215 20.2% 65.1%',
+      'muted-foreground': '215 20.2% 70%',
       'accent': '217.2 32.6% 17.5%',
       'accent-foreground': '210 40% 98%',
       'card': '222.2 84% 4.9%',
@@ -81,7 +81,7 @@ export function ThemeDemo() {
       'secondary': '200 50% 85%',
       'secondary-foreground': '200 100% 20%',
       'muted': '200 40% 90%',
-      'muted-foreground': '200 20% 50%',
+      'muted-foreground': '200 20% 35%',
       'accent': '180 100% 35%',
       'accent-foreground': '180 100% 95%',
       'card': '200 100% 98%',
@@ -102,7 +102,7 @@ export function ThemeDemo() {
       'secondary': '20 50% 90%',
       'secondary-foreground': '20 100% 20%',
       'muted': '20 40% 95%',
-      'muted-foreground': '20 20% 50%',
+      'muted-foreground': '20 20% 35%',
       'accent': '340 100% 50%',
       'accent-foreground': '340 100% 95%',
       'card': '20 100% 98%',
@@ -123,7 +123,7 @@ export function ThemeDemo() {
       'secondary': '120 30% 88%',
       'secondary-foreground': '120 100% 15%',
       'muted': '120 20% 92%',
-      'muted-foreground': '120 10% 45%',
+      'muted-foreground': '120 10% 30%',
       'accent': '158 64% 52%',
       'accent-foreground': '120 40% 98%',
       'card': '120 40% 98%',
@@ -144,7 +144,7 @@ export function ThemeDemo() {
       'secondary': '217 33% 17%',
       'secondary-foreground': '210 40% 98%',
       'muted': '217 19% 12%',
-      'muted-foreground': '215 20% 65%',
+      'muted-foreground': '215 20% 70%',
       'accent': '262 83% 58%',
       'accent-foreground': '210 40% 98%',
       'card': '217 33% 17%',
@@ -165,7 +165,7 @@ export function ThemeDemo() {
       'secondary': '270 30% 88%',
       'secondary-foreground': '270 100% 15%',
       'muted': '270 20% 92%',
-      'muted-foreground': '270 10% 45%',
+      'muted-foreground': '270 10% 30%',
       'accent': '291 64% 42%',
       'accent-foreground': '270 100% 98%',
       'card': '270 100% 98%',
@@ -186,7 +186,7 @@ export function ThemeDemo() {
       'secondary': '48 30% 88%',
       'secondary-foreground': '48 100% 15%',
       'muted': '48 20% 92%',
-      'muted-foreground': '48 10% 45%',
+      'muted-foreground': '48 10% 30%',
       'accent': '25 95% 53%',
       'accent-foreground': '48 100% 98%',
       'card': '48 100% 98%',
@@ -306,13 +306,20 @@ export function ThemeDemo() {
         {/* Динамические цвета */}
         <div className="space-y-2">
           <h3 className="text-sm font-medium">Динамические цвета:</h3>
+          <label htmlFor="hue-slider" className="text-sm text-muted-foreground">
+            Hue:
+            {' '}
+            {hue}
+          </label>
           <input
+            id="hue-slider"
             type="range"
             min="0"
             max="360"
             value={hue}
             onChange={e => setHue(Number(e.target.value))}
             className="w-full"
+            aria-label="Hue color slider"
           />
           <div
             style={{

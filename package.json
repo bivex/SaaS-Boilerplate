@@ -26,6 +26,8 @@
     "test:integration": "bunx --bun vitest run --config vitest.integration.config.ts",
     "test:auth": "bunx --bun vitest run -t '(auth|session|login)'",
     "test:security": "bunx --bun vitest run -t 'security'",
+    "test:fast": "bunx --bun vitest run --reporter=basic --no-coverage",
+    "test:parallel": "bunx --bun vitest run --pool=threads --maxThreads=6",
     "test:e2e:auth": "playwright test tests/auth",
     "test:all": "pnpm test:unit && pnpm test:integration && pnpm test:e2e",
     "test:smoke": "playwright test --grep '@smoke'",

@@ -51,16 +51,32 @@ export function ContactForm() {
     },
   });
 
-  function onSubmit(values: ContactFormValues) {
-    // Здесь можно добавить логику отправки формы
-    // Имитация отправки формы - в реальном приложении здесь будет API вызов
-    console.warn('Contact form submitted:', values);
+  async function onSubmit(values: ContactFormValues) {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
 
-    // Имитация отправки формы - в реальном приложении показать toast уведомление
-    console.warn('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.');
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
 
-    // Сброс формы после успешной отправки
-    form.reset();
+      const data = await response.json();
+
+      // Имитация показа toast уведомления
+      console.warn('Success:', data.message);
+
+      // Сброс формы после успешной отправки
+      form.reset();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // В реальном приложении показать ошибку пользователю
+      console.error('Произошла ошибка при отправке формы. Попробуйте еще раз.');
+    }
   }
 
   return (

@@ -44,22 +44,30 @@ export default function proxy(
   const { pathname } = request.nextUrl;
   const sessionCookie = getSessionCookie(request);
 
-  // If user is authenticated and trying to access auth pages, redirect to dashboard
-  if (sessionCookie && isAuthPage(pathname)) {
-    const locale = pathname.match(/(\/.*)\/sign-in/)?.at(1)
-      ?? pathname.match(/(\/.*)\/sign-up/)?.at(1) ?? '';
-    const dashboardUrl = new URL(`${locale}/dashboard`, request.url);
-    return NextResponse.redirect(dashboardUrl);
+  // Skip locale middleware for API routes - they should not have locale prefixes
+  if (pathname.startsWith('/api/') || pathname.startsWith('/trpc/')) {
+    // For API routes, still handle auth redirects if needed
+    // If user is authenticated and trying to access auth pages, redirect to dashboard
+    if (sessionCookie && isAuthPage(pathname)) {
+      const locale = pathname.match(/(\/.*)\/sign-in/)?.at(1)
+        ?? pathname.match(/(\/.*)\/sign-up/)?.at(1) ?? '';
+      const dashboardUrl = new URL(`${locale}/dashboard`, request.url);
+      return NextResponse.redirect(dashboardUrl);
+    }
+
+    // If user is not authenticated and trying to access protected routes, redirect to sign-in
+    if (!sessionCookie && isProtectedRoute(pathname)) {
+      const locale = pathname.match(/(\/.*)\/dashboard/)?.at(1)
+        ?? pathname.match(/(\/.*)\/onboarding/)?.at(1) ?? '';
+      const signInUrl = new URL(`${locale}/sign-in`, request.url);
+      return NextResponse.redirect(signInUrl);
+    }
+
+    // Return the request as-is for API routes
+    return NextResponse.next();
   }
 
-  // If user is not authenticated and trying to access protected routes, redirect to sign-in
-  if (!sessionCookie && isProtectedRoute(pathname)) {
-    const locale = pathname.match(/(\/.*)\/dashboard/)?.at(1)
-      ?? pathname.match(/(\/.*)\/onboarding/)?.at(1) ?? '';
-    const signInUrl = new URL(`${locale}/sign-in`, request.url);
-    return NextResponse.redirect(signInUrl);
-  }
-
+  // Apply locale middleware for non-API routes
   return intlMiddleware(request);
 }
 

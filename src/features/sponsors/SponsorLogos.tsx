@@ -26,6 +26,8 @@ const Logos = {
       <img
         src="/assets/images/clerk-logo-dark.png"
         alt="Clerk logo"
+        width="120"
+        height="40"
         className="h-[40px] w-auto object-contain dark:invert"
       />
     </a>
@@ -40,6 +42,8 @@ const Logos = {
       <img
         src="/assets/images/crowdin-dark.png"
         alt="Crowdin logo"
+        width="120"
+        height="40"
         className="h-[40px] w-auto object-contain dark:invert"
       />
     </a>
@@ -54,6 +58,8 @@ const Logos = {
       <img
         src="/assets/images/sentry-dark.png"
         alt="Sentry logo"
+        width="120"
+        height="40"
         className="h-[40px] w-auto object-contain dark:invert"
       />
     </a>
@@ -68,6 +74,8 @@ const Logos = {
       <img
         src="/assets/images/arcjet-light.svg"
         alt="Arcjet logo"
+        width="120"
+        height="40"
         className="h-[40px] w-auto object-contain dark:invert"
       />
     </a>
@@ -82,6 +90,8 @@ const Logos = {
       <img
         src="/assets/images/nextjs-boilerplate-saas.png"
         alt="Nextjs SaaS Boilerplate"
+        width="120"
+        height="40"
         className="h-[40px] w-auto object-contain"
       />
     </a>
