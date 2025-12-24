@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T20:53:17
- * Last Updated: 2025-12-24T15:50:29
+ * Last Updated: 2025-12-24T16:34:39
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -24,7 +24,7 @@ const jiti = createJiti(fileURLToPath(import.meta.url));
 
 jiti('./src/libs/Env');
 
-const withNextIntl = createNextIntlPlugin('./src/app/i18n.ts');
+const withNextIntl = createNextIntlPlugin('./i18n.ts');
 
 // Full Rspack config with Next.js 16 optimizations
 let config = {
@@ -109,12 +109,24 @@ if (process.argv.some(arg => arg.includes('build'))) {
             enforce: true,
             reuseExistingChunk: true,
           },
-          // Separate Radix UI components
+          // SWC helpers - commonly duplicated
+          swcHelpers: {
+            test: /[\\/]node_modules[\\/]@swc[\\/]helpers[\\/]/,
+            name: 'swc-helpers',
+            chunks: 'all',
+            priority: 50,
+            minChunks: 1, // Allow single usage to prevent duplication
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+          // Separate Radix UI components - ensure shared components are extracted
           radix: {
-            test: /[\\/]node_modules[\\/](@radix-ui)[\\/]/,
+            test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
             name: 'radix-ui',
             chunks: 'all',
-            priority: 35,
+            priority: 45,
+            minChunks: 1, // Allow single usage to prevent duplication
+            enforce: true, // Force creation of this chunk
             reuseExistingChunk: true,
           },
           // UI libraries (icons, animations)
@@ -122,7 +134,9 @@ if (process.argv.some(arg => arg.includes('build'))) {
             test: /[\\/]node_modules[\\/](lucide-react|framer-motion)[\\/]/,
             name: 'ui-libs',
             chunks: 'all',
-            priority: 30,
+            priority: 40,
+            minChunks: 1, // Allow single usage to prevent duplication
+            enforce: true,
             reuseExistingChunk: true,
           },
           // Data fetching libraries
@@ -261,19 +275,11 @@ const finalConfig = (() => {
     if (process.env.RSDOCTOR) {
       // Rsdoctor is applied through webpack config for Next.js + Rspack
       configWithPlugins.webpack = (config, { isServer }) => {
-        if (!isServer) { // Client-side builds
+        if (!isServer) { // Client-side builds only
           config.plugins.push(
             new RsdoctorRspackPlugin({
               disableClientServer: true,
-            }),
-          );
-        } else { // Server-side builds
-          config.plugins.push(
-            new RsdoctorRspackPlugin({
-              disableClientServer: true,
-              output: {
-                reportDir: './.next/server',
-              },
+              features: ['bundle'], // Only analyze bundle, not loader
             }),
           );
         }
