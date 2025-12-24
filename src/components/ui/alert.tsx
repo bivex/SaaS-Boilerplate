@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:01:01
- * Last Updated: 2025-12-24T01:52:49
+ * Last Updated: 2025-12-24T01:54:24
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -51,24 +51,28 @@ Alert.displayName = 'Alert';
 const AlertTitle = React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement> & { children: React.ReactNode }
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <h5
     ref={ref}
     className={cn('mb-1 font-medium leading-none tracking-tight', className)}
     {...props}
-  />
+  >
+    {children}
+  </h5>
 ));
 AlertTitle.displayName = 'AlertTitle';
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <div
     ref={ref}
     className={cn('text-sm [&_p]:leading-relaxed', className)}
     {...props}
-  />
+  >
+    {children}
+  </div>
 ));
 AlertDescription.displayName = 'AlertDescription';
 

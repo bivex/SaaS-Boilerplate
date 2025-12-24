@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:05:00
- * Last Updated: 2025-12-24T01:03:42
+ * Last Updated: 2025-12-24T01:58:08
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -17,7 +17,7 @@ import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 /// <reference types="node" />
 import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
-import { ZodError } from 'zod';
+import { ZodError, z } from 'zod';
 import { auth } from '@/libs/auth';
 
 export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
@@ -51,7 +51,7 @@ export const t = initTRPC.context<typeof createTRPCContext>().create({
         ...shape.data,
         zodError:
                     error.cause instanceof ZodError
-                      ? error.cause.flatten()
+                      ? z.flattenError(error.cause)
                       : null,
       },
     };

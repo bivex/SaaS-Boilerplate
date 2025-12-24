@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T19:01:01
- * Last Updated: 2025-12-24T01:03:43
+ * Last Updated: 2025-12-24T01:55:11
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -154,7 +154,7 @@ const ChartTooltipContent = React.forwardRef<
       const itemConfig = getPayloadConfigFromPayload(config, item, key);
       const value
         = !labelKey && typeof label === 'string'
-          ? config[label as keyof typeof config]?.label ?? label
+          ? config[label]?.label ?? label
           : itemConfig?.label;
 
       if (labelFormatter) {

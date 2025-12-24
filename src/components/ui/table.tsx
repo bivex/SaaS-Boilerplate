@@ -20,7 +20,8 @@ import { cn } from '@/utils/Helpers';
 /**
  * Table component for displaying tabular data.
  * This is a UI component library primitive - always use with TableHeader/TableHead
- * for proper accessibility when displaying data. See DataTable component for example usage.
+ * for proper accessibility when displaying data. Tables must have headers for screen readers.
+ * See DataTable component for example usage.
  */
 const Table = ({ ref, className, ...props}: React.HTMLAttributes<HTMLTableElement> & {
   ref?: React.RefObject<HTMLTableElement | null>;
@@ -29,6 +30,7 @@ const Table = ({ ref, className, ...props}: React.HTMLAttributes<HTMLTableElemen
     {/* This is a generic table component. Headers should be provided via TableHeader when used. */}
     <table
       ref={ref}
+      role="table"
       className={cn('w-full caption-bottom text-sm', className)}
       {...props}
     />
