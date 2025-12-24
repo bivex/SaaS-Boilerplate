@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:20:00
- * Last Updated: 2025-12-23T23:34:47
+ * Last Updated: 2025-12-24T00:02:12
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -134,6 +134,13 @@ export const auth = betterAuth({
   // Enhanced social providers - conditionally configured based on environment variables
   socialProviders: socialProvidersConfig,
 
+  // Redirect configuration for auth flows
+  redirectTo: {
+    signIn: '/dashboard',
+    signUp: '/dashboard',
+    callback: '/dashboard',
+  },
+
   // Plugins
   plugins: configurePlugins(),
 
@@ -164,7 +171,7 @@ export const auth = betterAuth({
   advanced: {
     // Cross-Site Request Forgery protection
     crossSubDomainCookies: {
-      enabled: true,
+      enabled: process.env.NODE_ENV === 'production',
       domain: process.env.NODE_ENV === 'production' ? '.yourdomain.com' : undefined,
     },
 

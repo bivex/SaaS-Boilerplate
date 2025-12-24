@@ -17,7 +17,7 @@ import type { Metadata } from 'next';
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
-import { LocaleSwitcher } from '@/components/LocaleSwitcher';
+import { LocaleSwitcher, SessionRefresher } from '@/components/LocaleSwitcher';
 
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { TRPCProvider } from '@/trpc/provider';
@@ -83,6 +83,7 @@ export default async function RootLayout(props: {
               locale={params.locale}
               messages={messages}
             >
+              <SessionRefresher />
               {props.children}
               <div className="fixed bottom-4 right-4 z-50">
                 <LocaleSwitcher />

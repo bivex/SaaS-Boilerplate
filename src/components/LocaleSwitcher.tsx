@@ -15,6 +15,7 @@
 
 'use client';
 
+import { useEffect } from 'react';
 import { useLocale } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
@@ -26,6 +27,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { usePathname, useRouter } from '@/libs/i18nNavigation';
+import { refreshSessionState } from '@/hooks/useAuth';
 import { AppConfig } from '@/utils/AppConfig';
 
 export const LocaleSwitcher = () => {
@@ -67,4 +69,27 @@ export const LocaleSwitcher = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
+};
+
+// Session refresher component to ensure session state is updated after OAuth callbacks
+export const SessionRefresher = () => {
+  useEffect(() => {
+    // Refresh session state when the component mounts
+    // This ensures that after OAuth redirects, the session is properly loaded
+    const refreshSession = async () => {
+      try {
+        await refreshSessionState();
+      } catch (error) {
+        console.error('Failed to refresh session:', error);
+      }
+    };
+
+    // Only refresh if we're not on auth pages to avoid unnecessary calls
+    const pathname = window.location.pathname;
+    if (!pathname.includes('/sign-in') && !pathname.includes('/sign-up')) {
+      refreshSession();
+    }
+  }, []);
+
+  return null; // This component doesn't render anything
 };

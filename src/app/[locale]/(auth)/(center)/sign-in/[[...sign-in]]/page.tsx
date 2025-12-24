@@ -69,10 +69,14 @@ export default function SignInPage() {
     try {
       const result = await authClient.signIn.social({
         provider,
+        callbackURL: '/dashboard', // Redirect to dashboard after successful auth
       });
 
       if (result.error) {
         setError(result.error.message || 'An error occurred');
+      } else if (result.url) {
+        // For social sign-in, Better Auth returns a URL to redirect to OAuth provider
+        window.location.href = result.url;
       }
     } catch {
       setError('An unexpected error occurred');
