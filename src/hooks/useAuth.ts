@@ -7,12 +7,13 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-24T01:00:00
- * Last Updated: 2025-12-23T23:39:48
+ * Last Updated: 2025-12-24T00:49:20
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
+import type { AuthSessionResponse } from '@/types/Auth';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { authClient } from '@/libs/auth-client';
 import { trpc } from '@/trpc/client';
@@ -24,10 +25,10 @@ const SESSION_CONFIG = {
 };
 
 // Global session state to prevent duplicate requests
-let globalSession: { session: any; user: any } | null = null;
+let globalSession: { session: any; user: any; organization?: any } | null = null;
 let globalLoading = true;
 let sessionPromise: Promise<{ session: any; user: any } | null> | null = null;
-const sessionSubscribers = new Set<(session: { session: any; user: any } | null, loading: boolean) => void>();
+const sessionSubscribers = new Set<(session: { session: any; user: any; organization?: any } | null, loading: boolean) => void>();
 
 function notifySubscribers(session: AuthSessionResponse['data'], loading: boolean) {
   globalSession = session;
@@ -35,7 +36,7 @@ function notifySubscribers(session: AuthSessionResponse['data'], loading: boolea
   sessionSubscribers.forEach(callback => callback(session, loading));
 }
 
-function subscribeToSession(callback: (session: { session: any; user: any } | null, loading: boolean) => void) {
+function subscribeToSession(callback: (session: { session: any; user: any; organization?: any } | null, loading: boolean) => void) {
   sessionSubscribers.add(callback);
   // Send current state immediately
   callback(globalSession, globalLoading);
@@ -45,7 +46,7 @@ function subscribeToSession(callback: (session: { session: any; user: any } | nu
   };
 }
 
-async function fetchSession(): Promise<{ session: any; user: any } | null> {
+async function fetchSession(): Promise<{ session: any; user: any; organization?: any } | null> {
   if (sessionPromise) {
     return sessionPromise;
   }
@@ -72,7 +73,7 @@ async function fetchSession(): Promise<{ session: any; user: any } | null> {
   return sessionPromise;
 }
 
-async function refreshSession(): Promise<{ session: any; user: any } | null> {
+async function refreshSession(): Promise<{ session: any; user: any; organization?: any } | null> {
   try {
     // Get a fresh session from the server
     const result = await authClient.getSession();
@@ -92,7 +93,7 @@ async function refreshSession(): Promise<{ session: any; user: any } | null> {
   }
 }
 
-function shouldRefreshSession(session: { session: any; user: any } | null): boolean {
+function shouldRefreshSession(session: { session: any; user: any; organization?: any } | null): boolean {
   if (!session?.session?.expiresAt) {
     return false;
   }
@@ -105,18 +106,18 @@ function shouldRefreshSession(session: { session: any; user: any } | null): bool
 }
 
 export function useSession() {
-  const [session, setSession] = useState<{ session: any; user: any } | null>(globalSession);
+  const [session, setSession] = useState<{ session: any; user: any; organization?: any } | null>(globalSession);
   const [loading, setLoading] = useState(globalLoading);
   const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
   const checkTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const updateSession = useCallback((newSession: { session: any; user: any } | null, newLoading: boolean) => {
+  const updateSession = useCallback((newSession: { session: any; user: any; organization?: any } | null, newLoading: boolean) => {
     setSession(newSession);
     setLoading(newLoading);
   }, []);
 
   // Schedule session refresh
-  const scheduleRefresh = useCallback((sessionData: { session: any; user: any } | null) => {
+  const scheduleRefresh = useCallback((sessionData: { session: any; user: any; organization?: any } | null) => {
     if (!sessionData?.session?.expiresAt) {
       return;
     }
@@ -231,7 +232,7 @@ export function useSignOut() {
 }
 
 // Manually refresh the session state
-export async function refreshSessionState(): Promise<{ session: any; user: any } | null> {
+export async function refreshSessionState(): Promise<{ session: any; user: any; organization?: any } | null> {
   // Clear the session promise cache to force a fresh fetch
   sessionPromise = null;
 

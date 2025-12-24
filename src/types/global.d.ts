@@ -29,3 +29,33 @@ declare global {
     role: OrgRole;
   }
 }
+
+// Better SQLite3 types
+declare module 'better-sqlite3' {
+  type Database = {
+    prepare: (sql: string) => Statement;
+    exec: (sql: string) => Database;
+    close: () => void;
+    // Add other methods as needed
+  };
+
+  type Statement = {
+    run: (...params: any[]) => RunResult;
+    get: (...params: any[]) => any;
+    all: (...params: any[]) => any[];
+    // Add other methods as needed
+  };
+
+  type RunResult = {
+    changes: number;
+    lastInsertRowid: number | bigint;
+  };
+
+  type DatabaseConstructor = {
+    new (filename: string, options?: any): Database;
+    (filename: string, options?: any): Database;
+  };
+
+  const Database: DatabaseConstructor;
+  export = Database;
+}
