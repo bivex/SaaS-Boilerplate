@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T20:53:17
- * Last Updated: 2025-12-24T07:13:35
+ * Last Updated: 2025-12-24T07:21:08
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -81,11 +81,16 @@ config = withNextIntl(config);
 // Use Rspack only for builds, webpack for dev/start
 if (process.argv.some(arg => arg.includes('build'))) {
   config = withRspack(config, {
-    // Rspack-specific performance optimizations
+    // Ultra-aggressive performance limits for maximum optimization
     performance: {
-      hints: 'warning',
-      maxAssetSize: 300000, // Reduced to 300kb to force better splitting
-      maxEntrypointSize: 300000,
+      hints: false, // Disable hints since we're optimizing aggressively
+      maxAssetSize: 150000, // Very aggressive 150kb limit to force more splitting
+      maxEntrypointSize: 150000, // Very aggressive 150kb entry point limit
+      // Additional performance optimizations
+      assetFilter: (assetFilename) => {
+        // Skip performance hints for certain assets
+        return !/\.(?:map|gz|br)$/.test(assetFilename);
+      },
     },
 
     // Enhanced bundle splitting to reduce unused JavaScript
@@ -171,27 +176,33 @@ if (process.argv.some(arg => arg.includes('build'))) {
         },
       },
 
-      // Aggressive minification and optimization
+      // Aggressive JavaScript minification with enhanced options
       minimize: true,
-      minimizer: [], // Use Rspack's built-in minimizers
+      minimizer: [], // Use Rspack's enhanced built-in minimizers
 
       // Deterministic chunk and module IDs for better caching
       chunkIds: 'deterministic',
       moduleIds: 'deterministic',
 
-      // Enable more aggressive optimizations
-      mangleExports: 'deterministic',
+      // Aggressive optimizations for maximum minification
+      mangleExports: 'size', // Mangle for size instead of deterministic
       concatenateModules: true,
       innerGraph: true,
       sideEffects: true,
 
-      // Additional optimizations for unused code reduction
+      // Enhanced unused code reduction
       usedExports: true, // Enable used exports analysis
       providedExports: true, // Enable provided exports analysis
       emitOnErrors: false, // Don't emit assets on errors
+
+      // Additional aggressive minification optimizations
+      removeAvailableModules: true, // Remove modules that are available
+      removeEmptyChunks: true, // Remove empty chunks
+      mergeDuplicateChunks: true, // Merge duplicate chunks
+      flagIncludedChunks: true, // Flag chunks that are included
     },
 
-    // Enhanced module resolution for better tree shaking
+    // Optimized module resolution for better tree shaking
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
       alias: {
@@ -209,10 +220,10 @@ if (process.argv.some(arg => arg.includes('build'))) {
       type: 'source-map', // Generate separate source map files
     },
 
-    // Production optimizations
+    // Production mode for optimal minification
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
 
-    // Experimental Rspack features for better performance
+    // Stable Rspack features for reliable performance
     experiments: {
       rspackFuture: {
         bundlerInfo: {
