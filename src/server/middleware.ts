@@ -13,7 +13,6 @@
  * Commercial licensing available upon request.
  */
 
-import type { MiddlewareBuilder } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
 import { rateLimitManager } from '@/libs/security';
 
