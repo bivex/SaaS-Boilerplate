@@ -54,7 +54,8 @@ const Sponsors = dynamic(() => import('@/templates/Sponsors').then(mod => ({ def
   loading: () => <div className="h-32 bg-muted animate-pulse" />,
 });
 
-const UIComponents = dynamic(() => import('@/templates/UIComponents').then(mod => ({ default: mod.UIComponents })), {
+// Lazy load UIComponents - client component wrapper for proper ssr: false
+const UIComponentsWrapper = dynamic(() => import('@/components/UIComponentsWrapper').then(mod => ({ default: mod.UIComponentsWrapper })), {
   loading: () => <div className="h-96 bg-muted animate-pulse" />,
 });
 
@@ -85,7 +86,7 @@ const IndexPage = async (props: { params: Promise<{ locale: string }> }) => {
       <TestimonialsSection />
       <Pricing />
       <FAQ />
-      <UIComponents />
+      <UIComponentsWrapper />
       <CTA />
       <Footer />
     </>
