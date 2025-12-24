@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:20:00
- * Last Updated: 2025-12-24T00:06:37
+ * Last Updated: 2025-12-24T00:07:10
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -133,8 +133,8 @@ export const auth = betterAuth({
     if (existingUser.length > 0) {
       // Email already exists - block automatic account creation
       throw new Error(
-        `Аккаунт с email ${newUser.email} уже существует. ` +
-        `Для привязки Google аккаунта войдите в существующий аккаунт и настройте интеграцию в настройках.`
+        `An account with email ${newUser.email} already exists. ` +
+        `To link your Google account, please sign in to your existing account and configure the integration in settings.`
       );
     }
 
