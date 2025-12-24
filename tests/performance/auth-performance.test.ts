@@ -25,7 +25,7 @@ vi.mock('@/libs/DB', () => ({
         insert: vi.fn(() => Promise.resolve([{id: 'test-id'}])),
         update: vi.fn(() => Promise.resolve([{id: 'test-id'}])),
         delete: vi.fn(() => Promise.resolve({count: 1})),
-        transaction: vi.fn(),
+        transaction: vi.fn((callback: any) => callback({} as any)),
     },
 }));
 
@@ -45,9 +45,9 @@ describe('Authentication Performance Tests', () => {
         select: vi.fn(() => ({
             where: vi.fn(() => Promise.resolve([])),
             from: vi.fn(() => Promise.resolve([])),
-        })),
-        insert: vi.fn(() => Promise.resolve([{id: 'test-id'}])),
-        update: vi.fn(() => Promise.resolve([{id: 'test-id'}])),
+        })) as any,
+        insert: vi.fn(() => Promise.resolve([{id: 'test-id'}])) as any,
+        update: vi.fn(() => Promise.resolve([{id: 'test-id'}])) as any,
         delete: vi.fn(() => Promise.resolve({count: 1})),
         transaction: vi.fn(),
     };
@@ -319,11 +319,11 @@ describe('Authentication Performance Tests', () => {
 
             mockDb.select.mockReturnValue({
                 from: vi.fn().mockResolvedValue([...expiredSessions, ...activeSessions]),
-            });
+            } as any);
             const mockDeleteQuery = {
                 where: vi.fn().mockResolvedValue({count: expiredSessions.length}),
             };
-            mockDb.delete.mockReturnValue(mockDeleteQuery);
+            mockDb.delete.mockReturnValue(mockDeleteQuery as any);
 
             const startTime = performance.now();
 
