@@ -60,64 +60,21 @@ function validateEnvironment(): void {
   console.log('✅ DATABASE_URL:', process.env.DATABASE_URL ? 'SET' : 'NOT SET');
 }
 
-// Email templates for better-auth
-const emailTemplates = {
-  emailVerification: {
-    subject: 'Verify your email address',
-    text: ({ url }: { url: string }) => `Click the link to verify your email: ${url}`,
-    html: ({ url }: { url: string }) => `
-      <div>
-        <h1>Welcome!</h1>
-        <p>Please verify your email address by clicking the link below:</p>
-        <a href="${url}">Verify Email</a>
-        <p>If you didn't create an account, you can safely ignore this email.</p>
-      </div>
-    `,
-  },
-  passwordReset: {
-    subject: 'Reset your password',
-    text: ({ url }: { url: string }) => `Click the link to reset your password: ${url}`,
-    html: ({ url }: { url: string }) => `
-      <div>
-        <h1>Password Reset</h1>
-        <p>You requested a password reset. Click the link below to set a new password:</p>
-        <a href="${url}">Reset Password</a>
-        <p>If you didn't request this, you can safely ignore this email.</p>
-        <p>This link will expire in 24 hours.</p>
-      </div>
-    `,
-  },
-};
 
 // Social provider configuration with validation
 function configureSocialProviders() {
   const providers: any = {};
 
   // Google OAuth
-  console.log('🔍 DEBUG - GOOGLE_CLIENT_ID:', Env.GOOGLE_CLIENT_ID ? 'SET' : 'NOT SET');
-  console.log('🔍 DEBUG - GOOGLE_CLIENT_ID length:', Env.GOOGLE_CLIENT_ID?.length || 0);
-  console.log('🔍 DEBUG - GOOGLE_CLIENT_ID value:', Env.GOOGLE_CLIENT_ID?.substring(0, 20) + '...');
-  console.log('🔍 DEBUG - GOOGLE_CLIENT_SECRET:', Env.GOOGLE_CLIENT_SECRET ? 'SET' : 'NOT SET');
-  console.log('🔍 DEBUG - GOOGLE_CLIENT_SECRET length:', Env.GOOGLE_CLIENT_SECRET?.length || 0);
-  console.log('🔍 DEBUG - GOOGLE_CLIENT_SECRET value:', Env.GOOGLE_CLIENT_SECRET?.substring(0, 10) + '...');
-
-  // Try using process.env directly instead of Env object
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
   if (clientId && clientSecret) {
-    const googleConfig = {
+    providers.google = google({
       clientId,
       clientSecret,
-      redirectURI: `${Env.BETTER_AUTH_URL}/api/auth/callback/google`,
-    };
-    console.log('🔍 DEBUG - Passing to google():', JSON.stringify(googleConfig, null, 2));
-    providers.google = google(googleConfig);
-    console.log('✅ Google OAuth: CONFIGURED with redirectURI:', googleConfig.redirectURI);
-  } else {
-    console.log('⚠️  Google OAuth: NOT CONFIGURED (missing GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET)');
+    });
   }
-
 
   return providers;
 }
@@ -146,6 +103,15 @@ validateEnvironment();
 
 console.log('🔧 Creating Better Auth instance...');
 
+// Create social providers configuration
+const socialProvidersConfig: any = {};
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  socialProvidersConfig.google = {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  };
+}
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'sqlite',
@@ -163,19 +129,10 @@ export const auth = betterAuth({
       // For now, just log the reset URL
       // You can integrate with your email service here
     },
-    // Custom email verification
-    sendEmailVerification: async ({ user, url }: { user: any; url: string }) => {
-      console.log(`📧 Email verification would be sent to ${user.email}: ${url}`);
-
-      // Integrate with your email service
-    },
   },
 
   // Enhanced social providers - conditionally configured based on environment variables
-  socialProviders: configureSocialProviders(),
-
-  // Email templates
-  emailTemplates,
+  socialProviders: socialProvidersConfig,
 
   // Plugins
   plugins: configurePlugins(),
@@ -215,10 +172,12 @@ export const auth = betterAuth({
     cookies: {
       session: {
         name: 'better-auth.session',
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
+        attributes: {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+        },
       },
     },
   },
