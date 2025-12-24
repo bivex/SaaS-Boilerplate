@@ -10,9 +10,7 @@ you to quickly build and launch SaaS with minimal effort.
 
 Packed with essential features like built-in **Authentication**, **Multi-Tenancy** with Team support, **Role &
 Permission**, Database, I18n (internationalization), Landing Page, User Dashboard, Form handling, SEO optimization,
-Logging, Error reporting
-with [Sentry](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo),
-Testing, Deployment, Monitoring, and **User Impersonation**, this SaaS template provides everything you need to get
+Logging, Error reporting, Testing, Deployment, Monitoring, and **User Impersonation**, this SaaS template provides everything you need to get
 started.
 
 Designed with developers in mind, this **Next.js Starter Kit** uses TypeScript for type safety and integrates ESLint to
@@ -54,13 +52,6 @@ at [SaaS Boilerplate](https://react-saas.com), which is a demo with a working au
       </a>
     </td>
     <td align="center" width="33%">
-      <a href="https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="public/assets/images/sentry-white.png?raw=true">
-          <source media="(prefers-color-scheme: light)" srcset="public/assets/images/sentry-dark.png?raw=true">
-          <img alt="Sentry" src="public/assets/images/sentry-dark.png?raw=true">
-        </picture>
-      </a>
       <a href="https://about.codecov.io/codecov-free-trial/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="public/assets/images/codecov-white.svg?raw=true">
@@ -162,8 +153,6 @@ Developer experience first, extremely flexible code structure and only keep what
 - 🧪 Integration and E2E Testing with [Playwright](https://playwright.dev)
 - 👷 Run tests on pull requests with GitHub Actions
 - 🎉 [Storybook](https://storybook.js.org) for UI development
-- 🚨 Error Monitoring
-  with [Sentry](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo)
 - ☂️ Code coverage
   with [Codecov](https://about.codecov.io/codecov-free-trial/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo)
 - 📝 Logging with [Pino.js](https://getpino.io) and Log Management
@@ -206,7 +195,6 @@ Developer experience first, extremely flexible code structure and only keep what
 | 🦺 Unit Testing with [Vitest](https://vitest.dev) and React Testing Library | ✅ True |
 | 🧪 Integration and E2E Testing with [Playwright](https://playwright.dev) | ✅ True |
 | 👷 Run tests on pull requests with GitHub Actions | ✅ True |
-| 🚨 Error Monitoring with [Sentry](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo) | ✅ True |
 | ☂️ Code coverage with [Codecov](https://about.codecov.io/codecov-free-trial/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo) | ✅ True |
 | 📝 Logging with [Pino.js](https://getpino.io) and Log Management with [Better Stack](https://betterstack.com/?utm_source=github&utm_medium=sponsorship&utm_campaign=next-js-boilerplate) | ✅ True |
 | 🖥️ Monitoring as Code with [Checkly](https://www.checklyhq.com/?utm_source=github&utm_medium=sponsorship&utm_campaign=next-js-boilerplate) | ✅ True |
@@ -282,7 +270,6 @@ This project offers both a free open-source version and a premium Pro version. H
 | **Drizzle ORM & Dev Database**                                                                                                                                                               |      ✅       |      ✅      |
 | **GitHub Actions**                                                                                                                                                                           |      ✅       |      ✅      |
 | **VSCode Configuration**                                                                                                                                                                     |      ✅       |      ✅      |
-| **[Sentry Error Monitoring](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo)** |      ✅       |      ✅      |
 | **Shadcn UI**                                                                                                                                                                                |      ✅       |      ✅      |
 | **Next.js**                                                                                                                                                                                  |      16      |     16      |
 | **React**                                                                                                                                                                                    |      19      |     19      |
@@ -534,18 +521,6 @@ You also need to defined the environment variables `CLERK_SECRET_KEY` using your
 This command starts a local server using the production build. You can now open http://localhost:3000 in your preferred
 browser to see the result.
 
-### Error Monitoring
-
-The project
-uses [Sentry](https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo)
-to monitor errors. In the development environment, no additional setup is needed: NextJS SaaS Boilerplate is
-pre-configured to use Sentry and Spotlight (Sentry for Development). All errors will automatically be sent to your local
-Spotlight instance, allowing you to experience Sentry locally.
-
-For production environment, you'll need to create a Sentry account and a new project. Then, in `next.config.mjs`, you
-need to update the `org` and `project` attributes in `withSentryConfig` function. Additionally, add your Sentry DSN to
-`sentry.client.config.ts`, `sentry.edge.config.ts` and `sentry.server.config.ts`.
-
 ### Code coverage
 
 Next.js SaaS Template relies
@@ -658,13 +633,6 @@ See [LICENSE](LICENSE) for more information.
       </a>
     </td>
     <td align="center" width="33%">
-      <a href="https://sentry.io/for/nextjs/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="public/assets/images/sentry-white.png?raw=true">
-          <source media="(prefers-color-scheme: light)" srcset="public/assets/images/sentry-dark.png?raw=true">
-          <img alt="Sentry" src="public/assets/images/sentry-dark.png?raw=true">
-        </picture>
-      </a>
       <a href="https://about.codecov.io/codecov-free-trial/?utm_source=github&utm_medium=paid-community&utm_campaign=general-fy25q1-nextjs&utm_content=github-banner-nextjsboilerplate-logo">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="public/assets/images/codecov-white.svg?raw=true">

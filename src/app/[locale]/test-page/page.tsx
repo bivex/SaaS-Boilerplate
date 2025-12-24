@@ -13,6 +13,8 @@
  * Commercial licensing available upon request.
  */
 
+'use client';
+
 export default function TestPage() {
   return (
     <div>

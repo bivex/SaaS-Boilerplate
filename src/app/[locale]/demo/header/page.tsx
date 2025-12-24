@@ -23,6 +23,4 @@ function HeaderDemo() {
   );
 }
 
-export { HeaderDemo };
-
 export default HeaderDemo;

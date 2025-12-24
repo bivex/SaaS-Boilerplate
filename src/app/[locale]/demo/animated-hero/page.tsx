@@ -14,7 +14,12 @@
  */
 
 import { setRequestLocale } from 'next-intl/server';
-import { Hero } from '@/components/ui/animated-hero';
+import dynamic from 'next/dynamic';
+
+// Lazy load the heavy animated hero component
+const Hero = dynamic(() => import('@/components/ui/animated-hero').then(mod => ({ default: mod.Hero })), {
+  loading: () => <div className="min-h-screen flex items-center justify-center">Loading demo...</div>,
+});
 
 function HeroDemo() {
   return (

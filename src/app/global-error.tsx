@@ -15,7 +15,6 @@
 
 'use client';
 
-import * as Sentry from '@sentry/nextjs';
 import NextError from 'next/error';
 import { useEffect, useState } from 'react';
 
@@ -28,10 +27,6 @@ export default function GlobalError(props: Readonly<{
   useEffect(() => {
     props.params.then(setParams);
   }, [props.params]);
-
-  useEffect(() => {
-    Sentry.captureException(props.error);
-  }, [props.error]);
 
   if (!params) {
     return null;

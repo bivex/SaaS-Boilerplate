@@ -13,8 +13,13 @@
  * Commercial licensing available upon request.
  */
 
-import { FloatingHeader } from '@/components/ui/floating-header';
+import dynamic from 'next/dynamic';
 import { cn } from '@/lib/utils';
+
+// Lazy load the floating header component
+const FloatingHeader = dynamic(() => import('@/components/ui/floating-header').then(mod => ({ default: mod.FloatingHeader })), {
+  loading: () => <div className="min-h-screen flex items-center justify-center">Loading demo...</div>,
+});
 
 export default function DemoOne() {
   return (
