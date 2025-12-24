@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:10:00
- * Last Updated: 2025-12-23T21:08:21
+ * Last Updated: 2025-12-23T22:27:07
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -87,7 +87,7 @@ describe('tRPC Context Creation', () => {
     });
 
     it('should handle getSession errors gracefully', async () => {
-      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       mockGetSession.mockRejectedValue(new Error('Session error'));
 
       const { createTRPCContext } = await import('@/server/trpc');
@@ -108,8 +108,8 @@ describe('tRPC Context Creation', () => {
         req: mockReq,
       });
 
-      expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to get session:', expect.any(Error));
-      consoleWarnSpy.mockRestore();
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Failed to get session in tRPC context:', expect.any(Error));
+      consoleErrorSpy.mockRestore();
     });
   });
 

@@ -26,7 +26,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       attribute="class"
       defaultTheme="system"
       enableSystem
-      themes={['light', 'dark', 'ocean', 'sunset', 'forest', 'midnight', 'lavender', 'amber']}
+      themes={['light', 'dark', 'ocean', 'sunset', 'forest', 'midnight', 'lavender', 'amber', 'simple-hue']}
       {...props}
     >
       {children}

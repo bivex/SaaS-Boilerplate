@@ -55,7 +55,6 @@ test.describe('Authentication Flow', () => {
 
     // Check social login buttons
     await expect(page.getByText('Google')).toBeVisible();
-    await expect(page.getByText('GitHub')).toBeVisible();
   });
 
   test('should show sign-up page', async ({ page }) => {

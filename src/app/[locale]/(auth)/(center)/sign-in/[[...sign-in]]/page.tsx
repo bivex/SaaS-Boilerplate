@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { refreshSessionState } from '@/hooks/useAuth';
 import { authClient } from '@/libs/auth-client';
 import { getI18nPath } from '@/utils/Helpers';
 
@@ -50,6 +51,11 @@ export default function SignInPage() {
       if (result.error) {
         setError(result.error.message || 'An error occurred');
       } else {
+        // After successful sign-in, refresh the session state
+        console.log('Sign-in successful, refreshing session...');
+        await refreshSessionState();
+
+        console.log('Session refreshed, redirecting to dashboard');
         router.push('/dashboard');
       }
     } catch {
@@ -59,14 +65,18 @@ export default function SignInPage() {
     }
   };
 
-  const handleSocialSignIn = async (provider: 'google' | 'github') => {
+  const handleSocialSignIn = async (provider: 'google') => {
     try {
       const result = await authClient.signIn.social({
         provider,
+        callbackURL: '/dashboard', // Redirect to dashboard after successful auth
       });
 
       if (result.error) {
         setError(result.error.message || 'An error occurred');
+      } else if (result.url) {
+        // For social sign-in, Better Auth returns a URL to redirect to OAuth provider
+        window.location.href = result.url;
       }
     } catch {
       setError('An unexpected error occurred');
@@ -128,22 +138,14 @@ export default function SignInPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <Button
-              variant="outline"
-              onClick={() => handleSocialSignIn('google')}
-              disabled={loading}
-            >
-              Google
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => handleSocialSignIn('github')}
-              disabled={loading}
-            >
-              GitHub
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            onClick={() => handleSocialSignIn('google')}
+            disabled={loading}
+            className="w-full"
+          >
+            Google
+          </Button>
 
           <div className="text-center text-sm">
             {t('dont_have_account')}

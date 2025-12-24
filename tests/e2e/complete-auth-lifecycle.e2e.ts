@@ -167,7 +167,6 @@ test.describe('Complete Authentication Lifecycle E2E', () => {
 
     // Look for OAuth buttons (they might exist in the UI)
     const googleButton = page.locator('button, a').filter({ hasText: /google/i }).first();
-    const githubButton = page.locator('button, a').filter({ hasText: /github/i }).first();
 
     // OAuth buttons might not be present if not configured
     // If they exist, clicking them should either:

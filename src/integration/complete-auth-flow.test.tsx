@@ -7,16 +7,18 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T21:15:00
- * Last Updated: 2025-12-23T21:15:00
+ * Last Updated: 2025-12-23T22:28:33
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
  */
 
+import React from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { trpc } from '@/trpc/client';
 
 // Mock tRPC and auth client
 vi.mock('@trpc/client', () => ({
@@ -32,6 +34,36 @@ vi.mock('@/libs/auth-client', () => ({
     signIn: { email: vi.fn() },
     signOut: vi.fn(),
     getSession: vi.fn(),
+  },
+}));
+
+// Mock tRPC client
+vi.mock('@/trpc/client', () => ({
+  trpc: {
+    auth: {
+      getProfile: {
+        useQuery: vi.fn(),
+      },
+      signOut: {
+        useMutation: vi.fn(),
+      },
+    },
+    user: {
+      getProfile: {
+        useQuery: vi.fn(),
+      },
+      updateProfile: {
+        useMutation: vi.fn(),
+      },
+    },
+    organization: {
+      getAll: {
+        useQuery: vi.fn(),
+      },
+      create: {
+        useMutation: vi.fn(),
+      },
+    },
   },
 }));
 
@@ -162,10 +194,10 @@ describe('Complete Authentication Flow Integration', () => {
       renderWithProviders(<AuthFlow />);
 
       // Start with sign up
-      expect(screen.getByText('Sign Up')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Sign Up' })).toBeInTheDocument();
 
       // Sign up
-      await user.click(screen.getByText('Sign Up'));
+      await user.click(screen.getByRole('button', { name: 'Sign Up' }));
       await waitFor(() => {
         expect(screen.getByText('Dashboard')).toBeInTheDocument();
       });
@@ -180,9 +212,9 @@ describe('Complete Authentication Flow Integration', () => {
 
       // Sign in again
       await user.click(screen.getByText('Sign In Again'));
-      expect(screen.getByText('Sign In')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: 'Sign In' })).toBeInTheDocument();
 
-      await user.click(screen.getByText('Sign In'));
+      await user.click(screen.getByRole('button', { name: 'Sign In' }));
       await waitFor(() => {
         expect(screen.getByText('Dashboard')).toBeInTheDocument();
       });
@@ -230,7 +262,6 @@ describe('Complete Authentication Flow Integration', () => {
           <div>
             <h2>Sign In</h2>
             <button onClick={() => handleOAuthSignIn('google')}>Sign in with Google</button>
-            <button onClick={() => handleOAuthSignIn('github')}>Sign in with GitHub</button>
           </div>
         );
       };
@@ -250,34 +281,26 @@ describe('Complete Authentication Flow Integration', () => {
   describe('Protected Route Access', () => {
     it('should allow access to protected tRPC procedures with valid session', async () => {
       // Mock tRPC with protected procedure
-      const mockTrpc = {
-        user: {
-          getProfile: {
-            useQuery: vi.fn(() => ({
-              data: { id: 'user-1', email: 'test@example.com', name: 'Test User' },
-              isLoading: false,
-              error: null,
-            })),
-          },
-        },
-        organization: {
-          getAll: {
-            useQuery: vi.fn(() => ({
-              data: [
-                { id: 'org-1', name: 'Test Organization', description: 'A test org' }
-              ],
-              isLoading: false,
-              error: null,
-            })),
-          },
-        },
-      };
+      const mockUserQuery = vi.fn(() => ({
+        data: { id: 'user-1', email: 'test@example.com', name: 'Test User' },
+        isLoading: false,
+        error: null,
+      }));
 
-      vi.mocked(await import('@/trpc/client')).trpc = mockTrpc as any;
+      const mockOrgQuery = vi.fn(() => ({
+        data: [
+          { id: 'org-1', name: 'Test Organization', description: 'A test org' }
+        ],
+        isLoading: false,
+        error: null,
+      }));
+
+      vi.mocked(trpc.user.getProfile.useQuery).mockImplementation(mockUserQuery);
+      vi.mocked(trpc.organization.getAll.useQuery).mockImplementation(mockOrgQuery);
 
       const ProtectedDashboard = () => {
-        const { data: profile, isLoading: profileLoading } = mockTrpc.user.getProfile.useQuery();
-        const { data: organizations, isLoading: orgsLoading } = mockTrpc.organization.getAll.useQuery();
+        const { data: profile, isLoading: profileLoading } = trpc.user.getProfile.useQuery();
+        const { data: organizations, isLoading: orgsLoading } = trpc.organization.getAll.useQuery();
 
         if (profileLoading || orgsLoading) return <div>Loading...</div>;
 
@@ -317,22 +340,16 @@ describe('Complete Authentication Flow Integration', () => {
     });
 
     it('should deny access to protected procedures without authentication', async () => {
-      const mockTrpc = {
-        user: {
-          getProfile: {
-            useQuery: vi.fn(() => ({
-              data: null,
-              isLoading: false,
-              error: { message: 'UNAUTHORIZED' },
-            })),
-          },
-        },
-      };
+      const mockUseQuery = vi.fn(() => ({
+        data: null,
+        isLoading: false,
+        error: { message: 'UNAUTHORIZED' },
+      }));
 
-      vi.mocked(await import('@/trpc/client')).trpc = mockTrpc as any;
+      vi.mocked(trpc.user.getProfile.useQuery).mockImplementation(mockUseQuery);
 
       const ProtectedComponent = () => {
-        const { error } = mockTrpc.user.getProfile.useQuery();
+        const { error } = trpc.user.getProfile.useQuery();
 
         if (error) {
           return <div data-testid="access-denied">{error.message}</div>;
@@ -354,57 +371,49 @@ describe('Complete Authentication Flow Integration', () => {
       const resolverCalls: any[] = [];
 
       // Mock tRPC with context-aware resolvers
-      const mockTrpc = {
-        user: {
-          updateProfile: {
-            useMutation: vi.fn(() => ({
-              mutateAsync: async (input: any) => {
-                // Simulate resolver with context access
-                resolverCalls.push({
-                  operation: 'updateProfile',
-                  input,
-                  context: {
-                    session: {
-                      user: { id: 'user-1', email: 'test@example.com' }
-                    }
-                  }
-                });
+      const mockUpdateMutation = vi.fn(() => ({
+        mutateAsync: async (input: any) => {
+          // Simulate resolver with context access
+          resolverCalls.push({
+            operation: 'updateProfile',
+            input,
+            context: {
+              session: {
+                user: { id: 'user-1', email: 'test@example.com' }
+              }
+            }
+          });
 
-                return { success: true, updatedUser: { ...input, id: 'user-1' } };
-              },
-              isPending: false,
-              error: null,
-            })),
-          },
+          return { success: true, updatedUser: { ...input, id: 'user-1' } };
         },
-        organization: {
-          create: {
-            useMutation: vi.fn(() => ({
-              mutateAsync: async (input: any) => {
-                resolverCalls.push({
-                  operation: 'createOrganization',
-                  input,
-                  context: {
-                    session: {
-                      user: { id: 'user-1', email: 'test@example.com' }
-                    }
-                  }
-                });
+        isPending: false,
+        error: null,
+      }));
 
-                return { id: 'org-1', ...input, userId: 'user-1' };
-              },
-              isPending: false,
-              error: null,
-            })),
-          },
+      const mockCreateMutation = vi.fn(() => ({
+        mutateAsync: async (input: any) => {
+          resolverCalls.push({
+            operation: 'createOrganization',
+            input,
+            context: {
+              session: {
+                user: { id: 'user-1', email: 'test@example.com' }
+              }
+            }
+          });
+
+          return { id: 'org-1', ...input, userId: 'user-1' };
         },
-      };
+        isPending: false,
+        error: null,
+      }));
 
-      vi.mocked(await import('@/trpc/client')).trpc = mockTrpc as any;
+      vi.mocked(trpc.user.updateProfile.useMutation).mockImplementation(mockUpdateMutation);
+      vi.mocked(trpc.organization.create.useMutation).mockImplementation(mockCreateMutation);
 
       const ContextAwareComponent = () => {
-        const updateProfile = mockTrpc.user.updateProfile.useMutation();
-        const createOrg = mockTrpc.organization.create.useMutation();
+        const updateProfile = trpc.user.updateProfile.useMutation();
+        const createOrg = trpc.organization.create.useMutation();
 
         const [results, setResults] = React.useState<any>({});
 

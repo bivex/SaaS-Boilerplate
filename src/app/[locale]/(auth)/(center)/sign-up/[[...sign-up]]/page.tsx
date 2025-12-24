@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { refreshSessionState } from '@/hooks/useAuth';
 import { authClient } from '@/libs/auth-client';
 import { trpc } from '@/trpc/client';
 import { getI18nPath } from '@/utils/Helpers';
@@ -52,13 +53,31 @@ export default function SignUpPage() {
     }
 
     try {
+      // Step 1: Create the user account
       await signUpMutation.mutateAsync({
         email,
         password,
         name,
       });
 
-      console.log('Sign-up successful, redirecting to dashboard');
+      // Step 2: Sign in the user to create a session
+      // TRPC mutations don't set cookies, so we need to use authClient to create a session
+      console.log('Account created, signing in...');
+      const signInResult = await authClient.signIn.email({
+        email,
+        password,
+      });
+
+      if (signInResult.error) {
+        setError('Account created but sign-in failed. Please sign in manually.');
+        return;
+      }
+
+      // Step 3: Refresh the session state to update the UI
+      console.log('Sign-in successful, refreshing session...');
+      await refreshSessionState();
+
+      console.log('Session refreshed, redirecting to dashboard');
       router.push('/dashboard');
     } catch (error) {
       console.error('Sign-up error:', error);
@@ -68,7 +87,7 @@ export default function SignUpPage() {
     }
   };
 
-  const handleSocialSignUp = async (provider: 'google' | 'github') => {
+  const handleSocialSignUp = async (provider: 'google') => {
     try {
       const result = await authClient.signIn.social({
         provider,
@@ -159,22 +178,14 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <Button
-              variant="outline"
-              onClick={() => handleSocialSignUp('google')}
-              disabled={loading}
-            >
-              Google
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => handleSocialSignUp('github')}
-              disabled={loading}
-            >
-              GitHub
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            onClick={() => handleSocialSignUp('google')}
+            disabled={loading}
+            className="w-full"
+          >
+            Google
+          </Button>
 
           <div className="text-center text-sm">
             {t('already_have_account')}
