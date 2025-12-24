@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-18T20:53:17
- * Last Updated: 2025-12-24T16:49:14
+ * Last Updated: 2025-12-24T16:59:14
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -190,15 +190,36 @@ if (process.argv.some(arg => arg.includes('build'))) {
         },
       },
 
-      // Aggressive JavaScript minification with enhanced options
+      // Ultra-aggressive JavaScript minification for maximum compression
       minimize: true,
       minimizer: [], // Use Rspack's enhanced built-in minimizers
 
-      // Deterministic chunk and module IDs for better caching
-      chunkIds: 'deterministic',
-      moduleIds: 'deterministic',
+      // Additional minification options
+      terserOptions: {
+        compress: {
+          drop_console: true, // Remove console.log statements
+          drop_debugger: true, // Remove debugger statements
+          pure_funcs: ['console.log', 'console.info', 'console.debug'], // Remove specific console methods
+          passes: 3, // Multiple passes for better compression
+          unsafe: true, // Enable unsafe optimizations
+          unsafe_comps: true, // Unsafe property access compression
+          unsafe_math: true, // Unsafe math optimizations
+          unsafe_proto: true, // Unsafe prototype optimizations
+          unsafe_regexp: true, // Unsafe regexp optimizations
+        },
+        mangle: {
+          safari10: true, // Fix Safari 10/11 bugs
+        },
+        format: {
+          comments: false, // Remove all comments
+        },
+      },
 
-      // Aggressive optimizations for maximum minification
+      // Optimized chunk and module IDs for better caching and smaller size
+      chunkIds: 'size', // Smaller chunk IDs
+      moduleIds: 'size', // Smaller module IDs
+
+      // Ultra-aggressive optimizations for maximum minification
       mangleExports: 'size', // Mangle for size instead of deterministic
       concatenateModules: true,
       innerGraph: true,
@@ -214,6 +235,9 @@ if (process.argv.some(arg => arg.includes('build'))) {
       removeEmptyChunks: true, // Remove empty chunks
       mergeDuplicateChunks: true, // Merge duplicate chunks
       flagIncludedChunks: true, // Flag chunks that are included
+
+      // Advanced compression options
+      realContentHash: true, // Use real content hash for better caching
     },
 
     // Optimized module resolution for better tree shaking
@@ -232,10 +256,13 @@ if (process.argv.some(arg => arg.includes('build'))) {
       cacheWithContext: false, // Better caching for monorepos
     },
 
-    // Source maps for debugging and Lighthouse performance insights
-    devtool: {
-      type: 'source-map', // Generate separate source map files
-    },
+    // Source maps only for development builds
+    devtool:
+      process.env.NODE_ENV === 'development'
+        ? {
+            type: 'source-map', // Generate separate source map files for debugging
+          }
+        : false, // No source maps in production for smaller bundle size
 
     // Production mode for optimal minification
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
