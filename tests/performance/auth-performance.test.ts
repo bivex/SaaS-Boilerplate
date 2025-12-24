@@ -288,7 +288,7 @@ describe('Authentication Performance Tests', () => {
             });
 
             const concurrentOperations = Array.from({length: operations}).fill(null).map(() =>
-                mockDb.transaction(async (tx) => {
+                mockDb.transaction(async (tx: any) => {
                     await tx.insert({id: 'test', data: 'test'});
                 }),
             );
@@ -400,7 +400,7 @@ describe('Authentication Performance Tests', () => {
                     await new Promise(resolve => setTimeout(resolve, 50));
                     return [];
                 }),
-            });
+            } as any);
 
             const startTime = performance.now();
 
