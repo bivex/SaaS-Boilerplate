@@ -21,12 +21,7 @@ import { ActiveLink } from '@/components/ActiveLink';
 import { LocaleSwitcher } from '@/components/LocaleSwitcher';
 import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
 import { ToggleMenuButton } from '@/components/ToggleMenuButton';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 import { UserButton } from '@/components/UserButton';
 import { Logo } from '@/templates/Logo';

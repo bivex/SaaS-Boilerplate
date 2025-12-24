@@ -13,13 +13,13 @@
  * Commercial licensing available upon request.
  */
 
-import { db } from './DB';
-import { session } from '../models/Schema';
-import { eq, lt, and, inArray } from 'drizzle-orm';
 import { Redis } from '@upstash/redis';
+import { eq, lt } from 'drizzle-orm';
+import { session } from '../models/Schema';
+import { db } from './DB';
 
 // Session data structure
-export interface SessionData {
+export type SessionData = {
   id: string;
   userId: string;
   token?: string;
@@ -36,17 +36,22 @@ export interface SessionData {
     permissions?: string[];
     metadata?: Record<string, any>;
   };
-}
+};
 
 // Storage adapter interface
-export interface SessionStorageAdapter {
-  store(session: SessionData): Promise<void>;
-  retrieve(sessionId: string): Promise<SessionData | null>;
-  update(sessionId: string, updates: Partial<SessionData>): Promise<void>;
-  delete(sessionId: string): Promise<void>;
-  cleanup(): Promise<void>;
-  close(): Promise<void>;
-}
+export type SessionStorageAdapter = {
+  store: (session: SessionData) => Promise<void>;
+
+  retrieve: (sessionId: string) => Promise<SessionData | null>;
+
+  update: (sessionId: string, updates: Partial<SessionData>) => Promise<void>;
+
+  delete: (sessionId: string) => Promise<void>;
+
+  cleanup: () => Promise<void>;
+
+  close: () => Promise<void>;
+};
 
 // Database session storage adapter
 export class DatabaseSessionStorage implements SessionStorageAdapter {
@@ -101,10 +106,18 @@ export class DatabaseSessionStorage implements SessionStorageAdapter {
       updatedAt: new Date(),
     };
 
-    if (updates.token !== undefined) updateData.token = updates.token;
-    if (updates.expiresAt !== undefined) updateData.expiresAt = updates.expiresAt;
-    if (updates.ipAddress !== undefined) updateData.ipAddress = updates.ipAddress;
-    if (updates.userAgent !== undefined) updateData.userAgent = updates.userAgent;
+    if (updates.token !== undefined) {
+      updateData.token = updates.token;
+    }
+    if (updates.expiresAt !== undefined) {
+      updateData.expiresAt = updates.expiresAt;
+    }
+    if (updates.ipAddress !== undefined) {
+      updateData.ipAddress = updates.ipAddress;
+    }
+    if (updates.userAgent !== undefined) {
+      updateData.userAgent = updates.userAgent;
+    }
 
     await db
       .update(session)
@@ -155,9 +168,15 @@ export class RedisSessionStorage implements SessionStorageAdapter {
     try {
       const session = JSON.parse(data);
       // Convert date strings back to Date objects
-      if (session.expiresAt) session.expiresAt = new Date(session.expiresAt);
-      if (session.createdAt) session.createdAt = new Date(session.createdAt);
-      if (session.updatedAt) session.updatedAt = new Date(session.updatedAt);
+      if (session.expiresAt) {
+        session.expiresAt = new Date(session.expiresAt);
+      }
+      if (session.createdAt) {
+        session.createdAt = new Date(session.createdAt);
+      }
+      if (session.updatedAt) {
+        session.updatedAt = new Date(session.updatedAt);
+      }
 
       return session;
     } catch (error) {
@@ -335,5 +354,5 @@ export class SessionStorageFactory {
 
 // Default session storage instance
 export const sessionStorage = SessionStorageFactory.create(
-  (process.env.SESSION_STORAGE_TYPE as 'database' | 'redis' | 'hybrid') || 'database'
+  (process.env.SESSION_STORAGE_TYPE as 'database' | 'redis' | 'hybrid') || 'database',
 );

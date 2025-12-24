@@ -21,7 +21,7 @@ import { useState } from 'react';
 import superjson from 'superjson';
 import { trpc } from './client';
 
-export function TRPCProvider({ children }: { children: React.ReactNode }) {
+export function TRPCProvider({ children}: { children: React.ReactNode }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({

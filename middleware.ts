@@ -30,7 +30,7 @@ const isProtectedRoute = (pathname: string) => {
   return (
     pathname.includes('/dashboard')
     || pathname.includes('/onboarding')
-    // API routes are now allowed through (auth routes handle their own auth)
+  // API routes are now allowed through (auth routes handle their own auth)
   );
 };
 

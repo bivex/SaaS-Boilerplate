@@ -19,7 +19,8 @@ import type { OrgPermission, OrgRole } from '@/types/Auth';
 type Messages = typeof import('../locales/en.json');
 
 // eslint-disable-next-line ts/consistent-type-definitions
-declare interface IntlMessages extends Messages {}
+declare interface IntlMessages extends Messages {
+}
 
 declare global {
   // eslint-disable-next-line ts/consistent-type-definitions

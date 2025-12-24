@@ -13,11 +13,12 @@
  * Commercial licensing available upon request.
  */
 
-import argon2 from 'argon2';
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
+import { Buffer } from 'node:buffer';
+import crypto from 'node:crypto';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
+import argon2 from 'argon2';
+import jwt from 'jsonwebtoken';
 import { Env } from './Env';
 
 // Initialize Redis for rate limiting
@@ -34,7 +35,7 @@ const ratelimit = new Ratelimit({
 });
 
 // JWT Configuration
-export interface JWTPayload {
+export type JWTPayload = {
   userId: string;
   sessionId: string;
   roles?: string[];
@@ -42,67 +43,67 @@ export interface JWTPayload {
   tenantId?: string;
   iat?: number;
   exp?: number;
-}
+};
 
-export interface JWTConfig {
+export type JWTConfig = {
   secret: string;
   expiresIn: string | number;
   algorithm?: jwt.Algorithm;
-}
+};
 
 // Password Security
-export interface PasswordConfig {
+export type PasswordConfig = {
   type?: argon2.Options['type'];
   memoryCost?: number;
   timeCost?: number;
   parallelism?: number;
-}
+};
 
 // CSRF Protection
-export interface CSRFConfig {
+export type CSRFConfig = {
   secret: string;
   expiresIn?: number; // in seconds
-}
+};
 
 // Rate Limiting
-export interface RateLimitConfig {
+export type RateLimitConfig = {
   windowMs: number; // window size in milliseconds
   maxRequests: number;
   skipSuccessfulRequests?: boolean;
   skipFailedRequests?: boolean;
-}
+};
 
 // OAuth Configuration
-export interface OAuthConfig {
+export type OAuthConfig = {
   clientId: string;
   clientSecret: string;
   redirectUri: string;
-}
+};
 
-export interface OAuthTokens {
+export type OAuthTokens = {
   access_token: string;
   refresh_token?: string | null;
   expires_in: number;
   token_type?: string;
-}
+};
 
-export interface OAuthProfile {
+export type OAuthProfile = {
   id: string;
   email: string;
   name: string;
   picture?: string;
   avatar_url?: string;
-}
+};
 
 // Cookie Configuration
-export interface CookieConfig {
+export type CookieConfig = {
   httpOnly: boolean;
   secure: boolean;
   sameSite: 'strict' | 'lax' | 'none';
   maxAge: number;
   path: string;
   domain?: string;
-}
+};
 
 /**
  * JWT Management Utilities
@@ -238,7 +239,7 @@ export class CSRFManager {
     // Use constant-time comparison to prevent timing attacks
     return crypto.timingSafeEqual(
       Buffer.from(token, 'hex'),
-      Buffer.from(sessionToken, 'hex')
+      Buffer.from(sessionToken, 'hex'),
     );
   }
 
@@ -448,8 +449,8 @@ export class OAuthManager {
     };
 
     const headers = {
-      'Authorization': `Bearer ${accessToken}`,
-      'Accept': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      Accept: 'application/json',
     };
 
     // For GitHub, add additional header for email
@@ -509,7 +510,7 @@ export class OAuthManager {
 // Handle cases where environment variables might not be available (e.g., tests)
 const getEnvVar = (key: string, defaultValue?: string) => {
   try {
-    return require('./Env').Env[key] || defaultValue;
+    return Env[key] || defaultValue;
   } catch {
     return defaultValue;
   }

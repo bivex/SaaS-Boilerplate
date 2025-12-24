@@ -93,7 +93,9 @@ async function refreshSession(): Promise<any> {
 }
 
 function shouldRefreshSession(session: any): boolean {
-  if (!session?.session?.expiresAt) return false;
+  if (!session?.session?.expiresAt) {
+    return false;
+  }
 
   const expiresAt = new Date(session.session.expiresAt);
   const now = new Date();
@@ -115,14 +117,18 @@ export function useSession() {
 
   // Schedule session refresh
   const scheduleRefresh = useCallback((sessionData: any) => {
-    if (!sessionData?.session?.expiresAt) return;
+    if (!sessionData?.session?.expiresAt) {
+      return;
+    }
 
     const expiresAt = new Date(sessionData.session.expiresAt);
     const now = new Date();
     const timeLeft = expiresAt.getTime() - now.getTime();
 
     // Clear existing timers
-    if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+    if (refreshTimerRef.current) {
+      clearTimeout(refreshTimerRef.current);
+    }
 
     if (timeLeft > SESSION_CONFIG.refreshThreshold) {
       // Schedule refresh when we hit the threshold
@@ -141,7 +147,9 @@ export function useSession() {
 
   // Periodic session check
   const scheduleCheck = useCallback(() => {
-    if (checkTimerRef.current) clearInterval(checkTimerRef.current);
+    if (checkTimerRef.current) {
+      clearInterval(checkTimerRef.current);
+    }
 
     checkTimerRef.current = setInterval(async () => {
       const currentSession = await fetchSession();
@@ -164,7 +172,7 @@ export function useSession() {
 
     // Initial session fetch if not already loading
     if (globalLoading && !sessionPromise) {
-      fetchSession().then(fetchedSession => {
+      fetchSession().then((fetchedSession) => {
         notifySubscribers(fetchedSession, false);
 
         if (fetchedSession) {
@@ -179,10 +187,14 @@ export function useSession() {
 
     return () => {
       unsubscribe();
-      if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
-      if (checkTimerRef.current) clearInterval(checkTimerRef.current);
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current);
+      }
+      if (checkTimerRef.current) {
+        clearInterval(checkTimerRef.current);
+      }
     };
-  }, [updateSession, scheduleRefresh, scheduleCheck]);
+  }, [updateSession, scheduleRefresh, scheduleCheck, session]);
 
   return { session, loading };
 }
@@ -248,7 +260,7 @@ export function useGoogleLinking() {
   const linkGoogleAccount = useCallback(async () => {
     try {
       await linkMutation.mutateAsync();
-      refetchLinkStatus();
+      await refetchLinkStatus();
       return { success: true };
     } catch (error) {
       console.error('Error linking Google account:', error);
@@ -259,7 +271,7 @@ export function useGoogleLinking() {
   const unlinkGoogleAccount = useCallback(async () => {
     try {
       await unlinkMutation.mutateAsync();
-      refetchLinkStatus();
+      await refetchLinkStatus();
       return { success: true };
     } catch (error) {
       console.error('Error unlinking Google account:', error);

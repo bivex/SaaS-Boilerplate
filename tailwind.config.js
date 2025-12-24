@@ -22,40 +22,40 @@ const config = {
   theme: {
     extend: {
       colors: {
-        border: 'var(--color-border)',
-        input: 'var(--color-input)',
-        ring: 'var(--color-ring)',
-        background: 'var(--color-background)',
-        foreground: 'var(--color-foreground)',
-        primary: {
+        'border': 'var(--color-border)',
+        'input': 'var(--color-input)',
+        'ring': 'var(--color-ring)',
+        'background': 'var(--color-background)',
+        'foreground': 'var(--color-foreground)',
+        'primary': {
           DEFAULT: 'var(--color-primary)',
           foreground: 'var(--color-primary-foreground)',
         },
-        secondary: {
+        'secondary': {
           DEFAULT: 'var(--color-secondary)',
           foreground: 'var(--color-secondary-foreground)',
         },
-        destructive: {
+        'destructive': {
           DEFAULT: 'var(--color-destructive)',
           foreground: 'var(--color-destructive-foreground)',
         },
-        muted: {
+        'muted': {
           DEFAULT: 'var(--color-muted)',
           foreground: 'var(--color-muted-foreground)',
         },
-        accent: {
+        'accent': {
           DEFAULT: 'var(--color-accent)',
           foreground: 'var(--color-accent-foreground)',
         },
-        popover: {
+        'popover': {
           DEFAULT: 'var(--color-popover)',
           foreground: 'var(--color-popover-foreground)',
         },
-        card: {
+        'card': {
           DEFAULT: 'var(--color-card)',
           foreground: 'var(--color-card-foreground)',
         },
-        brand: {
+        'brand': {
           DEFAULT: 'var(--color-brand)',
           light: 'var(--color-brand-light)',
         },

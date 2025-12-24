@@ -13,11 +13,7 @@
  * Commercial licensing available upon request.
  */
 
-import {
-  integer,
-  sqliteTable,
-  text,
-} from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 // This file defines the structure of your database tables using the Drizzle ORM.
 

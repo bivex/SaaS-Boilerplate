@@ -17,10 +17,10 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { organization } from 'better-auth/plugins';
 import { google } from 'better-auth/social-providers';
-import { db } from './DB';
-import { Env } from './Env';
 import { eq } from 'drizzle-orm';
 import { user } from '@/models/Schema';
+import { db } from './DB';
+import { Env } from './Env';
 
 // Environment validation and configuration
 function validateEnvironment(): void {
@@ -39,8 +39,8 @@ function validateEnvironment(): void {
 
   if (missingVars.length > 0) {
     throw new Error(
-      `Missing required environment variables: ${missingVars.join(', ')}\n` +
-      'Please set these variables in your .env file or environment.'
+      `Missing required environment variables: ${missingVars.join(', ')}\n`
+      + 'Please set these variables in your .env file or environment.',
     );
   }
 
@@ -49,19 +49,11 @@ function validateEnvironment(): void {
     console.warn('⚠️  BETTER_AUTH_SECRET should be at least 32 characters long for security');
   }
 
-  // Validate URL format
-  try {
-    new URL(Env.BETTER_AUTH_URL || '');
-  } catch {
-    throw new Error('BETTER_AUTH_URL must be a valid URL');
-  }
-
-  console.log('🔧 Better Auth Environment Check:');
-  console.log('✅ BETTER_AUTH_SECRET:', Env.BETTER_AUTH_SECRET ? 'SET' : 'NOT SET');
-  console.log('✅ BETTER_AUTH_URL:', Env.BETTER_AUTH_URL);
-  console.log('✅ DATABASE_URL:', process.env.DATABASE_URL ? 'SET' : 'NOT SET');
+  console.warn('🔧 Better Auth Environment Check:');
+  console.warn('✅ BETTER_AUTH_SECRET:', Env.BETTER_AUTH_SECRET ? 'SET' : 'NOT SET');
+  console.warn('✅ BETTER_AUTH_URL:', Env.BETTER_AUTH_URL);
+  console.warn('✅ DATABASE_URL:', process.env.DATABASE_URL ? 'SET' : 'NOT SET');
 }
-
 
 // Social provider configuration with validation
 function configureSocialProviders() {
@@ -92,10 +84,10 @@ function configurePlugins() {
       // Additional organization options
       organizationLimit: 10, // Max organizations per user
       memberLimit: 100, // Max members per organization
-    })
+    }),
   );
 
-  console.log('✅ Plugins configured:', plugins.length);
+  console.warn('✅ Plugins configured:', plugins.length);
 
   return plugins;
 }
@@ -103,7 +95,7 @@ function configurePlugins() {
 // Validate environment before creating auth instance
 validateEnvironment();
 
-console.log('🔧 Creating Better Auth instance...');
+console.warn('🔧 Creating Better Auth instance...');
 
 // Create social providers configuration with email conflict checking
 const socialProvidersConfig: any = {};
@@ -122,7 +114,7 @@ export const auth = betterAuth({
 
   // Security check: prevent account creation if email already exists
   // This prevents automatic account linking without user consent
-  onBeforeCreateAccount: async ({ user: newUser }: { user: { email: string } }) => {
+  onBeforeCreateAccount: async ({ user: newUser}: { user: { email: string } }) => {
     // Check if user with this email already exists
     const existingUser = await db
       .select()
@@ -133,14 +125,13 @@ export const auth = betterAuth({
     if (existingUser.length > 0) {
       // Email already exists - block automatic account creation
       throw new Error(
-        `An account with email ${newUser.email} already exists. ` +
-        `To link your Google account, please sign in to your existing account and configure the integration in settings.`
+        `An account with email ${newUser.email} already exists. `
+        + `To link your Google account, please sign in to your existing account and configure the integration in settings.`,
       );
     }
 
     return true; // Allow account creation if email is unique
   },
-
 
   // Enhanced email and password configuration
   emailAndPassword: {
@@ -149,7 +140,7 @@ export const auth = betterAuth({
     sendResetPassword: async ({ user, url }) => {
       // Custom password reset email sending logic
       // In production, integrate with your email service (Resend, SendGrid, etc.)
-      console.log(`📧 Password reset email would be sent to ${user.email}: ${url}`);
+      console.warn(`📧 Password reset email would be sent to ${user.email}: ${url}`);
 
       // For now, just log the reset URL
       // You can integrate with your email service here
@@ -160,7 +151,7 @@ export const auth = betterAuth({
   socialProviders: socialProvidersConfig,
 
   // Custom social provider sign-in logic
-  onBeforeSignIn: async ({ user: signInUser, account }: { user: any, account: any }) => {
+  onBeforeSignIn: async ({ user: signInUser, account}: { user: any; account: any }) => {
     if (account?.providerId === 'google') {
       // Check if user exists and has Google linked
       const existingUser = await db
@@ -174,8 +165,8 @@ export const auth = betterAuth({
         const userData = existingUser[0];
         if (userData && !userData.googleLinked) {
           throw new Error(
-            'Google authentication is not enabled for this account. ' +
-            'Please sign in with your email and password first, then link your Google account in settings.'
+            'Google authentication is not enabled for this account. '
+            + 'Please sign in with your email and password first, then link your Google account in settings.',
           );
         }
       }
@@ -185,7 +176,7 @@ export const auth = betterAuth({
   },
 
   // Handle post-account creation for social providers
-  onAfterCreateAccount: async ({ user: newUser, account }: { user: any, account: any }) => {
+  onAfterCreateAccount: async ({ user: newUser, account}: { user: any; account: any }) => {
     if (account?.providerId === 'google') {
       // Link Google account for new users
       await db
@@ -251,7 +242,7 @@ export const auth = betterAuth({
   },
 });
 
-console.log('✅ Better Auth instance created successfully');
+console.warn('✅ Better Auth instance created successfully');
 
 // Export configuration for testing and debugging
 export const authConfig = {

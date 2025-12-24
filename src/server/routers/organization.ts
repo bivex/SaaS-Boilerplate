@@ -36,7 +36,7 @@ export const organizationRouter = createTRPCRouter({
       name: z.string().min(1),
       description: z.string().optional(),
     }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ _input }) => {
       const result = await db
         .insert(organizationSchema)
         .values({

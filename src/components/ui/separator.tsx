@@ -21,7 +21,9 @@ type SeparatorProps = {
   orientation?: 'horizontal' | 'vertical';
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Separator = ({ ref, className, orientation = 'horizontal', ...props }: SeparatorProps & { ref?: React.RefObject<HTMLDivElement | null> }) => (
+const Separator = ({ ref, className, orientation = 'horizontal', ...props}: SeparatorProps & {
+  ref?: React.RefObject<HTMLDivElement | null>;
+}) => (
   <div
     ref={ref}
     className={cn(

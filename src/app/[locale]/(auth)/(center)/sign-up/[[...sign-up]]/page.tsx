@@ -62,7 +62,7 @@ export default function SignUpPage() {
 
       // Step 2: Sign in the user to create a session
       // TRPC mutations don't set cookies, so we need to use authClient to create a session
-      console.log('Account created, signing in...');
+      console.warn('Account created, signing in...');
       const signInResult = await authClient.signIn.email({
         email,
         password,
@@ -74,10 +74,10 @@ export default function SignUpPage() {
       }
 
       // Step 3: Refresh the session state to update the UI
-      console.log('Sign-in successful, refreshing session...');
+      console.warn('Sign-in successful, refreshing session...');
       await refreshSessionState();
 
-      console.log('Session refreshed, redirecting to dashboard');
+      console.warn('Session refreshed, redirecting to dashboard');
       router.push('/dashboard');
     } catch (error) {
       console.error('Sign-up error:', error);

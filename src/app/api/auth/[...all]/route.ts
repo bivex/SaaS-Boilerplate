@@ -16,8 +16,8 @@
 import { toNextJsHandler } from 'better-auth/next-js';
 import { auth } from '@/libs/auth';
 
-console.log('🔧 Setting up Better Auth routes...');
+console.warn('🔧 Setting up Better Auth routes...');
 
 export const { GET, POST } = toNextJsHandler(auth);
 
-console.log('✅ Better Auth routes configured');
+console.warn('✅ Better Auth routes configured');

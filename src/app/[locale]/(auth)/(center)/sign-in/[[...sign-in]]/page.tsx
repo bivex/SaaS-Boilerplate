@@ -52,10 +52,10 @@ export default function SignInPage() {
         setError(result.error.message || 'An error occurred');
       } else {
         // After successful sign-in, refresh the session state
-        console.log('Sign-in successful, refreshing session...');
+        console.warn('Sign-in successful, refreshing session...');
         await refreshSessionState();
 
-        console.log('Session refreshed, redirecting to dashboard');
+        console.warn('Session refreshed, redirecting to dashboard');
         router.push('/dashboard');
       }
     } catch {

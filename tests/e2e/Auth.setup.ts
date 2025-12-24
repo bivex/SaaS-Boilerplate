@@ -13,20 +13,20 @@
  * Commercial licensing available upon request.
  */
 
-import { execSync } from 'node:child_process';
-import { test as setup } from '@playwright/test';
+import {execSync} from 'node:child_process';
+import {test as setup} from '@playwright/test';
 
 setup('setup database for e2e tests', async () => {
-  // Ensure database is migrated and ready
-  try {
-    console.log('Setting up database for e2e tests...');
+    // Ensure database is migrated and ready
+    try {
+        console.log('Setting up database for e2e tests...');
 
-    // Run database migration
-    execSync('npm run db:migrate', { stdio: 'inherit' });
+        // Run database migration
+        execSync('npm run db:migrate', {stdio: 'inherit'});
 
-    console.log('Database setup complete');
-  } catch (error) {
-    console.error('Database setup failed:', error);
-    throw error;
-  }
+        console.log('Database setup complete');
+    } catch (error) {
+        console.error('Database setup failed:', error);
+        throw error;
+    }
 });

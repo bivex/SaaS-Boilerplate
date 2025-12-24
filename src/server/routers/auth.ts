@@ -13,12 +13,12 @@
  * Commercial licensing available upon request.
  */
 
+import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { auth } from '@/libs/auth';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/trpc';
 import { db } from '@/libs/DB';
 import { user } from '@/models/Schema';
-import { eq } from 'drizzle-orm';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '@/server/trpc';
 
 export const authRouter = createTRPCRouter({
   // Get current session

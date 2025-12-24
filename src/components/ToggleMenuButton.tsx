@@ -23,7 +23,9 @@ import { Button } from '@/components/ui/button';
  * @params props - Component props.
  * @params props.onClick - Function to run when the button is clicked.
  */
-const ToggleMenuButton = ({ ref, ...props }: ComponentPropsWithoutRef<typeof Button> & { ref?: React.RefObject<ElementRef<typeof Button> | null> }) => (
+const ToggleMenuButton = ({ ref, ...props}: ComponentPropsWithoutRef<typeof Button> & {
+  ref?: React.RefObject<ElementRef<typeof Button> | null>;
+}) => (
   <Button
     className="p-2 focus-visible:ring-offset-0"
     variant="ghost"

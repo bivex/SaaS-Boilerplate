@@ -13,22 +13,22 @@
  * Commercial licensing available upon request.
  */
 
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import {describe, expect, it, vi} from 'vitest';
+import {render, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ToggleMenuButton } from './ToggleMenuButton';
+import {ToggleMenuButton} from './ToggleMenuButton';
 
 describe('ToggleMenuButton', () => {
-  describe('onClick props', () => {
-    it('should call the callback when the user click on the button', async () => {
-      const handler = vi.fn();
+    describe('onClick props', () => {
+        it('should call the callback when the user click on the button', async () => {
+            const handler = vi.fn();
 
-      render(<ToggleMenuButton onClick={handler} />);
-      const button = screen.getByRole('button');
-      await userEvent.click(button);
+            render(<ToggleMenuButton onClick={handler}/>);
+            const button = screen.getByRole('button');
+            await userEvent.click(button);
 
-      expect(handler).toHaveBeenCalled();
+            expect(handler).toHaveBeenCalled();
+        });
     });
-  });
 });

@@ -13,191 +13,191 @@
  * Commercial licensing available upon request.
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 
 // Mock environment variables
 vi.mock('@/libs/Env', () => ({
-  Env: {
-    BETTER_AUTH_SECRET: 'test-secret-key-for-testing',
-    BETTER_AUTH_URL: 'http://localhost:3000',
-    GOOGLE_CLIENT_ID: 'test-google-client-id',
-    GOOGLE_CLIENT_SECRET: 'test-google-client-secret',
-  },
+    Env: {
+        BETTER_AUTH_SECRET: 'test-secret-key-for-testing',
+        BETTER_AUTH_URL: 'http://localhost:3000',
+        GOOGLE_CLIENT_ID: 'test-google-client-id',
+        GOOGLE_CLIENT_SECRET: 'test-google-client-secret',
+    },
 }));
 
 // Mock database
 vi.mock('@/libs/DB', () => ({
-  db: {
-    select: vi.fn(),
-    insert: vi.fn(),
-    update: vi.fn(),
-    delete: vi.fn(),
-  },
+    db: {
+        select: vi.fn(),
+        insert: vi.fn(),
+        update: vi.fn(),
+        delete: vi.fn(),
+    },
 }));
 
 // Mock drizzle adapter
 vi.mock('better-auth/adapters/drizzle', () => ({
-  drizzleAdapter: vi.fn(() => ({
-    provider: 'sqlite',
-    schema: {},
-  })),
+    drizzleAdapter: vi.fn(() => ({
+        provider: 'sqlite',
+        schema: {},
+    })),
 }));
 
 // Mock better-auth and plugins
 vi.mock('better-auth', () => ({
-  betterAuth: vi.fn(() => ({
-    options: {
-      baseURL: 'http://localhost:3000',
-      secret: 'test-secret-key-for-testing',
-      emailAndPassword: {
-        enabled: true,
-        requireEmailVerification: false,
-        sendResetPassword: vi.fn(),
-        sendEmailVerification: vi.fn(),
-      },
-      socialProviders: {
-        google: {
-          clientId: 'test-google-client-id',
-          clientSecret: 'test-google-client-secret',
+    betterAuth: vi.fn(() => ({
+        options: {
+            baseURL: 'http://localhost:3000',
+            secret: 'test-secret-key-for-testing',
+            emailAndPassword: {
+                enabled: true,
+                requireEmailVerification: false,
+                sendResetPassword: vi.fn(),
+                sendEmailVerification: vi.fn(),
+            },
+            socialProviders: {
+                google: {
+                    clientId: 'test-google-client-id',
+                    clientSecret: 'test-google-client-secret',
+                },
+            },
+            emailTemplates: {
+                emailVerification: {},
+                passwordReset: {},
+            },
+            plugins: [{}], // Mock organization plugin
+            session: {
+                expiresIn: 604800,
+                updateAge: 86400,
+            },
+            rateLimit: {
+                window: 900000,
+                max: 100,
+            },
         },
-      },
-      emailTemplates: {
-        emailVerification: {},
-        passwordReset: {},
-      },
-      plugins: [{}], // Mock organization plugin
-      session: {
-        expiresIn: 604800,
-        updateAge: 86400,
-      },
-      rateLimit: {
-        window: 900000,
-        max: 100,
-      },
-    },
-  })),
+    })),
 }));
 
 vi.mock('better-auth/plugins', () => ({
-  organization: vi.fn(() => ({
-    id: 'organization',
-    allowUserToCreateOrganization: true,
-  })),
+    organization: vi.fn(() => ({
+        id: 'organization',
+        allowUserToCreateOrganization: true,
+    })),
 }));
 
 // Better Auth configuration tests
 describe('Better Auth Configuration', () => {
-  let auth: any;
+    let auth: any;
 
-  beforeEach(async () => {
-    // Import after mocks are set up
-    const { auth: authInstance } = await import('@/libs/auth');
-    auth = authInstance;
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
-  describe('Configuration Validation', () => {
-    it('should create auth instance with correct configuration', () => {
-      expect(auth).toBeDefined();
-      expect(typeof auth).toBe('object');
-      expect(auth.options).toBeDefined();
+    beforeEach(async () => {
+        // Import after mocks are set up
+        const {auth: authInstance} = await import('@/libs/auth');
+        auth = authInstance;
     });
 
-    it('should configure email and password authentication', () => {
-      expect(auth.options.emailAndPassword).toBeDefined();
-      expect(auth.options.emailAndPassword.enabled).toBe(true);
+    afterEach(() => {
+        vi.clearAllMocks();
     });
 
-    it('should configure social providers', () => {
-      expect(auth.options.socialProviders).toBeDefined();
-      expect(auth.options.socialProviders.google).toBeDefined();
+    describe('Configuration Validation', () => {
+        it('should create auth instance with correct configuration', () => {
+            expect(auth).toBeDefined();
+            expect(typeof auth).toBe('object');
+            expect(auth.options).toBeDefined();
+        });
+
+        it('should configure email and password authentication', () => {
+            expect(auth.options.emailAndPassword).toBeDefined();
+            expect(auth.options.emailAndPassword.enabled).toBe(true);
+        });
+
+        it('should configure social providers', () => {
+            expect(auth.options.socialProviders).toBeDefined();
+            expect(auth.options.socialProviders.google).toBeDefined();
+        });
+
+        it('should set base URL from environment', () => {
+            expect(auth.options.baseURL).toBe('http://localhost:3000');
+        });
+
+        it('should set secret from environment', () => {
+            expect(auth.options.secret).toBe('test-secret-key-for-testing');
+        });
     });
 
-    it('should set base URL from environment', () => {
-      expect(auth.options.baseURL).toBe('http://localhost:3000');
+    describe('Social Provider Configuration', () => {
+        it('should configure Google provider with correct credentials', () => {
+            const googleProvider = auth.options.socialProviders.google;
+
+            expect(googleProvider.clientId).toBe('test-google-client-id');
+            expect(googleProvider.clientSecret).toBe('test-google-client-secret');
+        });
     });
 
-    it('should set secret from environment', () => {
-      expect(auth.options.secret).toBe('test-secret-key-for-testing');
-    });
-  });
-
-  describe('Social Provider Configuration', () => {
-    it('should configure Google provider with correct credentials', () => {
-      const googleProvider = auth.options.socialProviders.google;
-
-      expect(googleProvider.clientId).toBe('test-google-client-id');
-      expect(googleProvider.clientSecret).toBe('test-google-client-secret');
-    });
-  });
-
-  describe('Environment Variable Handling', () => {
-    it('should validate environment variables are set', () => {
-      // Since we're mocking the Env module, we can only test that
-      // the auth instance is created with the mocked values
-      expect(auth.options.secret).toBe('test-secret-key-for-testing');
-      expect(auth.options.baseURL).toBe('http://localhost:3000');
-    });
-  });
-
-  describe('Database Adapter', () => {
-    it('should create auth instance with database adapter', () => {
-      // The auth instance should be created successfully with mocked adapter
-      expect(auth).toBeDefined();
-      expect(auth.options).toBeDefined();
-    });
-  });
-
-  describe('Plugin Configuration', () => {
-    it('should configure plugins array', () => {
-      expect(Array.isArray(auth.options.plugins)).toBe(true);
+    describe('Environment Variable Handling', () => {
+        it('should validate environment variables are set', () => {
+            // Since we're mocking the Env module, we can only test that
+            // the auth instance is created with the mocked values
+            expect(auth.options.secret).toBe('test-secret-key-for-testing');
+            expect(auth.options.baseURL).toBe('http://localhost:3000');
+        });
     });
 
-    it('should configure organization plugin', () => {
-      expect(auth.options.plugins.length).toBeGreaterThan(0);
-    });
-  });
-
-  describe('Email and Password Configuration', () => {
-    it('should disable email verification', () => {
-      expect(auth.options.emailAndPassword.requireEmailVerification).toBe(false);
+    describe('Database Adapter', () => {
+        it('should create auth instance with database adapter', () => {
+            // The auth instance should be created successfully with mocked adapter
+            expect(auth).toBeDefined();
+            expect(auth.options).toBeDefined();
+        });
     });
 
-    it('should have password reset functionality', () => {
-      // The sendResetPassword function should be defined
-      expect(typeof auth.options.emailAndPassword.sendResetPassword).toBe('function');
-    });
-  });
+    describe('Plugin Configuration', () => {
+        it('should configure plugins array', () => {
+            expect(Array.isArray(auth.options.plugins)).toBe(true);
+        });
 
-  describe('Security Configuration', () => {
-    it('should configure session settings', () => {
-      expect(auth.options.session).toBeDefined();
-      expect(auth.options.session.expiresIn).toBe(604800); // 7 days
+        it('should configure organization plugin', () => {
+            expect(auth.options.plugins.length).toBeGreaterThan(0);
+        });
     });
 
-    it('should configure rate limiting', () => {
-      expect(auth.options.rateLimit).toBeDefined();
-      expect(auth.options.rateLimit.max).toBe(100);
-    });
-  });
+    describe('Email and Password Configuration', () => {
+        it('should disable email verification', () => {
+            expect(auth.options.emailAndPassword.requireEmailVerification).toBe(false);
+        });
 
-  describe('Email Templates', () => {
-    it('should configure email templates', () => {
-      expect(auth.options.emailTemplates).toBeDefined();
-      expect(auth.options.emailTemplates.emailVerification).toBeDefined();
-      expect(auth.options.emailTemplates.passwordReset).toBeDefined();
+        it('should have password reset functionality', () => {
+            // The sendResetPassword function should be defined
+            expect(typeof auth.options.emailAndPassword.sendResetPassword).toBe('function');
+        });
     });
-  });
 
-  describe('Environment Validation', () => {
-    it('should validate required environment variables', () => {
-      // Since we're mocking the environment, the auth instance should be created successfully
-      expect(auth).toBeDefined();
-      expect(auth.options.baseURL).toBe('http://localhost:3000');
-      expect(auth.options.secret).toBe('test-secret-key-for-testing');
+    describe('Security Configuration', () => {
+        it('should configure session settings', () => {
+            expect(auth.options.session).toBeDefined();
+            expect(auth.options.session.expiresIn).toBe(604800); // 7 days
+        });
+
+        it('should configure rate limiting', () => {
+            expect(auth.options.rateLimit).toBeDefined();
+            expect(auth.options.rateLimit.max).toBe(100);
+        });
     });
-  });
+
+    describe('Email Templates', () => {
+        it('should configure email templates', () => {
+            expect(auth.options.emailTemplates).toBeDefined();
+            expect(auth.options.emailTemplates.emailVerification).toBeDefined();
+            expect(auth.options.emailTemplates.passwordReset).toBeDefined();
+        });
+    });
+
+    describe('Environment Validation', () => {
+        it('should validate required environment variables', () => {
+            // Since we're mocking the environment, the auth instance should be created successfully
+            expect(auth).toBeDefined();
+            expect(auth.options.baseURL).toBe('http://localhost:3000');
+            expect(auth.options.secret).toBe('test-secret-key-for-testing');
+        });
+    });
 });

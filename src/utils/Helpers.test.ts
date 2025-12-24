@@ -13,23 +13,23 @@
  * Commercial licensing available upon request.
  */
 
-import { AppConfig } from './AppConfig';
-import { getI18nPath } from './Helpers';
+import {AppConfig} from './AppConfig';
+import {getI18nPath} from './Helpers';
 
 describe('Helpers', () => {
-  describe('getI18nPath function', () => {
-    it('should not change the path for default language', () => {
-      const url = '/random-url';
-      const locale = AppConfig.defaultLocale;
+    describe('getI18nPath function', () => {
+        it('should not change the path for default language', () => {
+            const url = '/random-url';
+            const locale = AppConfig.defaultLocale;
 
-      expect(getI18nPath(url, locale)).toBe(url);
+            expect(getI18nPath(url, locale)).toBe(url);
+        });
+
+        it('should prepend the locale to the path for non-default language', () => {
+            const url = '/random-url';
+            const locale = 'fr';
+
+            expect(getI18nPath(url, locale)).toMatch(/^\/fr/);
+        });
     });
-
-    it('should prepend the locale to the path for non-default language', () => {
-      const url = '/random-url';
-      const locale = 'fr';
-
-      expect(getI18nPath(url, locale)).toMatch(/^\/fr/);
-    });
-  });
 });

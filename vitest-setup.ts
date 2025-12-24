@@ -13,10 +13,10 @@
  * Commercial licensing available upon request.
  */
 
+import { TextDecoder, TextEncoder } from 'node:util';
+import { vi } from 'vitest';
 import '@testing-library/jest-dom';
 import 'vitest-mock-extended';
-import { vi } from 'vitest';
-import { TextEncoder, TextDecoder } from 'util';
 
 // Set up environment variables for testing
 process.env.BILLING_PLAN_ENV = 'test';
@@ -26,11 +26,11 @@ process.env.BETTER_AUTH_URL = 'http://localhost:3000';
 process.env.DATABASE_URL = './sqlite.db';
 
 // Make vi globally available
-(global as any).vi = vi;
+(globalThis as any).vi = vi;
 
 // Set up TextEncoder/TextDecoder for tests
-global.TextEncoder = TextEncoder;
-(global as any).TextDecoder = TextDecoder;
+globalThis.TextEncoder = TextEncoder;
+(globalThis as any).TextDecoder = TextDecoder;
 
 // Ensure jsdom globals are available
 if (typeof window !== 'undefined') {

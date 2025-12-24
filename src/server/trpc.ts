@@ -13,12 +13,12 @@
  * Commercial licensing available upon request.
  */
 
+import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 /// <reference types="node" />
 import { initTRPC, TRPCError } from '@trpc/server';
-import { type FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import superjson from 'superjson';
-import { auth } from '@/libs/auth';
 import { ZodError } from 'zod';
+import { auth } from '@/libs/auth';
 
 export const createTRPCContext = async (opts: FetchCreateContextFnOptions) => {
   try {
@@ -50,9 +50,9 @@ export const t = initTRPC.context<typeof createTRPCContext>().create({
       data: {
         ...shape.data,
         zodError:
-          error.cause instanceof ZodError
-            ? (error.cause as ZodError).flatten()
-            : null,
+                    error.cause instanceof ZodError
+                      ? (error.cause as ZodError).flatten()
+                      : null,
       },
     };
   },
