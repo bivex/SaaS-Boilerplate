@@ -18,7 +18,7 @@ import type { LocalePrefix } from 'next-intl/routing';
 import type { PricingPlan } from '@/types/Subscription';
 import { BILLING_INTERVAL, PLAN_ID } from '@/types/constants';
 
-const localePrefix = 'as-needed' as LocalePrefix;
+const localePrefix = 'always' as LocalePrefix;
 
 export const AppConfig = {
   name: 'SaaS Template',
