@@ -48,6 +48,42 @@ const nextConfig = {
   // Enable compression
   compress: true,
 
+  // Add caching headers for static assets
+  async headers() {
+    return [
+      {
+        // Cache static assets for 1 year
+        source: '/assets/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache favicon and icons for 1 day
+        source: '/(favicon.ico|apple-touch-icon.png|favicon-*.png)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400',
+          },
+        ],
+      },
+      {
+        // Cache fonts for 1 year
+        source: '/fonts/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
+
   // Optimize loading
   experimental: {
     // Skip transpilation of modern features for better browsers
