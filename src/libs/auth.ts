@@ -7,7 +7,7 @@
  * https://github.com/bivex
  *
  * Created: 2025-12-23T22:20:00
- * Last Updated: 2025-12-24T00:04:53
+ * Last Updated: 2025-12-24T00:06:37
  *
  * Licensed under the MIT License.
  * Commercial licensing available upon request.
@@ -19,6 +19,8 @@ import { organization } from 'better-auth/plugins';
 import { google } from 'better-auth/social-providers';
 import { db } from './DB';
 import { Env } from './Env';
+import { eq } from 'drizzle-orm';
+import { user } from '@/models/Schema';
 
 // Environment validation and configuration
 function validateEnvironment(): void {
@@ -103,7 +105,7 @@ validateEnvironment();
 
 console.log('🔧 Creating Better Auth instance...');
 
-// Create social providers configuration
+// Create social providers configuration with email conflict checking
 const socialProvidersConfig: any = {};
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   socialProvidersConfig.google = {
@@ -117,6 +119,27 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'sqlite',
   }),
+
+  // Security check: prevent account creation if email already exists
+  // This prevents automatic account linking without user consent
+  onBeforeCreateAccount: async ({ user: newUser }: { user: { email: string } }) => {
+    // Check if user with this email already exists
+    const existingUser = await db
+      .select()
+      .from(user)
+      .where(eq(user.email, newUser.email))
+      .limit(1);
+
+    if (existingUser.length > 0) {
+      // Email already exists - block automatic account creation
+      throw new Error(
+        `Аккаунт с email ${newUser.email} уже существует. ` +
+        `Для привязки Google аккаунта войдите в существующий аккаунт и настройте интеграцию в настройках.`
+      );
+    }
+
+    return true; // Allow account creation if email is unique
+  },
 
   // Enhanced email and password configuration
   emailAndPassword: {
