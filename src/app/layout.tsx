@@ -130,10 +130,6 @@ export default function RootLayout({
           `}
         </style>
 
-        {/* Preload critical CSS for better LCP */}
-        <link rel="modulepreload" href="/_next/static/css/app/layout.css" />
-        <link rel="modulepreload" href="/_next/static/css/app/[locale]/page.css" />
-
         {/* Preload and optimize critical fonts */}
         <link
           rel="preload"
